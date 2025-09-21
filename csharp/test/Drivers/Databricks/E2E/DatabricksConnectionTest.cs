@@ -325,6 +325,12 @@ namespace Apache.Arrow.Adbc.Tests.Drivers.Databricks
                 Add(new(new() { [SparkParameters.Type] = SparkServerTypeConstants.Http, [SparkParameters.HostName] = "valid.server.com", [AdbcOptions.Username] = "user", [AdbcOptions.Password] = "myPassword", [DatabricksParameters.TracePropagationEnabled] = "notabool" }, typeof(ArgumentException)));
                 Add(new(new() { [SparkParameters.Type] = SparkServerTypeConstants.Http, [SparkParameters.HostName] = "valid.server.com", [AdbcOptions.Username] = "user", [AdbcOptions.Password] = "myPassword", [DatabricksParameters.TraceParentHeaderName] = "" }, typeof(ArgumentException)));
                 Add(new(new() { [SparkParameters.Type] = SparkServerTypeConstants.Http, [SparkParameters.HostName] = "valid.server.com", [AdbcOptions.Username] = "user", [AdbcOptions.Password] = "myPassword", [DatabricksParameters.TraceStateEnabled] = "notabool" }, typeof(ArgumentException)));
+
+                // Tests for RowsFetchedPerBlock parameter
+                Add(new(new() { [SparkParameters.Type] = SparkServerTypeConstants.Http, [SparkParameters.HostName] = "valid.server.com", [AdbcOptions.Username] = "user", [AdbcOptions.Password] = "myPassword", [DatabricksParameters.RowsFetchedPerBlock] = "notanumber" }, typeof(ArgumentException)));
+                Add(new(new() { [SparkParameters.Type] = SparkServerTypeConstants.Http, [SparkParameters.HostName] = "valid.server.com", [AdbcOptions.Username] = "user", [AdbcOptions.Password] = "myPassword", [DatabricksParameters.RowsFetchedPerBlock] = "0" }, typeof(ArgumentOutOfRangeException)));
+                Add(new(new() { [SparkParameters.Type] = SparkServerTypeConstants.Http, [SparkParameters.HostName] = "valid.server.com", [AdbcOptions.Username] = "user", [AdbcOptions.Password] = "myPassword", [DatabricksParameters.RowsFetchedPerBlock] = "-1" }, typeof(ArgumentOutOfRangeException)));
+                Add(new(new() { [SparkParameters.Type] = SparkServerTypeConstants.Http, [SparkParameters.HostName] = "valid.server.com", [AdbcOptions.Username] = "user", [AdbcOptions.Password] = "myPassword", [DatabricksParameters.RowsFetchedPerBlock] = "2147483648" }, typeof(ArgumentOutOfRangeException)));
             }
         }
 

@@ -124,8 +124,8 @@ namespace Apache.Arrow.Adbc.Drivers.Databricks
         // Expose QueryTimeoutSeconds for IHiveServer2Statement
         int IHiveServer2Statement.QueryTimeoutSeconds => base.QueryTimeoutSeconds;
 
-        // Expose BatchSize through the interface
-        long IHiveServer2Statement.BatchSize => BatchSize;
+        // Use RowsFetchedPerBlock if set, otherwise use the standard BatchSize
+        long IHiveServer2Statement.BatchSize => ((DatabricksConnection)Connection).RowsFetchedPerBlock ?? BatchSize;
 
         // Expose Connection through the interface
         HiveServer2Connection IHiveServer2Statement.Connection => Connection;
@@ -162,6 +162,25 @@ namespace Apache.Arrow.Adbc.Drivers.Databricks
                     else
                     {
                         throw new ArgumentException($"Invalid value for {key}: {value}. Expected a long value.");
+                    }
+                    break;
+                case DatabricksParameters.RowsFetchedPerBlock:
+                    if (int.TryParse(value, out int rowsFetchedPerBlockValue))
+                    {
+                        if (rowsFetchedPerBlockValue <= 0)
+                        {
+                            throw new ArgumentOutOfRangeException(key, value, $"The value '{value}' for option '{key}' is invalid. Must be a positive 32-bit integer.");
+                        }
+                        if (rowsFetchedPerBlockValue > int.MaxValue)
+                        {
+                            throw new ArgumentOutOfRangeException(key, value, $"The value '{value}' for option '{key}' is invalid. Must be a positive 32-bit integer (max value: {int.MaxValue}).");
+                        }
+                        // Update the connection's RowsFetchedPerBlock value
+                        ((DatabricksConnection)Connection)._rowsFetchedPerBlock = rowsFetchedPerBlockValue;
+                    }
+                    else
+                    {
+                        throw new ArgumentException($"Invalid value for {key}: {value}. Expected a positive 32-bit integer.");
                     }
                     break;
                 default:

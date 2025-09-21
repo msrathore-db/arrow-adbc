@@ -83,6 +83,9 @@ namespace Apache.Arrow.Adbc.Drivers.Databricks
         // Identity federation client ID for token exchange
         private string? _identityFederationClientId;
 
+        // Rows fetched per block configuration
+        internal int? _rowsFetchedPerBlock;
+
         // Default namespace
         private TNamespace? _defaultNamespace;
 
@@ -386,6 +389,33 @@ namespace Apache.Arrow.Adbc.Drivers.Databricks
             {
                 _identityFederationClientId = identityFederationClientId;
             }
+
+            // Parse RowsFetchedPerBlock parameter
+            if (Properties.TryGetValue(DatabricksParameters.RowsFetchedPerBlock, out string? rowsFetchedPerBlockStr))
+            {
+                if (!int.TryParse(rowsFetchedPerBlockStr, out int rowsFetchedPerBlockValue))
+                {
+                    throw new ArgumentException($"Parameter '{DatabricksParameters.RowsFetchedPerBlock}' value '{rowsFetchedPerBlockStr}' could not be parsed. Valid values are positive 32-bit integers.");
+                }
+
+                if (rowsFetchedPerBlockValue <= 0)
+                {
+                    throw new ArgumentOutOfRangeException(
+                        nameof(Properties),
+                        rowsFetchedPerBlockValue,
+                        $"Parameter '{DatabricksParameters.RowsFetchedPerBlock}' value must be a positive 32-bit integer.");
+                }
+
+                if (rowsFetchedPerBlockValue > int.MaxValue)
+                {
+                    throw new ArgumentOutOfRangeException(
+                        nameof(Properties),
+                        rowsFetchedPerBlockValue,
+                        $"Parameter '{DatabricksParameters.RowsFetchedPerBlock}' value must be a positive 32-bit integer (max value: {int.MaxValue}).");
+                }
+
+                _rowsFetchedPerBlock = rowsFetchedPerBlockValue;
+            }
         }
 
         /// <summary>
@@ -442,6 +472,12 @@ namespace Apache.Arrow.Adbc.Drivers.Databricks
         /// Gets whether PK/FK metadata call is enabled
         /// </summary>
         public bool EnablePKFK => _enablePKFK;
+
+        /// <summary>
+        /// Gets the maximum number of rows that a query returns at a time.
+        /// Returns null if not set (uses the standard batch size).
+        /// </summary>
+        public int? RowsFetchedPerBlock => _rowsFetchedPerBlock;
 
         /// <summary>
         /// Enable RunAsync flag in Thrift Operation

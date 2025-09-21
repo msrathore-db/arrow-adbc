@@ -38,6 +38,88 @@ namespace Apache.Arrow.Adbc.Tests.Drivers.Databricks
         {
         }
 
+        /// <summary>
+        /// Tests that RowsFetchedPerBlock parameter can be set and affects batch size.
+        /// </summary>
+        [SkippableTheory]
+        [InlineData("1000", 1000)]
+        [InlineData("5000", 5000)]
+        [InlineData("10000", 10000)]
+        public void CanSetRowsFetchedPerBlock(string value, int expectedValue)
+        {
+            using AdbcConnection connection = NewConnection();
+            using var statement = connection.CreateStatement();
+
+            // Set the RowsFetchedPerBlock option
+            statement.SetOption(DatabricksParameters.RowsFetchedPerBlock, value);
+
+            // Verify the value is set correctly by checking the connection
+            var databricksConnection = (DatabricksConnection)connection;
+            Assert.Equal(expectedValue, databricksConnection.RowsFetchedPerBlock);
+        }
+
+        /// <summary>
+        /// Tests that invalid RowsFetchedPerBlock values throw appropriate exceptions.
+        /// </summary>
+        [SkippableTheory]
+        [InlineData("0", typeof(ArgumentOutOfRangeException))]
+        [InlineData("-1", typeof(ArgumentOutOfRangeException))]
+        [InlineData("notanumber", typeof(ArgumentException))]
+        [InlineData("2147483648", typeof(ArgumentOutOfRangeException))]
+        public void RowsFetchedPerBlockInvalidValues(string value, Type expectedExceptionType)
+        {
+            using AdbcConnection connection = NewConnection();
+            using var statement = connection.CreateStatement();
+
+            // Verify that setting invalid values throws the expected exception
+            Assert.Throws(expectedExceptionType, () => statement.SetOption(DatabricksParameters.RowsFetchedPerBlock, value));
+        }
+
+        /// <summary>
+        /// Tests that RowsFetchedPerBlock parameter affects the actual batch size during query execution.
+        /// </summary>
+        [SkippableTheory]
+        [InlineData("100", 100)]
+        [InlineData("500", 500)]
+        public async Task RowsFetchedPerBlockAffectsBatchSize(string rowsFetchedPerBlock, int expectedBatchSize)
+        {
+            using AdbcConnection connection = NewConnection();
+            using var statement = connection.CreateStatement();
+
+            // Set the RowsFetchedPerBlock option
+            statement.SetOption(DatabricksParameters.RowsFetchedPerBlock, rowsFetchedPerBlock);
+
+            // Execute a query that returns more rows than the batch size
+            statement.SqlQuery = "SELECT id, CAST(id AS STRING) as id_string FROM RANGE(1000)";
+            QueryResult result = statement.ExecuteQuery();
+
+            // Verify we have a valid stream
+            Assert.NotNull(result.Stream);
+
+            // Read batches and verify they don't exceed the expected batch size
+            int totalRows = 0;
+            int batchCount = 0;
+            int maxBatchSize = 0;
+
+            while (result.Stream != null)
+            {
+                using var batch = await result.Stream.ReadNextRecordBatchAsync();
+                if (batch == null)
+                    break;
+
+                batchCount++;
+                totalRows += batch.Length;
+                maxBatchSize = Math.Max(maxBatchSize, batch.Length);
+                
+                // Verify that no batch exceeds the expected batch size
+                Assert.True(batch.Length <= expectedBatchSize, 
+                    $"Batch {batchCount} had {batch.Length} rows, which exceeds the expected batch size of {expectedBatchSize}");
+            }
+
+            // Verify we got all rows
+            Assert.Equal(1000, totalRows);
+        }
+
         [SkippableTheory]
         [InlineData(true, "CloudFetch enabled")]
         [InlineData(false, "CloudFetch disabled")]

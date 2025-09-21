@@ -228,6 +228,14 @@ namespace Apache.Arrow.Adbc.Drivers.Databricks
         /// Default value is false if not specified.
         /// </summary>
         public const string DriverConfigTakePrecedence = "adbc.databricks.driver_config_take_precedence";
+
+        /// <summary>
+        /// The maximum number of rows that a query returns at a time.
+        /// Valid values for this setting include any positive 32-bit integer.
+        /// This parameter overrides the default batch size for Databricks-specific behavior.
+        /// Default value is not set if not specified (uses the standard batch size).
+        /// </summary>
+        public const string RowsFetchedPerBlock = "adbc.databricks.rows_fetched_per_block";
     }
 
     /// <summary>
