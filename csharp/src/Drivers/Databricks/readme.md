@@ -130,6 +130,11 @@ CloudFetch is Databricks' high-performance result retrieval system that download
 | `adbc.databricks.driver_config_take_precedence` | Whether driver configuration overrides passed-in properties during configuration merging | `false` |
 | `adbc.apache.statement.batch_size` | Sets the maximum number of rows to retrieve in a single batch request | `2000000` |
 | `adbc.apache.connection.polltime_ms` | The time in milliseconds between each poll for query execution status. Databricks default is 100ms (Apache default: 500ms) | `100` |
+| `adbc.databricks.max_bytes_per_fetch_request` | Maximum bytes per fetch request when retrieving query results from servers. Supports unit suffixes (B, KB, MB, GB). Examples: `400MB`, `1024KB`, `419430400` | `400MB` |
+| `adbc.databricks.fetch_heartbeat_interval` | Interval in seconds for heartbeat polling during long-running operations to prevent timeouts. Must be a positive integer | `60` |
+| `adbc.databricks.operation_status_request_timeout` | Timeout in seconds for operation status polling requests. Must be a positive integer | `30` |
+| `adbc.databricks.rate_limit_retry` | Whether to retry requests that receive HTTP 429 (TooManyRequests) response | `true` |
+| `adbc.databricks.rate_limit_retry_timeout` | Maximum time in seconds to retry operations when receiving HTTP 429 responses. Set to 0 to retry indefinitely | `120` |
 
 ### Tracing Properties
 
