@@ -362,6 +362,8 @@ namespace Apache.Arrow.Adbc.Drivers.Apache.Hive2.Metadata
         /// For integer types, returns 0.
         /// For floating-point types, returns the fractional precision (matches HiveServer2).
         /// For TIMESTAMP types, returns 6 (microsecond precision).
+        /// For DATE type, returns 0.
+        /// For other types (VARCHAR, CHAR, BINARY, ARRAY, etc.), returns null.
         /// </summary>
         /// <param name="typeName">The full type name (e.g., "DECIMAL(10,2)")</param>
         /// <returns>The decimal digits (scale), or null if not applicable</returns>
@@ -407,15 +409,15 @@ namespace Apache.Arrow.Adbc.Drivers.Apache.Hive2.Metadata
                 return 6; // Microsecond precision
             }
 
-            // For DATE and STRING types, return 0 (matches HiveServer2)
-            if (baseType == "DATE" || baseType == "STRING")
+            // For DATE type, return 0 (matches HiveServer2)
+            if (baseType == "DATE")
             {
                 return 0;
             }
 
-            // For all other types, return 0 for statement-based output compatibility (matches HiveServer2)
-            // HiveServer2 consistently returns 0 instead of null for types where decimal digits don't apply
-            return 0;
+            // For all other types (STRING, CHAR, VARCHAR, BINARY, ARRAY, etc.), return null
+            // This matches the HiveServer2 GetObjects behavior where types without decimal components have null scale
+            return null;
         }
 
         /// <summary>
