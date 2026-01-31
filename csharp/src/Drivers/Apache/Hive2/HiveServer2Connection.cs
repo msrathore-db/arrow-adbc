@@ -506,7 +506,7 @@ namespace Apache.Arrow.Adbc.Drivers.Apache.Hive2
                     throw new InvalidOperationException("Invalid session");
                 }
 
-                Dictionary<string, Dictionary<string, Dictionary<string, TableInfo>>> catalogMap = new Dictionary<string, Dictionary<string, Dictionary<string, TableInfo>>>();
+                Dictionary<string, Dictionary<string, Dictionary<string, TableMetadata>>> catalogMap = new Dictionary<string, Dictionary<string, Dictionary<string, TableMetadata>>>();
                 CancellationToken cancellationToken = ApacheUtility.GetCancellationToken(QueryTimeoutSeconds, ApacheUtility.TimeUnit.Seconds);
                 try
                 {
@@ -534,7 +534,7 @@ namespace Apache.Arrow.Adbc.Drivers.Apache.Hive2
 
                             if (Regex.IsMatch(catalog, catalogRegexp, RegexOptions.IgnoreCase))
                             {
-                                catalogMap.Add(catalog, new Dictionary<string, Dictionary<string, TableInfo>>());
+                                catalogMap.Add(catalog, new Dictionary<string, Dictionary<string, TableMetadata>>());
                             }
                         }
                         // Handle the case where server does not support 'catalog' in the namespace.
@@ -560,7 +560,7 @@ namespace Apache.Arrow.Adbc.Drivers.Apache.Hive2
                             string catalog = catalogList[i];
                             string schemaDb = schemaList[i];
                             // It seems Spark sometimes returns empty string for catalog on some schema (temporary tables).
-                            catalogMap.GetValueOrDefault(catalog)?.Add(schemaDb, new Dictionary<string, TableInfo>());
+                            catalogMap.GetValueOrDefault(catalog)?.Add(schemaDb, new Dictionary<string, TableMetadata>());
                         }
                     }
 
@@ -573,8 +573,8 @@ namespace Apache.Arrow.Adbc.Drivers.Apache.Hive2
                             tableTypes?.ToList(),
                             cancellationToken).Result;
 
-                        TGetResultSetMetadataResp tableMetadata = GetResultSetMetadataAsync(getTablesResp, cancellationToken).Result;
-                        IReadOnlyDictionary<string, int> columnMap = GetColumnIndexMap(tableMetadata.Schema.Columns);
+                        TGetResultSetMetadataResp tablesMetadataResp = GetResultSetMetadataAsync(getTablesResp, cancellationToken).Result;
+                        IReadOnlyDictionary<string, int> columnMap = GetColumnIndexMap(tablesMetadataResp.Schema.Columns);
                         TRowSet rowSet = GetRowSetAsync(getTablesResp, cancellationToken).Result;
 
                         IReadOnlyList<string> catalogList = rowSet.Columns[columnMap[TableCat]].StringVal.Values;
@@ -588,8 +588,8 @@ namespace Apache.Arrow.Adbc.Drivers.Apache.Hive2
                             string schemaDb = schemaList[i];
                             string tableName = tableList[i];
                             string tableType = tableTypeList[i];
-                            TableInfo tableInfo = new(tableType);
-                            catalogMap.GetValueOrDefault(catalog)?.GetValueOrDefault(schemaDb)?.Add(tableName, tableInfo);
+                            TableMetadata tableMetadata = new(tableType);
+                            catalogMap.GetValueOrDefault(catalog)?.GetValueOrDefault(schemaDb)?.Add(tableName, tableMetadata);
                         }
                     }
 
@@ -621,6 +621,9 @@ namespace Apache.Arrow.Adbc.Drivers.Apache.Hive2
                         ReadOnlySpan<int> columnSizeList = rowSet.Columns[columnMap[columnNames.ColumnSize]].I32Val.Values.Values;
                         ReadOnlySpan<int> decimalDigitsList = rowSet.Columns[columnMap[columnNames.DecimalDigits]].I32Val.Values.Values;
 
+                        // Create metadata populator for field synthesis
+                        var populator = new Metadata.MetadataFieldPopulator();
+
                         for (int i = 0; i < catalogList.Count; i++)
                         {
                             // For systems that don't support 'catalog' in the namespace
@@ -639,22 +642,45 @@ namespace Apache.Arrow.Adbc.Drivers.Apache.Hive2
                             int ordinalPos = ordinalPosList[i] + PositionRequiredOffset;
                             int columnSize = columnSizeList[i];
                             int decimalDigits = decimalDigitsList[i];
-                            TableInfo? tableInfo = catalogMap.GetValueOrDefault(catalog)?.GetValueOrDefault(schemaDb)?.GetValueOrDefault(tableName);
-                            tableInfo?.ColumnName.Add(columnName);
-                            tableInfo?.ColType.Add(colType);
-                            tableInfo?.Nullable.Add(nullable);
-                            tableInfo?.IsAutoIncrement.Add(isAutoIncrement);
-                            tableInfo?.IsNullable.Add(isNullable);
-                            tableInfo?.ColumnDefault.Add(columnDefault);
-                            tableInfo?.OrdinalPosition.Add(ordinalPos);
-                            SetPrecisionScaleAndTypeName(colType, typeName, tableInfo, columnSize, decimalDigits);
+
+                            // Get table metadata reference
+                            TableMetadata? tableMeta = catalogMap.GetValueOrDefault(catalog)?.GetValueOrDefault(schemaDb)?.GetValueOrDefault(tableName);
+                            if (tableMeta.HasValue)
+                            {
+                                // Convert isNullable string to boolean for populator
+                                bool? isNullableBool = isNullable.Equals("YES", StringComparison.InvariantCultureIgnoreCase) ? true :
+                                                       isNullable.Equals("NO", StringComparison.InvariantCultureIgnoreCase) ? false :
+                                                       (bool?)null;
+
+                                // Populate column metadata using shared abstractions
+                                var record = populator.PopulateColumnMetadata(
+                                    catalog,
+                                    schemaDb,
+                                    tableName,
+                                    columnName,
+                                    typeName,
+                                    ordinalPos,
+                                    isNullableBool,
+                                    remarks: null, // Not available in Thrift GetObjects
+                                    columnDefault: columnDefault,
+                                    customData: null
+                                );
+
+                                // Override fields with Thrift-provided values (preserves exact current behavior)
+                                record.XdbcDataType = colType;
+                                record.Nullable = nullable;
+                                record.IsNullable = isNullable;
+                                record.IsAutoIncrement = isAutoIncrement ? "YES" : "NO";
+
+                                tableMeta.Value.Columns.Add(record);
+                            }
                         }
                     }
 
                     StringArray.Builder catalogNameBuilder = new StringArray.Builder();
                     List<IArrowArray?> catalogDbSchemasValues = new List<IArrowArray?>();
 
-                    foreach (KeyValuePair<string, Dictionary<string, Dictionary<string, TableInfo>>> catalogEntry in catalogMap)
+                    foreach (KeyValuePair<string, Dictionary<string, Dictionary<string, TableMetadata>>> catalogEntry in catalogMap)
                     {
                         catalogNameBuilder.Append(catalogEntry.Key);
 
@@ -960,14 +986,14 @@ namespace Apache.Arrow.Adbc.Drivers.Apache.Hive2
 
         private static StructArray GetDbSchemas(
             GetObjectsDepth depth,
-            Dictionary<string, Dictionary<string, TableInfo>> schemaMap)
+            Dictionary<string, Dictionary<string, TableMetadata>> schemaMap)
         {
             StringArray.Builder dbSchemaNameBuilder = new StringArray.Builder();
             List<IArrowArray?> dbSchemaTablesValues = new List<IArrowArray?>();
             ArrowBuffer.BitmapBuilder nullBitmapBuffer = new ArrowBuffer.BitmapBuilder();
             int length = 0;
 
-            foreach (KeyValuePair<string, Dictionary<string, TableInfo>> schemaEntry in schemaMap)
+            foreach (KeyValuePair<string, Dictionary<string, TableMetadata>> schemaEntry in schemaMap)
             {
                 dbSchemaNameBuilder.Append(schemaEntry.Key);
                 length++;
@@ -1001,7 +1027,7 @@ namespace Apache.Arrow.Adbc.Drivers.Apache.Hive2
 
         private static StructArray GetTableSchemas(
             GetObjectsDepth depth,
-            Dictionary<string, TableInfo> tableMap)
+            Dictionary<string, TableMetadata> tableMap)
         {
             StringArray.Builder tableNameBuilder = new StringArray.Builder();
             StringArray.Builder tableTypeBuilder = new StringArray.Builder();
@@ -1010,7 +1036,7 @@ namespace Apache.Arrow.Adbc.Drivers.Apache.Hive2
             ArrowBuffer.BitmapBuilder nullBitmapBuffer = new ArrowBuffer.BitmapBuilder();
             int length = 0;
 
-            foreach (KeyValuePair<string, TableInfo> tableEntry in tableMap)
+            foreach (KeyValuePair<string, TableMetadata> tableEntry in tableMap)
             {
                 tableNameBuilder.Append(tableEntry.Key);
                 tableTypeBuilder.Append(tableEntry.Value.Type);
@@ -1025,7 +1051,7 @@ namespace Apache.Arrow.Adbc.Drivers.Apache.Hive2
                 }
                 else
                 {
-                    tableColumnsValues.Add(GetColumnSchema(tableEntry.Value));
+                    tableColumnsValues.Add(Metadata.MetadataSchemaBuilder.BuildColumnsStructArray(tableEntry.Value.Columns));
                 }
             }
 
@@ -1656,6 +1682,13 @@ namespace Apache.Arrow.Adbc.Drivers.Apache.Hive2
             public List<string> IsNullable { get; } = new();
 
             public List<bool> IsAutoIncrement { get; } = new();
+        }
+
+        internal struct TableMetadata(string type)
+        {
+            public string Type { get; } = type;
+
+            public List<Metadata.ColumnMetadataRecord> Columns { get; } = new();
         }
 
         internal class HiveInfoArrowStream : IArrowArrayStream

@@ -16,6 +16,7 @@
 */
 
 using System.Collections.Generic;
+using Apache.Arrow.Adbc.Extensions;
 using Apache.Arrow.Types;
 
 namespace Apache.Arrow.Adbc.Drivers.Apache.Hive2.Metadata
@@ -548,7 +549,7 @@ namespace Apache.Arrow.Adbc.Drivers.Apache.Hive2.Metadata
         private static void AppendOrNull(Int8Array.Builder builder, byte? value)
         {
             if (value.HasValue)
-                builder.Append(value.Value);
+                builder.Append((sbyte)value.Value);
             else
                 builder.AppendNull();
         }

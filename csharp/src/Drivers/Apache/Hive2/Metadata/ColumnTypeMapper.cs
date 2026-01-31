@@ -158,14 +158,19 @@ namespace Apache.Arrow.Adbc.Drivers.Apache.Hive2.Metadata
                 return string.Empty;
 
             // Try using SqlTypeNameParser first for consistent parsing
-            if (SqlTypeNameParser<SqlTypeNameParserResult>.TryParse(typeName, out SqlTypeNameParserResult? result, null) && result != null)
+            try
             {
+                SqlTypeNameParserResult result = SqlTypeNameParser<SqlTypeNameParserResult>.Parse(typeName!, null);
                 return result.BaseTypeName;
+            }
+            catch
+            {
+                // Parser failed, fallback to manual extraction
             }
 
             // Fallback: manual extraction for types not handled by parser
             // Check for angle brackets (complex types: ARRAY<T>, STRUCT<...>, MAP<K,V>)
-            int angleIndex = typeName.IndexOf('<');
+            int angleIndex = typeName!.IndexOf('<');
             if (angleIndex != -1)
             {
                 return typeName.Substring(0, angleIndex).ToUpperInvariant();
@@ -206,7 +211,7 @@ namespace Apache.Arrow.Adbc.Drivers.Apache.Hive2.Metadata
                 return null;
 
             // For INTERVAL types, check the full type name first before stripping
-            var upperTypeName = typeName.ToUpperInvariant();
+            var upperTypeName = typeName!.ToUpperInvariant();
             if (upperTypeName.StartsWith("INTERVAL ", StringComparison.OrdinalIgnoreCase))
             {
                 // Try exact match first for full INTERVAL type names
@@ -240,7 +245,7 @@ namespace Apache.Arrow.Adbc.Drivers.Apache.Hive2.Metadata
                 return null;
 
             // Special handling for INTERVAL types before normalization
-            var upperTypeName = typeName.ToUpperInvariant();
+            var upperTypeName = typeName!.ToUpperInvariant();
             if (upperTypeName.StartsWith("INTERVAL ", StringComparison.OrdinalIgnoreCase))
             {
                 if (upperTypeName.Contains("YEAR") || upperTypeName.Contains("MONTH"))
@@ -255,29 +260,36 @@ namespace Apache.Arrow.Adbc.Drivers.Apache.Hive2.Metadata
             // For DECIMAL(p,s), extract precision using SqlTypeNameParser
             if (baseType == "DECIMAL" || baseType == "NUMERIC")
             {
-                var typeCode = GetXdbcDataType(typeName);
-                if (SqlTypeNameParser<SqlDecimalParserResult>.TryParse(typeName, out SqlDecimalParserResult? result, typeCode) && result != null)
+                try
                 {
+                    var typeCode = (int?)GetXdbcDataType(typeName);
+                    SqlDecimalParserResult result = SqlTypeNameParser<SqlDecimalParserResult>.Parse(typeName!, typeCode);
                     return result.Precision;
                 }
-
-                if (DefaultColumnSizes.TryGetValue(baseType, out var decimalSize))
-                    return decimalSize;
+                catch
+                {
+                    // Parser failed, use default
+                    if (DefaultColumnSizes.TryGetValue(baseType, out var decimalSize))
+                        return decimalSize;
+                }
             }
 
             // For VARCHAR(n) or CHAR(n), extract length using SqlTypeNameParser
             if (baseType == "VARCHAR" || baseType == "CHAR" || baseType == "STRING")
             {
-                var typeCode = GetXdbcDataType(typeName);
-                if (SqlTypeNameParser<SqlCharVarcharParserResult>.TryParse(typeName, out SqlCharVarcharParserResult? result, typeCode) && result != null)
+                try
                 {
+                    var typeCode = (int?)GetXdbcDataType(typeName);
+                    SqlCharVarcharParserResult result = SqlTypeNameParser<SqlCharVarcharParserResult>.Parse(typeName!, typeCode);
                     return result.ColumnSize;
                 }
-
-                // Default length for string types
-                if (DefaultColumnSizes.TryGetValue(baseType, out var stringSize))
-                    return stringSize;
-                return 65535;
+                catch
+                {
+                    // Parser failed, use default
+                    if (DefaultColumnSizes.TryGetValue(baseType, out var stringSize))
+                        return stringSize;
+                    return 65535;
+                }
             }
 
             // For other types, use default size
@@ -312,13 +324,17 @@ namespace Apache.Arrow.Adbc.Drivers.Apache.Hive2.Metadata
             // For DECIMAL, buffer length is calculated based on precision
             if (baseType == "DECIMAL" || baseType == "NUMERIC")
             {
-                var typeCode = GetXdbcDataType(typeName);
-                if (SqlTypeNameParser<SqlDecimalParserResult>.TryParse(typeName, out SqlDecimalParserResult? result, typeCode) && result != null)
+                try
                 {
+                    var typeCode = (int?)GetXdbcDataType(typeName);
+                    SqlDecimalParserResult result = SqlTypeNameParser<SqlDecimalParserResult>.Parse(typeName!, typeCode);
                     // Approximate: 5 bytes per 9 digits + 1 byte overhead
                     return ((result.Precision + 8) / 9) * 5 + 1;
                 }
-                return 20; // Default for DECIMAL without specified precision
+                catch
+                {
+                    return 20; // Default for DECIMAL without specified precision
+                }
             }
 
             // Buffer length not applicable for strings, dates, and complex types
@@ -344,16 +360,19 @@ namespace Apache.Arrow.Adbc.Drivers.Apache.Hive2.Metadata
                 return null;
 
             // Extract length from VARCHAR(n) or CHAR(n)
-            var typeCode = GetXdbcDataType(typeName);
-            if (SqlTypeNameParser<SqlCharVarcharParserResult>.TryParse(typeName, out SqlCharVarcharParserResult? result, typeCode) && result != null)
+            try
             {
+                var typeCode = (int?)GetXdbcDataType(typeName);
+                SqlCharVarcharParserResult result = SqlTypeNameParser<SqlCharVarcharParserResult>.Parse(typeName!, typeCode);
                 return result.ColumnSize;
             }
-
-            // Default for unbounded strings
-            if (DefaultColumnSizes.TryGetValue(baseType, out var defaultSize))
-                return defaultSize;
-            return 65535;
+            catch
+            {
+                // Default for unbounded strings
+                if (DefaultColumnSizes.TryGetValue(baseType, out var defaultSize))
+                    return defaultSize;
+                return 65535;
+            }
         }
 
         /// <summary>
@@ -377,12 +396,16 @@ namespace Apache.Arrow.Adbc.Drivers.Apache.Hive2.Metadata
             // For DECIMAL(p,s), extract scale
             if (baseType == "DECIMAL" || baseType == "NUMERIC")
             {
-                var typeCode = GetXdbcDataType(typeName);
-                if (SqlTypeNameParser<SqlDecimalParserResult>.TryParse(typeName, out SqlDecimalParserResult? result, typeCode) && result != null)
+                try
                 {
+                    var typeCode = (int?)GetXdbcDataType(typeName);
+                    SqlDecimalParserResult result = SqlTypeNameParser<SqlDecimalParserResult>.Parse(typeName!, typeCode);
                     return result.Scale;
                 }
-                return 0; // Default scale is 0
+                catch
+                {
+                    return 0; // Default scale is 0
+                }
             }
 
             // For integer types, scale is always 0

@@ -45,7 +45,7 @@ namespace Apache.Arrow.Adbc.Drivers.Apache.Hive2.Metadata
             var regex = new StringBuilder("^");
             bool escaped = false;
 
-            foreach (char c in sqlPattern)
+            foreach (char c in sqlPattern!)
             {
                 if (escaped)
                 {
@@ -123,7 +123,7 @@ namespace Apache.Arrow.Adbc.Drivers.Apache.Hive2.Metadata
             if (string.IsNullOrEmpty(identifier))
                 return identifier;
 
-            if ((identifier.StartsWith("\"") && identifier.EndsWith("\"")) ||
+            if ((identifier!.StartsWith("\"") && identifier.EndsWith("\"")) ||
                 (identifier.StartsWith("`") && identifier.EndsWith("`")))
             {
                 if (identifier.Length > 2)
@@ -144,7 +144,7 @@ namespace Apache.Arrow.Adbc.Drivers.Apache.Hive2.Metadata
             if (string.IsNullOrEmpty(pattern))
                 return false;
 
-            return !pattern.Contains("%") && !pattern.Contains("_");
+            return !pattern!.Contains("%") && !pattern.Contains("_");
         }
 
         /// <summary>
@@ -158,7 +158,7 @@ namespace Apache.Arrow.Adbc.Drivers.Apache.Hive2.Metadata
             if (string.IsNullOrEmpty(value))
                 return value;
 
-            return value.Replace("\\", "\\\\")
+            return value!.Replace("\\", "\\\\")
                         .Replace("%", "\\%")
                         .Replace("_", "\\_");
         }
