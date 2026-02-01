@@ -21,6 +21,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Threading;
 using System.Threading.Tasks;
 using Apache.Arrow.Adbc.Drivers.Apache.Hive2;
+using Apache.Arrow.Adbc.Drivers.Apache.Hive2.Metadata;
 using Apache.Hive.Service.Rpc.Thrift;
 
 namespace Apache.Arrow.Adbc.Drivers.Apache.Spark
@@ -76,41 +77,20 @@ namespace Apache.Arrow.Adbc.Drivers.Apache.Spark
         {
             // Keep the original type name
             tableInfo?.TypeName.Add(typeName);
-            switch (colType)
-            {
-                case (short)ColumnTypeId.DECIMAL:
-                case (short)ColumnTypeId.NUMERIC:
-                    {
-                        SqlDecimalParserResult result = SqlTypeNameParser<SqlDecimalParserResult>.Parse(typeName, colType);
-                        tableInfo?.Precision.Add(result.Precision);
-                        tableInfo?.Scale.Add((short)result.Scale);
-                        tableInfo?.BaseTypeName.Add(result.BaseTypeName);
-                        break;
-                    }
 
-                case (short)ColumnTypeId.CHAR:
-                case (short)ColumnTypeId.NCHAR:
-                case (short)ColumnTypeId.VARCHAR:
-                case (short)ColumnTypeId.LONGVARCHAR:
-                case (short)ColumnTypeId.LONGNVARCHAR:
-                case (short)ColumnTypeId.NVARCHAR:
-                    {
-                        SqlCharVarcharParserResult result = SqlTypeNameParser<SqlCharVarcharParserResult>.Parse(typeName, colType);
-                        tableInfo?.Precision.Add(result.ColumnSize);
-                        tableInfo?.Scale.Add(null);
-                        tableInfo?.BaseTypeName.Add(result.BaseTypeName);
-                        break;
-                    }
+            // Use ColumnTypeMapper to extract type information
+            // This eliminates code duplication with the shared metadata abstractions
+            var mapper = new ColumnTypeMapper();
 
-                default:
-                    {
-                        SqlTypeNameParserResult result = SqlTypeNameParser<SqlTypeNameParserResult>.Parse(typeName, colType);
-                        tableInfo?.Precision.Add(null);
-                        tableInfo?.Scale.Add(null);
-                        tableInfo?.BaseTypeName.Add(result.BaseTypeName);
-                        break;
-                    }
-            }
+            // Extract base type name and precision/scale
+            string? baseTypeName = mapper.GetBaseTypeName(typeName);
+            int? precision = mapper.GetColumnSize(typeName);
+            int? scale = mapper.GetDecimalDigits(typeName);
+
+            // Populate TableInfo with synthesized values
+            tableInfo?.BaseTypeName.Add(baseTypeName);
+            tableInfo?.Precision.Add(precision);
+            tableInfo?.Scale.Add(scale.HasValue ? (short)scale.Value : null);
         }
 
         protected override string InfoDriverName => DriverName;

@@ -592,6 +592,9 @@ namespace Apache.Arrow.Adbc.Drivers.Apache.Hive2
             enhancedFields.Add(new Field("BASE_TYPE_NAME", StringType.Default, true));
             Schema enhancedSchema = new Schema(enhancedFields, originalSchema.Metadata);
 
+            // Create metadata populator for field synthesis
+            var populator = new Metadata.MetadataFieldPopulator();
+
             // Pre-allocate arrays to store our values
             int length = typeNames.Length;
             List<string> baseTypeNames = new List<string>(length);
@@ -606,45 +609,31 @@ namespace Apache.Arrow.Adbc.Drivers.Apache.Hive2
                 int columnSize = originalColumnSizes.GetValue(i).GetValueOrDefault();
                 int decimalDigits = originalDecimalDigits.GetValue(i).GetValueOrDefault();
 
-                // Create a TableInfo for this row
-                var tableInfo = new HiveServer2Connection.TableInfo(string.Empty);
+                // Use MetadataFieldPopulator to synthesize fields from type name
+                // Pass null for catalog/schema/table/column as we only need type-related fields
+                var record = populator.PopulateColumnMetadata(
+                    catalogName: null,
+                    schemaName: null,
+                    tableName: null,
+                    columnName: null,
+                    typeName: typeName,
+                    ordinalPosition: null,
+                    isNullable: null,
+                    remarks: null,
+                    columnDefault: null,
+                    customData: null
+                );
 
-                // Process all types through SetPrecisionScaleAndTypeName
-                Connection.SetPrecisionScaleAndTypeName(colType, typeName ?? string.Empty, tableInfo, columnSize, decimalDigits);
+                // Extract values with fallback to Thrift-provided values
+                // This preserves the existing behavior where parsed values take precedence,
+                // but Thrift values are used if parsing fails or returns null
+                string baseTypeName = record.BaseTypeName ?? typeName ?? string.Empty;
+                int finalColumnSize = record.XdbcColumnSize ?? columnSize;
+                int finalDecimalDigits = record.XdbcDecimalDigits ?? decimalDigits;
 
-                // Get base type name
-                string baseTypeName;
-                if (tableInfo.BaseTypeName.Count > 0)
-                {
-                    string? baseTypeNameValue = tableInfo.BaseTypeName[0];
-                    baseTypeName = baseTypeNameValue ?? string.Empty;
-                }
-                else
-                {
-                    baseTypeName = typeName ?? string.Empty;
-                }
                 baseTypeNames.Add(baseTypeName);
-
-                // Get precision/scale values
-                if (tableInfo.Precision.Count > 0)
-                {
-                    int? precisionValue = tableInfo.Precision[0];
-                    columnSizeValues.Add(precisionValue.GetValueOrDefault(columnSize));
-                }
-                else
-                {
-                    columnSizeValues.Add(columnSize);
-                }
-
-                if (tableInfo.Scale.Count > 0)
-                {
-                    int? scaleValue = tableInfo.Scale[0];
-                    decimalDigitsValues.Add(scaleValue.GetValueOrDefault(decimalDigits));
-                }
-                else
-                {
-                    decimalDigitsValues.Add(decimalDigits);
-                }
+                columnSizeValues.Add(finalColumnSize);
+                decimalDigitsValues.Add(finalDecimalDigits);
             }
 
             // Create the Arrow arrays directly from our data arrays
