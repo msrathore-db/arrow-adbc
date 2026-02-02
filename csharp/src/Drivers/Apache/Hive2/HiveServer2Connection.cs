@@ -652,6 +652,11 @@ namespace Apache.Arrow.Adbc.Drivers.Apache.Hive2
                                                        isNullable.Equals("NO", StringComparison.InvariantCultureIgnoreCase) ? false :
                                                        (bool?)null;
 
+                                // Get precision/scale from Thrift using SetPrecisionScaleAndTypeName
+                                // This preserves the original Thrift behavior of using server-provided values
+                                var tempTableInfo = new TableInfo(string.Empty);
+                                SetPrecisionScaleAndTypeName(colType, typeName, tempTableInfo, columnSize, decimalDigits);
+
                                 // Populate column metadata using shared abstractions
                                 var record = populator.PopulateColumnMetadata(
                                     catalog,
@@ -666,11 +671,17 @@ namespace Apache.Arrow.Adbc.Drivers.Apache.Hive2
                                     customData: null
                                 );
 
-                                // Override fields with Thrift-provided values (preserves exact current behavior)
-                                record.XdbcDataType = colType;
-                                record.Nullable = nullable;
-                                record.IsNullable = isNullable;
-                                record.IsAutoIncrement = isAutoIncrement ? "YES" : "NO";
+                                // Override ALL fields with Thrift-provided values to preserve exact original behavior
+                                record.XdbcDataType = colType;                                               // From Thrift
+                                record.XdbcColumnSize = tempTableInfo.Precision.Count > 0 ? tempTableInfo.Precision[0] : null;  // From Thrift/parsing
+                                record.XdbcDecimalDigits = tempTableInfo.Scale.Count > 0 ? tempTableInfo.Scale[0] : null;       // From Thrift/parsing
+                                record.XdbcNumPrecRadix = null;                                              // Original Thrift: always null
+                                record.SqlDataType = colType;                                                // From Thrift (same as XdbcDataType)
+                                record.XdbcCharOctetLength = null;                                           // Original Thrift: always null
+                                record.SqlDatetimeSub = null;                                                // Original Thrift: always null
+                                record.Nullable = nullable;                                                  // From Thrift
+                                record.IsNullable = isNullable;                                              // From Thrift
+                                record.IsAutoIncrement = isAutoIncrement ? "YES" : "NO";                     // From Thrift
 
                                 tableMeta.Value.Columns.Add(record);
                             }

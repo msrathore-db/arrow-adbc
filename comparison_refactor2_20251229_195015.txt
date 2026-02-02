@@ -1,0 +1,2084 @@
+/Users/madhavendra.rathore/Desktop/adbc-databricks/databricks/csharp/examples/CompareMetadata.cs(322,35): warning CS8602: Dereference of a possibly null reference. [/Users/madhavendra.rathore/Desktop/adbc-databricks/databricks/csharp/examples/CompareMetadata.csproj]
+/Users/madhavendra.rathore/Desktop/adbc-databricks/databricks/csharp/examples/CompareMetadata.cs(341,43): warning CS8601: Possible null reference assignment. [/Users/madhavendra.rathore/Desktop/adbc-databricks/databricks/csharp/examples/CompareMetadata.csproj]
+/Users/madhavendra.rathore/Desktop/adbc-databricks/databricks/csharp/examples/CompareMetadata.cs(363,35): warning CS8602: Dereference of a possibly null reference. [/Users/madhavendra.rathore/Desktop/adbc-databricks/databricks/csharp/examples/CompareMetadata.csproj]
+/Users/madhavendra.rathore/Desktop/adbc-databricks/databricks/csharp/examples/CompareMetadata.cs(382,43): warning CS8601: Possible null reference assignment. [/Users/madhavendra.rathore/Desktop/adbc-databricks/databricks/csharp/examples/CompareMetadata.csproj]
+/Users/madhavendra.rathore/Desktop/adbc-databricks/databricks/csharp/examples/CompareMetadata.cs(405,35): warning CS8602: Dereference of a possibly null reference. [/Users/madhavendra.rathore/Desktop/adbc-databricks/databricks/csharp/examples/CompareMetadata.csproj]
+/Users/madhavendra.rathore/Desktop/adbc-databricks/databricks/csharp/examples/CompareMetadata.cs(424,43): warning CS8601: Possible null reference assignment. [/Users/madhavendra.rathore/Desktop/adbc-databricks/databricks/csharp/examples/CompareMetadata.csproj]
+/Users/madhavendra.rathore/Desktop/adbc-databricks/databricks/csharp/examples/CompareMetadata.cs(448,35): warning CS8602: Dereference of a possibly null reference. [/Users/madhavendra.rathore/Desktop/adbc-databricks/databricks/csharp/examples/CompareMetadata.csproj]
+/Users/madhavendra.rathore/Desktop/adbc-databricks/databricks/csharp/examples/CompareMetadata.cs(467,43): warning CS8601: Possible null reference assignment. [/Users/madhavendra.rathore/Desktop/adbc-databricks/databricks/csharp/examples/CompareMetadata.csproj]
+/Users/madhavendra.rathore/Desktop/adbc-databricks/databricks/csharp/examples/CompareMetadata.cs(496,35): warning CS8602: Dereference of a possibly null reference. [/Users/madhavendra.rathore/Desktop/adbc-databricks/databricks/csharp/examples/CompareMetadata.csproj]
+/Users/madhavendra.rathore/Desktop/adbc-databricks/databricks/csharp/examples/CompareMetadata.cs(515,43): warning CS8601: Possible null reference assignment. [/Users/madhavendra.rathore/Desktop/adbc-databricks/databricks/csharp/examples/CompareMetadata.csproj]
+/Users/madhavendra.rathore/Desktop/adbc-databricks/databricks/csharp/examples/CompareMetadata.cs(849,35): warning CS8602: Dereference of a possibly null reference. [/Users/madhavendra.rathore/Desktop/adbc-databricks/databricks/csharp/examples/CompareMetadata.csproj]
+/Users/madhavendra.rathore/Desktop/adbc-databricks/databricks/csharp/examples/CompareMetadata.cs(868,43): warning CS8601: Possible null reference assignment. [/Users/madhavendra.rathore/Desktop/adbc-databricks/databricks/csharp/examples/CompareMetadata.csproj]
+/Users/madhavendra.rathore/Desktop/adbc-databricks/databricks/csharp/examples/CompareMetadata.cs(954,57): warning CS8601: Possible null reference assignment. [/Users/madhavendra.rathore/Desktop/adbc-databricks/databricks/csharp/examples/CompareMetadata.csproj]
+========================================================================================================================
+METADATA COMPARISON: THRIFT vs SEA (ENHANCED)
+Comparing GetCatalogs, GetSchemas, GetTables, GetColumns, GetPrimaryKeys, GetCrossReference
+========================================================================================================================
+
+████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████
+PART 1: GETCATALOGS METADATA COMPARISON
+████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████
+
+Executing GetCatalogs metadata command on both protocols...
+
+[SEA SQL]: SHOW CATALOGS
+SCHEMA COMPARISON:
+------------------------------------------------------------------------------------------------------------------------
+Column Name                    Thrift          SEA             Match?
+------------------------------------------------------------------------------------------------------------------------
+TABLE_CAT                      Present         Present         ✅ YES
+------------------------------------------------------------------------------------------------------------------------
+Schema Summary: 1 matches, 0 mismatches
+Thrift has 1 columns, SEA has 1 columns
+
+
+ROW-BY-ROW DATA COMPARISON:
+------------------------------------------------------------------------------------------------------------------------
+Processing 9 rows...
+
+Row 0:
+------------------------------------------------------------------------------------------------------------------------
+Column                         Thrift Value                        SEA Value                           Match?
+------------------------------------------------------------------------------------------------------------------------
+TABLE_CAT                      aw-catalog                          aw-catalog                          ✅ YES
+
+Row 1:
+------------------------------------------------------------------------------------------------------------------------
+Column                         Thrift Value                        SEA Value                           Match?
+------------------------------------------------------------------------------------------------------------------------
+TABLE_CAT                      cujs                                cujs                                ✅ YES
+
+Row 2:
+------------------------------------------------------------------------------------------------------------------------
+Column                         Thrift Value                        SEA Value                           Match?
+------------------------------------------------------------------------------------------------------------------------
+TABLE_CAT                      hive_metastore                      hive_metastore                      ✅ YES
+
+Row 3:
+------------------------------------------------------------------------------------------------------------------------
+Column                         Thrift Value                        SEA Value                           Match?
+------------------------------------------------------------------------------------------------------------------------
+TABLE_CAT                      main                                main                                ✅ YES
+
+Row 4:
+------------------------------------------------------------------------------------------------------------------------
+Column                         Thrift Value                        SEA Value                           Match?
+------------------------------------------------------------------------------------------------------------------------
+TABLE_CAT                      market_trends                       market_trends                       ✅ YES
+
+Row 5:
+------------------------------------------------------------------------------------------------------------------------
+Column                         Thrift Value                        SEA Value                           Match?
+------------------------------------------------------------------------------------------------------------------------
+TABLE_CAT                      powerbi                             powerbi                             ✅ YES
+
+Row 6:
+------------------------------------------------------------------------------------------------------------------------
+Column                         Thrift Value                        SEA Value                           Match?
+------------------------------------------------------------------------------------------------------------------------
+TABLE_CAT                      samples                             samples                             ✅ YES
+
+Row 7:
+------------------------------------------------------------------------------------------------------------------------
+Column                         Thrift Value                        SEA Value                           Match?
+------------------------------------------------------------------------------------------------------------------------
+TABLE_CAT                      sparklebricks                       sparklebricks                       ✅ YES
+
+Row 8:
+------------------------------------------------------------------------------------------------------------------------
+Column                         Thrift Value                        SEA Value                           Match?
+------------------------------------------------------------------------------------------------------------------------
+TABLE_CAT                      tpcds                               tpcds                               ✅ YES
+
+========================================================================================================================
+GETCATALOGS SUMMARY:
+  Total cell comparisons: 9
+  Matches: 9
+  Mismatches: 0
+  Match percentage: 100.00%
+========================================================================================================================
+
+
+████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████
+PART 2: GETSCHEMAS METADATA COMPARISON
+████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████
+
+Executing GetSchemas metadata command on both protocols...
+
+[SEA SQL]: SHOW SCHEMAS IN `main`
+SCHEMA COMPARISON:
+------------------------------------------------------------------------------------------------------------------------
+Column Name                    Thrift          SEA             Match?
+------------------------------------------------------------------------------------------------------------------------
+TABLE_SCHEM                    Present         Present         ✅ YES
+TABLE_CATALOG                  Present         Present         ✅ YES
+------------------------------------------------------------------------------------------------------------------------
+Schema Summary: 2 matches, 0 mismatches
+Thrift has 2 columns, SEA has 2 columns
+
+
+ROW-BY-ROW DATA COMPARISON:
+------------------------------------------------------------------------------------------------------------------------
+Processing 37 rows...
+
+Row 0:
+------------------------------------------------------------------------------------------------------------------------
+Column                         Thrift Value                        SEA Value                           Match?
+------------------------------------------------------------------------------------------------------------------------
+TABLE_SCHEM                    55075ff6123c4cae8bf6885184e3a5aa    55075ff6123c4cae8bf6885184e3a5aa    ✅ YES
+TABLE_CATALOG                  main                                main                                ✅ YES
+
+Row 1:
+------------------------------------------------------------------------------------------------------------------------
+Column                         Thrift Value                        SEA Value                           Match?
+------------------------------------------------------------------------------------------------------------------------
+TABLE_SCHEM                    adbc_testing                        adbc_testing                        ✅ YES
+TABLE_CATALOG                  main                                main                                ✅ YES
+
+Row 2:
+------------------------------------------------------------------------------------------------------------------------
+Column                         Thrift Value                        SEA Value                           Match?
+------------------------------------------------------------------------------------------------------------------------
+TABLE_SCHEM                    b1aa2e0683fa49c784167e5e436b8e3c    b1aa2e0683fa49c784167e5e436b8e3c    ✅ YES
+TABLE_CATALOG                  main                                main                                ✅ YES
+
+Row 3:
+------------------------------------------------------------------------------------------------------------------------
+Column                         Thrift Value                        SEA Value                           Match?
+------------------------------------------------------------------------------------------------------------------------
+TABLE_SCHEM                    copilot_test                        copilot_test                        ✅ YES
+TABLE_CATALOG                  main                                main                                ✅ YES
+
+Row 4:
+------------------------------------------------------------------------------------------------------------------------
+Column                         Thrift Value                        SEA Value                           Match?
+------------------------------------------------------------------------------------------------------------------------
+TABLE_SCHEM                    dais                                dais                                ✅ YES
+TABLE_CATALOG                  main                                main                                ✅ YES
+
+Row 5:
+------------------------------------------------------------------------------------------------------------------------
+Column                         Thrift Value                        SEA Value                           Match?
+------------------------------------------------------------------------------------------------------------------------
+TABLE_SCHEM                    dbdemos_iot_turbine                 dbdemos_iot_turbine                 ✅ YES
+TABLE_CATALOG                  main                                main                                ✅ YES
+
+Row 6:
+------------------------------------------------------------------------------------------------------------------------
+Column                         Thrift Value                        SEA Value                           Match?
+------------------------------------------------------------------------------------------------------------------------
+TABLE_SCHEM                    default                             default                             ✅ YES
+TABLE_CATALOG                  main                                main                                ✅ YES
+
+Row 7:
+------------------------------------------------------------------------------------------------------------------------
+Column                         Thrift Value                        SEA Value                           Match?
+------------------------------------------------------------------------------------------------------------------------
+TABLE_SCHEM                    fivetran_metadata                   fivetran_metadata                   ✅ YES
+TABLE_CATALOG                  main                                main                                ✅ YES
+
+Row 8:
+------------------------------------------------------------------------------------------------------------------------
+Column                         Thrift Value                        SEA Value                           Match?
+------------------------------------------------------------------------------------------------------------------------
+TABLE_SCHEM                    jdbc_large_queries_benchmark_s...   information_schema                  ❌ NO
+TABLE_CATALOG                  main                                main                                ✅ YES
+
+Row 9:
+------------------------------------------------------------------------------------------------------------------------
+Column                         Thrift Value                        SEA Value                           Match?
+------------------------------------------------------------------------------------------------------------------------
+TABLE_SCHEM                    jdbc_metadata_benchmark_schema0     jdbc_large_queries_benchmark_s...   ❌ NO
+TABLE_CATALOG                  main                                main                                ✅ YES
+
+Row 10:
+------------------------------------------------------------------------------------------------------------------------
+Column                         Thrift Value                        SEA Value                           Match?
+------------------------------------------------------------------------------------------------------------------------
+TABLE_SCHEM                    jdbc_metadata_benchmark_schema1     jdbc_metadata_benchmark_schema0     ❌ NO
+TABLE_CATALOG                  main                                main                                ✅ YES
+
+Row 11:
+------------------------------------------------------------------------------------------------------------------------
+Column                         Thrift Value                        SEA Value                           Match?
+------------------------------------------------------------------------------------------------------------------------
+TABLE_SCHEM                    jdbc_metadata_benchmark_schema2     jdbc_metadata_benchmark_schema1     ❌ NO
+TABLE_CATALOG                  main                                main                                ✅ YES
+
+Row 12:
+------------------------------------------------------------------------------------------------------------------------
+Column                         Thrift Value                        SEA Value                           Match?
+------------------------------------------------------------------------------------------------------------------------
+TABLE_SCHEM                    jdbc_metadata_benchmark_schema3     jdbc_metadata_benchmark_schema2     ❌ NO
+TABLE_CATALOG                  main                                main                                ✅ YES
+
+Row 13:
+------------------------------------------------------------------------------------------------------------------------
+Column                         Thrift Value                        SEA Value                           Match?
+------------------------------------------------------------------------------------------------------------------------
+TABLE_SCHEM                    jdbc_metadata_benchmark_schema4     jdbc_metadata_benchmark_schema3     ❌ NO
+TABLE_CATALOG                  main                                main                                ✅ YES
+
+Row 14:
+------------------------------------------------------------------------------------------------------------------------
+Column                         Thrift Value                        SEA Value                           Match?
+------------------------------------------------------------------------------------------------------------------------
+TABLE_SCHEM                    jdbc_metadata_benchmark_schema5     jdbc_metadata_benchmark_schema4     ❌ NO
+TABLE_CATALOG                  main                                main                                ✅ YES
+
+Row 15:
+------------------------------------------------------------------------------------------------------------------------
+Column                         Thrift Value                        SEA Value                           Match?
+------------------------------------------------------------------------------------------------------------------------
+TABLE_SCHEM                    jdbc_metadata_benchmark_schema6     jdbc_metadata_benchmark_schema5     ❌ NO
+TABLE_CATALOG                  main                                main                                ✅ YES
+
+Row 16:
+------------------------------------------------------------------------------------------------------------------------
+Column                         Thrift Value                        SEA Value                           Match?
+------------------------------------------------------------------------------------------------------------------------
+TABLE_SCHEM                    jdbc_metadata_benchmark_schema7     jdbc_metadata_benchmark_schema6     ❌ NO
+TABLE_CATALOG                  main                                main                                ✅ YES
+
+Row 17:
+------------------------------------------------------------------------------------------------------------------------
+Column                         Thrift Value                        SEA Value                           Match?
+------------------------------------------------------------------------------------------------------------------------
+TABLE_SCHEM                    jdbc_metadata_benchmark_schema8     jdbc_metadata_benchmark_schema7     ❌ NO
+TABLE_CATALOG                  main                                main                                ✅ YES
+
+Row 18:
+------------------------------------------------------------------------------------------------------------------------
+Column                         Thrift Value                        SEA Value                           Match?
+------------------------------------------------------------------------------------------------------------------------
+TABLE_SCHEM                    jdbc_metadata_benchmark_schema9     jdbc_metadata_benchmark_schema8     ❌ NO
+TABLE_CATALOG                  main                                main                                ✅ YES
+
+Row 19:
+------------------------------------------------------------------------------------------------------------------------
+Column                         Thrift Value                        SEA Value                           Match?
+------------------------------------------------------------------------------------------------------------------------
+TABLE_SCHEM                    jdbc_test_schema                    jdbc_metadata_benchmark_schema9     ❌ NO
+TABLE_CATALOG                  main                                main                                ✅ YES
+
+Row 20:
+------------------------------------------------------------------------------------------------------------------------
+Column                         Thrift Value                        SEA Value                           Match?
+------------------------------------------------------------------------------------------------------------------------
+TABLE_SCHEM                    jprakash                            jdbc_test_schema                    ❌ NO
+TABLE_CATALOG                  main                                main                                ✅ YES
+
+Row 21:
+------------------------------------------------------------------------------------------------------------------------
+Column                         Thrift Value                        SEA Value                           Match?
+------------------------------------------------------------------------------------------------------------------------
+TABLE_SCHEM                    kent_dais_bi                        jprakash                            ❌ NO
+TABLE_CATALOG                  main                                main                                ✅ YES
+
+Row 22:
+------------------------------------------------------------------------------------------------------------------------
+Column                         Thrift Value                        SEA Value                           Match?
+------------------------------------------------------------------------------------------------------------------------
+TABLE_SCHEM                    matillion                           kent_dais_bi                        ❌ NO
+TABLE_CATALOG                  main                                main                                ✅ YES
+
+Row 23:
+------------------------------------------------------------------------------------------------------------------------
+Column                         Thrift Value                        SEA Value                           Match?
+------------------------------------------------------------------------------------------------------------------------
+TABLE_SCHEM                    powerapp                            matillion                           ❌ NO
+TABLE_CATALOG                  main                                main                                ✅ YES
+
+Row 24:
+------------------------------------------------------------------------------------------------------------------------
+Column                         Thrift Value                        SEA Value                           Match?
+------------------------------------------------------------------------------------------------------------------------
+TABLE_SCHEM                    powerapp_demo                       powerapp                            ❌ NO
+TABLE_CATALOG                  main                                main                                ✅ YES
+
+Row 25:
+------------------------------------------------------------------------------------------------------------------------
+Column                         Thrift Value                        SEA Value                           Match?
+------------------------------------------------------------------------------------------------------------------------
+TABLE_SCHEM                    powerappstest_ns                    powerapp_demo                       ❌ NO
+TABLE_CATALOG                  main                                main                                ✅ YES
+
+Row 26:
+------------------------------------------------------------------------------------------------------------------------
+Column                         Thrift Value                        SEA Value                           Match?
+------------------------------------------------------------------------------------------------------------------------
+TABLE_SCHEM                    pqtest                              powerappstest_ns                    ❌ NO
+TABLE_CATALOG                  main                                main                                ✅ YES
+
+Row 27:
+------------------------------------------------------------------------------------------------------------------------
+Column                         Thrift Value                        SEA Value                           Match?
+------------------------------------------------------------------------------------------------------------------------
+TABLE_SCHEM                    snapshots                           pqtest                              ❌ NO
+TABLE_CATALOG                  main                                main                                ✅ YES
+
+Row 28:
+------------------------------------------------------------------------------------------------------------------------
+Column                         Thrift Value                        SEA Value                           Match?
+------------------------------------------------------------------------------------------------------------------------
+TABLE_SCHEM                    testing1                            snapshots                           ❌ NO
+TABLE_CATALOG                  main                                main                                ✅ YES
+
+Row 29:
+------------------------------------------------------------------------------------------------------------------------
+Column                         Thrift Value                        SEA Value                           Match?
+------------------------------------------------------------------------------------------------------------------------
+TABLE_SCHEM                    testing2                            testing1                            ❌ NO
+TABLE_CATALOG                  main                                main                                ✅ YES
+
+Row 30:
+------------------------------------------------------------------------------------------------------------------------
+Column                         Thrift Value                        SEA Value                           Match?
+------------------------------------------------------------------------------------------------------------------------
+TABLE_SCHEM                    tpcds_sf100_delta                   testing2                            ❌ NO
+TABLE_CATALOG                  main                                main                                ✅ YES
+
+Row 31:
+------------------------------------------------------------------------------------------------------------------------
+Column                         Thrift Value                        SEA Value                           Match?
+------------------------------------------------------------------------------------------------------------------------
+TABLE_SCHEM                    tpcds_sf10_delta                    tpcds_sf100_delta                   ❌ NO
+TABLE_CATALOG                  main                                main                                ✅ YES
+
+Row 32:
+------------------------------------------------------------------------------------------------------------------------
+Column                         Thrift Value                        SEA Value                           Match?
+------------------------------------------------------------------------------------------------------------------------
+TABLE_SCHEM                    tpcds_sf1_delta                     tpcds_sf10_delta                    ❌ NO
+TABLE_CATALOG                  main                                main                                ✅ YES
+
+Row 33:
+------------------------------------------------------------------------------------------------------------------------
+Column                         Thrift Value                        SEA Value                           Match?
+------------------------------------------------------------------------------------------------------------------------
+TABLE_SCHEM                    tpch                                tpcds_sf1_delta                     ❌ NO
+TABLE_CATALOG                  main                                main                                ✅ YES
+
+Row 34:
+------------------------------------------------------------------------------------------------------------------------
+Column                         Thrift Value                        SEA Value                           Match?
+------------------------------------------------------------------------------------------------------------------------
+TABLE_SCHEM                    uc_1721026050673_db1                tpch                                ❌ NO
+TABLE_CATALOG                  main                                main                                ✅ YES
+
+Row 35:
+------------------------------------------------------------------------------------------------------------------------
+Column                         Thrift Value                        SEA Value                           Match?
+------------------------------------------------------------------------------------------------------------------------
+TABLE_SCHEM                    uc_1721026050673_db2                uc_1721026050673_db1                ❌ NO
+TABLE_CATALOG                  main                                main                                ✅ YES
+
+Row 36:
+------------------------------------------------------------------------------------------------------------------------
+Column                         Thrift Value                        SEA Value                           Match?
+------------------------------------------------------------------------------------------------------------------------
+TABLE_SCHEM                    global_temp                         uc_1721026050673_db2                ❌ NO
+TABLE_CATALOG                                                      main                                ❌ NO
+
+========================================================================================================================
+GETSCHEMAS SUMMARY:
+  Total cell comparisons: 74
+  Matches: 44
+  Mismatches: 30
+  Match percentage: 59.46%
+========================================================================================================================
+
+
+████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████
+PART 3: GETTABLES METADATA COMPARISON
+████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████
+
+Executing GetTables metadata command on both protocols...
+
+[SEA SQL]: SHOW TABLES IN CATALOG `main` SCHEMA LIKE 'adbc.testing'
+SCHEMA COMPARISON:
+------------------------------------------------------------------------------------------------------------------------
+Column Name                    Thrift          SEA             Match?
+------------------------------------------------------------------------------------------------------------------------
+TABLE_CAT                      Present         Present         ✅ YES
+TABLE_SCHEM                    Present         Present         ✅ YES
+TABLE_NAME                     Present         Present         ✅ YES
+TABLE_TYPE                     Present         Present         ✅ YES
+REMARKS                        Present         Present         ✅ YES
+TYPE_CAT                       Present         Present         ✅ YES
+TYPE_SCHEM                     Present         Present         ✅ YES
+TYPE_NAME                      Present         Present         ✅ YES
+SELF_REFERENCING_COL_NAME      Present         Present         ✅ YES
+REF_GENERATION                 Present         Present         ✅ YES
+------------------------------------------------------------------------------------------------------------------------
+Schema Summary: 10 matches, 0 mismatches
+Thrift has 10 columns, SEA has 10 columns
+
+
+ROW-BY-ROW DATA COMPARISON:
+------------------------------------------------------------------------------------------------------------------------
+Processing 27 rows...
+
+Row 0:
+------------------------------------------------------------------------------------------------------------------------
+Column                         Thrift Value                        SEA Value                           Match?
+------------------------------------------------------------------------------------------------------------------------
+TABLE_CAT                      main                                main                                ✅ YES
+TABLE_SCHEM                    adbc_testing                        adbc_testing                        ✅ YES
+TABLE_NAME                     e2a7456fe5394c889ffe61c64419f35c    e2a7456fe5394c889ffe61c64419f35c    ✅ YES
+TABLE_TYPE                     TABLE                               TABLE                               ✅ YES
+REMARKS                                                                                                ✅ YES
+TYPE_CAT                       null                                null                                ✅ YES
+TYPE_SCHEM                     null                                null                                ✅ YES
+TYPE_NAME                      null                                null                                ✅ YES
+SELF_REFERENCING_COL_NAME      null                                null                                ✅ YES
+REF_GENERATION                 null                                null                                ✅ YES
+
+Row 1:
+------------------------------------------------------------------------------------------------------------------------
+Column                         Thrift Value                        SEA Value                           Match?
+------------------------------------------------------------------------------------------------------------------------
+TABLE_CAT                      main                                main                                ✅ YES
+TABLE_SCHEM                    adbc_testing                        adbc_testing                        ✅ YES
+TABLE_NAME                     7567aa1772e84d1db4197b52d25c89fc    7567aa1772e84d1db4197b52d25c89fc    ✅ YES
+TABLE_TYPE                     TABLE                               TABLE                               ✅ YES
+REMARKS                                                                                                ✅ YES
+TYPE_CAT                       null                                null                                ✅ YES
+TYPE_SCHEM                     null                                null                                ✅ YES
+TYPE_NAME                      null                                null                                ✅ YES
+SELF_REFERENCING_COL_NAME      null                                null                                ✅ YES
+REF_GENERATION                 null                                null                                ✅ YES
+
+Row 2:
+------------------------------------------------------------------------------------------------------------------------
+Column                         Thrift Value                        SEA Value                           Match?
+------------------------------------------------------------------------------------------------------------------------
+TABLE_CAT                      main                                main                                ✅ YES
+TABLE_SCHEM                    adbc_testing                        adbc_testing                        ✅ YES
+TABLE_NAME                     all_column_types                    all_column_types                    ✅ YES
+TABLE_TYPE                     TABLE                               TABLE                               ✅ YES
+REMARKS                                                                                                ✅ YES
+TYPE_CAT                       null                                null                                ✅ YES
+TYPE_SCHEM                     null                                null                                ✅ YES
+TYPE_NAME                      null                                null                                ✅ YES
+SELF_REFERENCING_COL_NAME      null                                null                                ✅ YES
+REF_GENERATION                 null                                null                                ✅ YES
+
+Row 3:
+------------------------------------------------------------------------------------------------------------------------
+Column                         Thrift Value                        SEA Value                           Match?
+------------------------------------------------------------------------------------------------------------------------
+TABLE_CAT                      main                                main                                ✅ YES
+TABLE_SCHEM                    adbc_testing                        adbc_testing                        ✅ YES
+TABLE_NAME                     3d1eb579a42f46f2ab4eef83153045bc    3d1eb579a42f46f2ab4eef83153045bc    ✅ YES
+TABLE_TYPE                     TABLE                               TABLE                               ✅ YES
+REMARKS                                                                                                ✅ YES
+TYPE_CAT                       null                                null                                ✅ YES
+TYPE_SCHEM                     null                                null                                ✅ YES
+TYPE_NAME                      null                                null                                ✅ YES
+SELF_REFERENCING_COL_NAME      null                                null                                ✅ YES
+REF_GENERATION                 null                                null                                ✅ YES
+
+Row 4:
+------------------------------------------------------------------------------------------------------------------------
+Column                         Thrift Value                        SEA Value                           Match?
+------------------------------------------------------------------------------------------------------------------------
+TABLE_CAT                      main                                main                                ✅ YES
+TABLE_SCHEM                    adbc_testing                        adbc_testing                        ✅ YES
+TABLE_NAME                     9ad838ee4ad8495886f4865a827e6045    9ad838ee4ad8495886f4865a827e6045    ✅ YES
+TABLE_TYPE                     TABLE                               TABLE                               ✅ YES
+REMARKS                                                                                                ✅ YES
+TYPE_CAT                       null                                null                                ✅ YES
+TYPE_SCHEM                     null                                null                                ✅ YES
+TYPE_NAME                      null                                null                                ✅ YES
+SELF_REFERENCING_COL_NAME      null                                null                                ✅ YES
+REF_GENERATION                 null                                null                                ✅ YES
+
+Row 5:
+------------------------------------------------------------------------------------------------------------------------
+Column                         Thrift Value                        SEA Value                           Match?
+------------------------------------------------------------------------------------------------------------------------
+TABLE_CAT                      main                                main                                ✅ YES
+TABLE_SCHEM                    adbc_testing                        adbc_testing                        ✅ YES
+TABLE_NAME                     f118e9e7ea684bd1bffed3cf81d349ca    f118e9e7ea684bd1bffed3cf81d349ca    ✅ YES
+TABLE_TYPE                     TABLE                               TABLE                               ✅ YES
+REMARKS                                                                                                ✅ YES
+TYPE_CAT                       null                                null                                ✅ YES
+TYPE_SCHEM                     null                                null                                ✅ YES
+TYPE_NAME                      null                                null                                ✅ YES
+SELF_REFERENCING_COL_NAME      null                                null                                ✅ YES
+REF_GENERATION                 null                                null                                ✅ YES
+
+Row 6:
+------------------------------------------------------------------------------------------------------------------------
+Column                         Thrift Value                        SEA Value                           Match?
+------------------------------------------------------------------------------------------------------------------------
+TABLE_CAT                      main                                main                                ✅ YES
+TABLE_SCHEM                    adbc_testing                        adbc_testing                        ✅ YES
+TABLE_NAME                     people                              people                              ✅ YES
+TABLE_TYPE                     TABLE                               TABLE                               ✅ YES
+REMARKS                                                                                                ✅ YES
+TYPE_CAT                       null                                null                                ✅ YES
+TYPE_SCHEM                     null                                null                                ✅ YES
+TYPE_NAME                      null                                null                                ✅ YES
+SELF_REFERENCING_COL_NAME      null                                null                                ✅ YES
+REF_GENERATION                 null                                null                                ✅ YES
+
+Row 7:
+------------------------------------------------------------------------------------------------------------------------
+Column                         Thrift Value                        SEA Value                           Match?
+------------------------------------------------------------------------------------------------------------------------
+TABLE_CAT                      main                                main                                ✅ YES
+TABLE_SCHEM                    adbc_testing                        adbc_testing                        ✅ YES
+TABLE_NAME                     cross_ref_customers                 cross_ref_customers                 ✅ YES
+TABLE_TYPE                     TABLE                               TABLE                               ✅ YES
+REMARKS                                                                                                ✅ YES
+TYPE_CAT                       null                                null                                ✅ YES
+TYPE_SCHEM                     null                                null                                ✅ YES
+TYPE_NAME                      null                                null                                ✅ YES
+SELF_REFERENCING_COL_NAME      null                                null                                ✅ YES
+REF_GENERATION                 null                                null                                ✅ YES
+
+Row 8:
+------------------------------------------------------------------------------------------------------------------------
+Column                         Thrift Value                        SEA Value                           Match?
+------------------------------------------------------------------------------------------------------------------------
+TABLE_CAT                      main                                main                                ✅ YES
+TABLE_SCHEM                    adbc_testing                        adbc_testing                        ✅ YES
+TABLE_NAME                     powerbi_test_table                  powerbi_test_table                  ✅ YES
+TABLE_TYPE                     TABLE                               TABLE                               ✅ YES
+REMARKS                                                                                                ✅ YES
+TYPE_CAT                       null                                null                                ✅ YES
+TYPE_SCHEM                     null                                null                                ✅ YES
+TYPE_NAME                      null                                null                                ✅ YES
+SELF_REFERENCING_COL_NAME      null                                null                                ✅ YES
+REF_GENERATION                 null                                null                                ✅ YES
+
+Row 9:
+------------------------------------------------------------------------------------------------------------------------
+Column                         Thrift Value                        SEA Value                           Match?
+------------------------------------------------------------------------------------------------------------------------
+TABLE_CAT                      main                                main                                ✅ YES
+TABLE_SCHEM                    adbc_testing                        adbc_testing                        ✅ YES
+TABLE_NAME                     a98c796ba8ea45cab88b8cac6d0afa1c    a98c796ba8ea45cab88b8cac6d0afa1c    ✅ YES
+TABLE_TYPE                     TABLE                               TABLE                               ✅ YES
+REMARKS                                                                                                ✅ YES
+TYPE_CAT                       null                                null                                ✅ YES
+TYPE_SCHEM                     null                                null                                ✅ YES
+TYPE_NAME                      null                                null                                ✅ YES
+SELF_REFERENCING_COL_NAME      null                                null                                ✅ YES
+REF_GENERATION                 null                                null                                ✅ YES
+
+Row 10:
+------------------------------------------------------------------------------------------------------------------------
+Column                         Thrift Value                        SEA Value                           Match?
+------------------------------------------------------------------------------------------------------------------------
+TABLE_CAT                      main                                main                                ✅ YES
+TABLE_SCHEM                    adbc_testing                        adbc_testing                        ✅ YES
+TABLE_NAME                     fb3c8a9a176e4d239d98e06556777c01    fb3c8a9a176e4d239d98e06556777c01    ✅ YES
+TABLE_TYPE                     TABLE                               TABLE                               ✅ YES
+REMARKS                                                                                                ✅ YES
+TYPE_CAT                       null                                null                                ✅ YES
+TYPE_SCHEM                     null                                null                                ✅ YES
+TYPE_NAME                      null                                null                                ✅ YES
+SELF_REFERENCING_COL_NAME      null                                null                                ✅ YES
+REF_GENERATION                 null                                null                                ✅ YES
+
+Row 11:
+------------------------------------------------------------------------------------------------------------------------
+Column                         Thrift Value                        SEA Value                           Match?
+------------------------------------------------------------------------------------------------------------------------
+TABLE_CAT                      main                                main                                ✅ YES
+TABLE_SCHEM                    adbc_testing                        adbc_testing                        ✅ YES
+TABLE_NAME                     2b4af4eec91b4c43b4bc78161fb5249e    2b4af4eec91b4c43b4bc78161fb5249e    ✅ YES
+TABLE_TYPE                     TABLE                               TABLE                               ✅ YES
+REMARKS                                                                                                ✅ YES
+TYPE_CAT                       null                                null                                ✅ YES
+TYPE_SCHEM                     null                                null                                ✅ YES
+TYPE_NAME                      null                                null                                ✅ YES
+SELF_REFERENCING_COL_NAME      null                                null                                ✅ YES
+REF_GENERATION                 null                                null                                ✅ YES
+
+Row 12:
+------------------------------------------------------------------------------------------------------------------------
+Column                         Thrift Value                        SEA Value                           Match?
+------------------------------------------------------------------------------------------------------------------------
+TABLE_CAT                      main                                main                                ✅ YES
+TABLE_SCHEM                    adbc_testing                        adbc_testing                        ✅ YES
+TABLE_NAME                     32abcd0fb62e427e838efdf7c2d73762    32abcd0fb62e427e838efdf7c2d73762    ✅ YES
+TABLE_TYPE                     TABLE                               TABLE                               ✅ YES
+REMARKS                                                                                                ✅ YES
+TYPE_CAT                       null                                null                                ✅ YES
+TYPE_SCHEM                     null                                null                                ✅ YES
+TYPE_NAME                      null                                null                                ✅ YES
+SELF_REFERENCING_COL_NAME      null                                null                                ✅ YES
+REF_GENERATION                 null                                null                                ✅ YES
+
+Row 13:
+------------------------------------------------------------------------------------------------------------------------
+Column                         Thrift Value                        SEA Value                           Match?
+------------------------------------------------------------------------------------------------------------------------
+TABLE_CAT                      main                                main                                ✅ YES
+TABLE_SCHEM                    adbc_testing                        adbc_testing                        ✅ YES
+TABLE_NAME                     e44e073fd1f943c19261fd14e7d30164    e44e073fd1f943c19261fd14e7d30164    ✅ YES
+TABLE_TYPE                     TABLE                               TABLE                               ✅ YES
+REMARKS                                                                                                ✅ YES
+TYPE_CAT                       null                                null                                ✅ YES
+TYPE_SCHEM                     null                                null                                ✅ YES
+TYPE_NAME                      null                                null                                ✅ YES
+SELF_REFERENCING_COL_NAME      null                                null                                ✅ YES
+REF_GENERATION                 null                                null                                ✅ YES
+
+Row 14:
+------------------------------------------------------------------------------------------------------------------------
+Column                         Thrift Value                        SEA Value                           Match?
+------------------------------------------------------------------------------------------------------------------------
+TABLE_CAT                      main                                main                                ✅ YES
+TABLE_SCHEM                    adbc_testing                        adbc_testing                        ✅ YES
+TABLE_NAME                     0ec98bdd67834c63bbc7c042c697c323    0ec98bdd67834c63bbc7c042c697c323    ✅ YES
+TABLE_TYPE                     TABLE                               TABLE                               ✅ YES
+REMARKS                                                                                                ✅ YES
+TYPE_CAT                       null                                null                                ✅ YES
+TYPE_SCHEM                     null                                null                                ✅ YES
+TYPE_NAME                      null                                null                                ✅ YES
+SELF_REFERENCING_COL_NAME      null                                null                                ✅ YES
+REF_GENERATION                 null                                null                                ✅ YES
+
+Row 15:
+------------------------------------------------------------------------------------------------------------------------
+Column                         Thrift Value                        SEA Value                           Match?
+------------------------------------------------------------------------------------------------------------------------
+TABLE_CAT                      main                                main                                ✅ YES
+TABLE_SCHEM                    adbc_testing                        adbc_testing                        ✅ YES
+TABLE_NAME                     24dccce751d74f1c84feda083f7bdfdd    24dccce751d74f1c84feda083f7bdfdd    ✅ YES
+TABLE_TYPE                     TABLE                               TABLE                               ✅ YES
+REMARKS                                                                                                ✅ YES
+TYPE_CAT                       null                                null                                ✅ YES
+TYPE_SCHEM                     null                                null                                ✅ YES
+TYPE_NAME                      null                                null                                ✅ YES
+SELF_REFERENCING_COL_NAME      null                                null                                ✅ YES
+REF_GENERATION                 null                                null                                ✅ YES
+
+Row 16:
+------------------------------------------------------------------------------------------------------------------------
+Column                         Thrift Value                        SEA Value                           Match?
+------------------------------------------------------------------------------------------------------------------------
+TABLE_CAT                      main                                main                                ✅ YES
+TABLE_SCHEM                    adbc_testing                        adbc_testing                        ✅ YES
+TABLE_NAME                     adbc_testing_table                  adbc_testing_table                  ✅ YES
+TABLE_TYPE                     TABLE                               TABLE                               ✅ YES
+REMARKS                                                                                                ✅ YES
+TYPE_CAT                       null                                null                                ✅ YES
+TYPE_SCHEM                     null                                null                                ✅ YES
+TYPE_NAME                      null                                null                                ✅ YES
+SELF_REFERENCING_COL_NAME      null                                null                                ✅ YES
+REF_GENERATION                 null                                null                                ✅ YES
+
+Row 17:
+------------------------------------------------------------------------------------------------------------------------
+Column                         Thrift Value                        SEA Value                           Match?
+------------------------------------------------------------------------------------------------------------------------
+TABLE_CAT                      main                                main                                ✅ YES
+TABLE_SCHEM                    adbc_testing                        adbc_testing                        ✅ YES
+TABLE_NAME                     fk_test_ref_table                   fk_test_ref_table                   ✅ YES
+TABLE_TYPE                     TABLE                               TABLE                               ✅ YES
+REMARKS                                                                                                ✅ YES
+TYPE_CAT                       null                                null                                ✅ YES
+TYPE_SCHEM                     null                                null                                ✅ YES
+TYPE_NAME                      null                                null                                ✅ YES
+SELF_REFERENCING_COL_NAME      null                                null                                ✅ YES
+REF_GENERATION                 null                                null                                ✅ YES
+
+Row 18:
+------------------------------------------------------------------------------------------------------------------------
+Column                         Thrift Value                        SEA Value                           Match?
+------------------------------------------------------------------------------------------------------------------------
+TABLE_CAT                      main                                main                                ✅ YES
+TABLE_SCHEM                    adbc_testing                        adbc_testing                        ✅ YES
+TABLE_NAME                     d61ea751429c4cd28906037fa0335e84    d61ea751429c4cd28906037fa0335e84    ✅ YES
+TABLE_TYPE                     TABLE                               TABLE                               ✅ YES
+REMARKS                                                                                                ✅ YES
+TYPE_CAT                       null                                null                                ✅ YES
+TYPE_SCHEM                     null                                null                                ✅ YES
+TYPE_NAME                      null                                null                                ✅ YES
+SELF_REFERENCING_COL_NAME      null                                null                                ✅ YES
+REF_GENERATION                 null                                null                                ✅ YES
+
+Row 19:
+------------------------------------------------------------------------------------------------------------------------
+Column                         Thrift Value                        SEA Value                           Match?
+------------------------------------------------------------------------------------------------------------------------
+TABLE_CAT                      main                                main                                ✅ YES
+TABLE_SCHEM                    adbc_testing                        adbc_testing                        ✅ YES
+TABLE_NAME                     92f4ca82aa644503976c4288207da6fd    92f4ca82aa644503976c4288207da6fd    ✅ YES
+TABLE_TYPE                     TABLE                               TABLE                               ✅ YES
+REMARKS                                                                                                ✅ YES
+TYPE_CAT                       null                                null                                ✅ YES
+TYPE_SCHEM                     null                                null                                ✅ YES
+TYPE_NAME                      null                                null                                ✅ YES
+SELF_REFERENCING_COL_NAME      null                                null                                ✅ YES
+REF_GENERATION                 null                                null                                ✅ YES
+
+Row 20:
+------------------------------------------------------------------------------------------------------------------------
+Column                         Thrift Value                        SEA Value                           Match?
+------------------------------------------------------------------------------------------------------------------------
+TABLE_CAT                      main                                main                                ✅ YES
+TABLE_SCHEM                    adbc_testing                        adbc_testing                        ✅ YES
+TABLE_NAME                     test_table                          test_table                          ✅ YES
+TABLE_TYPE                     TABLE                               TABLE                               ✅ YES
+REMARKS                                                                                                ✅ YES
+TYPE_CAT                       null                                null                                ✅ YES
+TYPE_SCHEM                     null                                null                                ✅ YES
+TYPE_NAME                      null                                null                                ✅ YES
+SELF_REFERENCING_COL_NAME      null                                null                                ✅ YES
+REF_GENERATION                 null                                null                                ✅ YES
+
+Row 21:
+------------------------------------------------------------------------------------------------------------------------
+Column                         Thrift Value                        SEA Value                           Match?
+------------------------------------------------------------------------------------------------------------------------
+TABLE_CAT                      main                                main                                ✅ YES
+TABLE_SCHEM                    adbc_testing                        adbc_testing                        ✅ YES
+TABLE_NAME                     b968b5d2ed6c4dc6993d972a88926d72    b968b5d2ed6c4dc6993d972a88926d72    ✅ YES
+TABLE_TYPE                     TABLE                               TABLE                               ✅ YES
+REMARKS                                                                                                ✅ YES
+TYPE_CAT                       null                                null                                ✅ YES
+TYPE_SCHEM                     null                                null                                ✅ YES
+TYPE_NAME                      null                                null                                ✅ YES
+SELF_REFERENCING_COL_NAME      null                                null                                ✅ YES
+REF_GENERATION                 null                                null                                ✅ YES
+
+Row 22:
+------------------------------------------------------------------------------------------------------------------------
+Column                         Thrift Value                        SEA Value                           Match?
+------------------------------------------------------------------------------------------------------------------------
+TABLE_CAT                      main                                main                                ✅ YES
+TABLE_SCHEM                    adbc_testing                        adbc_testing                        ✅ YES
+TABLE_NAME                     73d189a0e0014933af19c0ec08fcc0ef    73d189a0e0014933af19c0ec08fcc0ef    ✅ YES
+TABLE_TYPE                     TABLE                               TABLE                               ✅ YES
+REMARKS                                                                                                ✅ YES
+TYPE_CAT                       null                                null                                ✅ YES
+TYPE_SCHEM                     null                                null                                ✅ YES
+TYPE_NAME                      null                                null                                ✅ YES
+SELF_REFERENCING_COL_NAME      null                                null                                ✅ YES
+REF_GENERATION                 null                                null                                ✅ YES
+
+Row 23:
+------------------------------------------------------------------------------------------------------------------------
+Column                         Thrift Value                        SEA Value                           Match?
+------------------------------------------------------------------------------------------------------------------------
+TABLE_CAT                      main                                main                                ✅ YES
+TABLE_SCHEM                    adbc_testing                        adbc_testing                        ✅ YES
+TABLE_NAME                     7f84e8cbad1247539697e31cf71216b2    7f84e8cbad1247539697e31cf71216b2    ✅ YES
+TABLE_TYPE                     TABLE                               TABLE                               ✅ YES
+REMARKS                                                                                                ✅ YES
+TYPE_CAT                       null                                null                                ✅ YES
+TYPE_SCHEM                     null                                null                                ✅ YES
+TYPE_NAME                      null                                null                                ✅ YES
+SELF_REFERENCING_COL_NAME      null                                null                                ✅ YES
+REF_GENERATION                 null                                null                                ✅ YES
+
+Row 24:
+------------------------------------------------------------------------------------------------------------------------
+Column                         Thrift Value                        SEA Value                           Match?
+------------------------------------------------------------------------------------------------------------------------
+TABLE_CAT                      main                                main                                ✅ YES
+TABLE_SCHEM                    adbc_testing                        adbc_testing                        ✅ YES
+TABLE_NAME                     a30be18e5a1d440c8c50002633d8f831    a30be18e5a1d440c8c50002633d8f831    ✅ YES
+TABLE_TYPE                     TABLE                               TABLE                               ✅ YES
+REMARKS                                                                                                ✅ YES
+TYPE_CAT                       null                                null                                ✅ YES
+TYPE_SCHEM                     null                                null                                ✅ YES
+TYPE_NAME                      null                                null                                ✅ YES
+SELF_REFERENCING_COL_NAME      null                                null                                ✅ YES
+REF_GENERATION                 null                                null                                ✅ YES
+
+Row 25:
+------------------------------------------------------------------------------------------------------------------------
+Column                         Thrift Value                        SEA Value                           Match?
+------------------------------------------------------------------------------------------------------------------------
+TABLE_CAT                      main                                main                                ✅ YES
+TABLE_SCHEM                    adbc_testing                        adbc_testing                        ✅ YES
+TABLE_NAME                     f3fbf6604b72491586c10211c6ea435a    f3fbf6604b72491586c10211c6ea435a    ✅ YES
+TABLE_TYPE                     TABLE                               TABLE                               ✅ YES
+REMARKS                                                                                                ✅ YES
+TYPE_CAT                       null                                null                                ✅ YES
+TYPE_SCHEM                     null                                null                                ✅ YES
+TYPE_NAME                      null                                null                                ✅ YES
+SELF_REFERENCING_COL_NAME      null                                null                                ✅ YES
+REF_GENERATION                 null                                null                                ✅ YES
+
+Row 26:
+------------------------------------------------------------------------------------------------------------------------
+Column                         Thrift Value                        SEA Value                           Match?
+------------------------------------------------------------------------------------------------------------------------
+TABLE_CAT                      main                                main                                ✅ YES
+TABLE_SCHEM                    adbc_testing                        adbc_testing                        ✅ YES
+TABLE_NAME                     cross_ref_orders                    cross_ref_orders                    ✅ YES
+TABLE_TYPE                     TABLE                               TABLE                               ✅ YES
+REMARKS                                                                                                ✅ YES
+TYPE_CAT                       null                                null                                ✅ YES
+TYPE_SCHEM                     null                                null                                ✅ YES
+TYPE_NAME                      null                                null                                ✅ YES
+SELF_REFERENCING_COL_NAME      null                                null                                ✅ YES
+REF_GENERATION                 null                                null                                ✅ YES
+
+========================================================================================================================
+GETTABLES SUMMARY:
+  Total cell comparisons: 270
+  Matches: 270
+  Mismatches: 0
+  Match percentage: 100.00%
+========================================================================================================================
+
+
+████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████
+PART 4: GETCOLUMNS METADATA COMPARISON (Statement-Based)
+████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████
+
+Executing GetColumns metadata command on both protocols...
+
+[SEA SQL]: SHOW COLUMNS IN CATALOG `main` SCHEMA LIKE 'adbc.testing' TABLE LIKE 'all.column.types'
+SCHEMA COMPARISON:
+------------------------------------------------------------------------------------------------------------------------
+Column Name                    Thrift          SEA             Match?
+------------------------------------------------------------------------------------------------------------------------
+TABLE_CAT                      Present         Present         ✅ YES
+TABLE_SCHEM                    Present         Present         ✅ YES
+TABLE_NAME                     Present         Present         ✅ YES
+COLUMN_NAME                    Present         Present         ✅ YES
+DATA_TYPE                      Present         Present         ✅ YES
+TYPE_NAME                      Present         Present         ✅ YES
+COLUMN_SIZE                    Present         Present         ✅ YES
+BUFFER_LENGTH                  Present         Present         ✅ YES
+DECIMAL_DIGITS                 Present         Present         ✅ YES
+NUM_PREC_RADIX                 Present         Present         ✅ YES
+NULLABLE                       Present         Present         ✅ YES
+REMARKS                        Present         Present         ✅ YES
+COLUMN_DEF                     Present         Present         ✅ YES
+SQL_DATA_TYPE                  Present         Present         ✅ YES
+SQL_DATETIME_SUB               Present         Present         ✅ YES
+CHAR_OCTET_LENGTH              Present         Present         ✅ YES
+ORDINAL_POSITION               Present         Present         ✅ YES
+IS_NULLABLE                    Present         Present         ✅ YES
+SCOPE_CATALOG                  Present         Present         ✅ YES
+SCOPE_SCHEMA                   Present         Present         ✅ YES
+SCOPE_TABLE                    Present         Present         ✅ YES
+SOURCE_DATA_TYPE               Present         Present         ✅ YES
+IS_AUTO_INCREMENT              Present         Present         ✅ YES
+BASE_TYPE_NAME                 Present         Present         ✅ YES
+------------------------------------------------------------------------------------------------------------------------
+Schema Summary: 24 matches, 0 mismatches
+Thrift has 24 columns, SEA has 24 columns
+
+
+ROW-BY-ROW DATA COMPARISON:
+------------------------------------------------------------------------------------------------------------------------
+Processing 20 rows...
+
+Row 0:
+------------------------------------------------------------------------------------------------------------------------
+Column                         Thrift Value                        SEA Value                           Match?
+------------------------------------------------------------------------------------------------------------------------
+TABLE_CAT                      main                                main                                ✅ YES
+TABLE_SCHEM                    adbc_testing                        adbc_testing                        ✅ YES
+TABLE_NAME                     all_column_types                    all_column_types                    ✅ YES
+COLUMN_NAME                    c_tinyint                           c_tinyint                           ✅ YES
+DATA_TYPE                      -6                                  -6                                  ✅ YES
+TYPE_NAME                      TINYINT                             TINYINT                             ✅ YES
+COLUMN_SIZE                    1                                   1                                   ✅ YES
+BUFFER_LENGTH                  null                                1                                   ❌ NO
+DECIMAL_DIGITS                 0                                   0                                   ✅ YES
+NUM_PREC_RADIX                 10                                  10                                  ✅ YES
+NULLABLE                       1                                   1                                   ✅ YES
+REMARKS                                                                                                ✅ YES
+COLUMN_DEF                     null                                null                                ✅ YES
+SQL_DATA_TYPE                  null                                -6                                  ❌ NO
+SQL_DATETIME_SUB               null                                null                                ✅ YES
+CHAR_OCTET_LENGTH              null                                null                                ✅ YES
+ORDINAL_POSITION               0                                   0                                   ✅ YES
+IS_NULLABLE                    YES                                 YES                                 ✅ YES
+SCOPE_CATALOG                  null                                null                                ✅ YES
+SCOPE_SCHEMA                   null                                null                                ✅ YES
+SCOPE_TABLE                    null                                null                                ✅ YES
+SOURCE_DATA_TYPE               null                                null                                ✅ YES
+IS_AUTO_INCREMENT              NO                                  NO                                  ✅ YES
+BASE_TYPE_NAME                 TINYINT                             TINYINT                             ✅ YES
+
+Row 1:
+------------------------------------------------------------------------------------------------------------------------
+Column                         Thrift Value                        SEA Value                           Match?
+------------------------------------------------------------------------------------------------------------------------
+TABLE_CAT                      main                                main                                ✅ YES
+TABLE_SCHEM                    adbc_testing                        adbc_testing                        ✅ YES
+TABLE_NAME                     all_column_types                    all_column_types                    ✅ YES
+COLUMN_NAME                    c_smallint                          c_smallint                          ✅ YES
+DATA_TYPE                      5                                   5                                   ✅ YES
+TYPE_NAME                      SMALLINT                            SMALLINT                            ✅ YES
+COLUMN_SIZE                    2                                   2                                   ✅ YES
+BUFFER_LENGTH                  null                                2                                   ❌ NO
+DECIMAL_DIGITS                 0                                   0                                   ✅ YES
+NUM_PREC_RADIX                 10                                  10                                  ✅ YES
+NULLABLE                       1                                   1                                   ✅ YES
+REMARKS                                                                                                ✅ YES
+COLUMN_DEF                     null                                null                                ✅ YES
+SQL_DATA_TYPE                  null                                5                                   ❌ NO
+SQL_DATETIME_SUB               null                                null                                ✅ YES
+CHAR_OCTET_LENGTH              null                                null                                ✅ YES
+ORDINAL_POSITION               1                                   1                                   ✅ YES
+IS_NULLABLE                    YES                                 YES                                 ✅ YES
+SCOPE_CATALOG                  null                                null                                ✅ YES
+SCOPE_SCHEMA                   null                                null                                ✅ YES
+SCOPE_TABLE                    null                                null                                ✅ YES
+SOURCE_DATA_TYPE               null                                null                                ✅ YES
+IS_AUTO_INCREMENT              NO                                  NO                                  ✅ YES
+BASE_TYPE_NAME                 SMALLINT                            SMALLINT                            ✅ YES
+
+Row 2:
+------------------------------------------------------------------------------------------------------------------------
+Column                         Thrift Value                        SEA Value                           Match?
+------------------------------------------------------------------------------------------------------------------------
+TABLE_CAT                      main                                main                                ✅ YES
+TABLE_SCHEM                    adbc_testing                        adbc_testing                        ✅ YES
+TABLE_NAME                     all_column_types                    all_column_types                    ✅ YES
+COLUMN_NAME                    c_int                               c_int                               ✅ YES
+DATA_TYPE                      4                                   4                                   ✅ YES
+TYPE_NAME                      INT                                 INT                                 ✅ YES
+COLUMN_SIZE                    4                                   4                                   ✅ YES
+BUFFER_LENGTH                  null                                4                                   ❌ NO
+DECIMAL_DIGITS                 0                                   0                                   ✅ YES
+NUM_PREC_RADIX                 10                                  10                                  ✅ YES
+NULLABLE                       0                                   0                                   ✅ YES
+REMARKS                                                                                                ✅ YES
+COLUMN_DEF                     null                                null                                ✅ YES
+SQL_DATA_TYPE                  null                                4                                   ❌ NO
+SQL_DATETIME_SUB               null                                null                                ✅ YES
+CHAR_OCTET_LENGTH              null                                null                                ✅ YES
+ORDINAL_POSITION               2                                   2                                   ✅ YES
+IS_NULLABLE                    YES                                 NO                                  ❌ NO
+SCOPE_CATALOG                  null                                null                                ✅ YES
+SCOPE_SCHEMA                   null                                null                                ✅ YES
+SCOPE_TABLE                    null                                null                                ✅ YES
+SOURCE_DATA_TYPE               null                                null                                ✅ YES
+IS_AUTO_INCREMENT              NO                                  NO                                  ✅ YES
+BASE_TYPE_NAME                 INTEGER                             INTEGER                             ✅ YES
+
+Row 3:
+------------------------------------------------------------------------------------------------------------------------
+Column                         Thrift Value                        SEA Value                           Match?
+------------------------------------------------------------------------------------------------------------------------
+TABLE_CAT                      main                                main                                ✅ YES
+TABLE_SCHEM                    adbc_testing                        adbc_testing                        ✅ YES
+TABLE_NAME                     all_column_types                    all_column_types                    ✅ YES
+COLUMN_NAME                    c_bigint                            c_bigint                            ✅ YES
+DATA_TYPE                      -5                                  -5                                  ✅ YES
+TYPE_NAME                      BIGINT                              BIGINT                              ✅ YES
+COLUMN_SIZE                    8                                   8                                   ✅ YES
+BUFFER_LENGTH                  null                                8                                   ❌ NO
+DECIMAL_DIGITS                 0                                   0                                   ✅ YES
+NUM_PREC_RADIX                 10                                  10                                  ✅ YES
+NULLABLE                       1                                   1                                   ✅ YES
+REMARKS                                                                                                ✅ YES
+COLUMN_DEF                     null                                null                                ✅ YES
+SQL_DATA_TYPE                  null                                -5                                  ❌ NO
+SQL_DATETIME_SUB               null                                null                                ✅ YES
+CHAR_OCTET_LENGTH              null                                null                                ✅ YES
+ORDINAL_POSITION               3                                   3                                   ✅ YES
+IS_NULLABLE                    YES                                 YES                                 ✅ YES
+SCOPE_CATALOG                  null                                null                                ✅ YES
+SCOPE_SCHEMA                   null                                null                                ✅ YES
+SCOPE_TABLE                    null                                null                                ✅ YES
+SOURCE_DATA_TYPE               null                                null                                ✅ YES
+IS_AUTO_INCREMENT              NO                                  NO                                  ✅ YES
+BASE_TYPE_NAME                 BIGINT                              BIGINT                              ✅ YES
+
+Row 4:
+------------------------------------------------------------------------------------------------------------------------
+Column                         Thrift Value                        SEA Value                           Match?
+------------------------------------------------------------------------------------------------------------------------
+TABLE_CAT                      main                                main                                ✅ YES
+TABLE_SCHEM                    adbc_testing                        adbc_testing                        ✅ YES
+TABLE_NAME                     all_column_types                    all_column_types                    ✅ YES
+COLUMN_NAME                    c_decimal                           c_decimal                           ✅ YES
+DATA_TYPE                      3                                   3                                   ✅ YES
+TYPE_NAME                      DECIMAL(10,2)                       DECIMAL(10,2)                       ✅ YES
+COLUMN_SIZE                    10                                  10                                  ✅ YES
+BUFFER_LENGTH                  null                                11                                  ❌ NO
+DECIMAL_DIGITS                 2                                   2                                   ✅ YES
+NUM_PREC_RADIX                 10                                  10                                  ✅ YES
+NULLABLE                       1                                   1                                   ✅ YES
+REMARKS                                                                                                ✅ YES
+COLUMN_DEF                     null                                null                                ✅ YES
+SQL_DATA_TYPE                  null                                3                                   ❌ NO
+SQL_DATETIME_SUB               null                                null                                ✅ YES
+CHAR_OCTET_LENGTH              null                                null                                ✅ YES
+ORDINAL_POSITION               4                                   4                                   ✅ YES
+IS_NULLABLE                    YES                                 YES                                 ✅ YES
+SCOPE_CATALOG                  null                                null                                ✅ YES
+SCOPE_SCHEMA                   null                                null                                ✅ YES
+SCOPE_TABLE                    null                                null                                ✅ YES
+SOURCE_DATA_TYPE               null                                null                                ✅ YES
+IS_AUTO_INCREMENT              NO                                  NO                                  ✅ YES
+BASE_TYPE_NAME                 DECIMAL                             DECIMAL                             ✅ YES
+
+Row 5:
+------------------------------------------------------------------------------------------------------------------------
+Column                         Thrift Value                        SEA Value                           Match?
+------------------------------------------------------------------------------------------------------------------------
+TABLE_CAT                      main                                main                                ✅ YES
+TABLE_SCHEM                    adbc_testing                        adbc_testing                        ✅ YES
+TABLE_NAME                     all_column_types                    all_column_types                    ✅ YES
+COLUMN_NAME                    c_float                             c_float                             ✅ YES
+DATA_TYPE                      6                                   6                                   ✅ YES
+TYPE_NAME                      FLOAT                               FLOAT                               ✅ YES
+COLUMN_SIZE                    4                                   4                                   ✅ YES
+BUFFER_LENGTH                  null                                4                                   ❌ NO
+DECIMAL_DIGITS                 7                                   7                                   ✅ YES
+NUM_PREC_RADIX                 10                                  10                                  ✅ YES
+NULLABLE                       1                                   1                                   ✅ YES
+REMARKS                                                                                                ✅ YES
+COLUMN_DEF                     null                                null                                ✅ YES
+SQL_DATA_TYPE                  null                                6                                   ❌ NO
+SQL_DATETIME_SUB               null                                null                                ✅ YES
+CHAR_OCTET_LENGTH              null                                null                                ✅ YES
+ORDINAL_POSITION               5                                   5                                   ✅ YES
+IS_NULLABLE                    YES                                 YES                                 ✅ YES
+SCOPE_CATALOG                  null                                null                                ✅ YES
+SCOPE_SCHEMA                   null                                null                                ✅ YES
+SCOPE_TABLE                    null                                null                                ✅ YES
+SOURCE_DATA_TYPE               null                                null                                ✅ YES
+IS_AUTO_INCREMENT              NO                                  NO                                  ✅ YES
+BASE_TYPE_NAME                 FLOAT                               FLOAT                               ✅ YES
+
+Row 6:
+------------------------------------------------------------------------------------------------------------------------
+Column                         Thrift Value                        SEA Value                           Match?
+------------------------------------------------------------------------------------------------------------------------
+TABLE_CAT                      main                                main                                ✅ YES
+TABLE_SCHEM                    adbc_testing                        adbc_testing                        ✅ YES
+TABLE_NAME                     all_column_types                    all_column_types                    ✅ YES
+COLUMN_NAME                    c_double                            c_double                            ✅ YES
+DATA_TYPE                      8                                   8                                   ✅ YES
+TYPE_NAME                      DOUBLE                              DOUBLE                              ✅ YES
+COLUMN_SIZE                    8                                   8                                   ✅ YES
+BUFFER_LENGTH                  null                                8                                   ❌ NO
+DECIMAL_DIGITS                 15                                  15                                  ✅ YES
+NUM_PREC_RADIX                 10                                  10                                  ✅ YES
+NULLABLE                       1                                   1                                   ✅ YES
+REMARKS                                                                                                ✅ YES
+COLUMN_DEF                     null                                null                                ✅ YES
+SQL_DATA_TYPE                  null                                8                                   ❌ NO
+SQL_DATETIME_SUB               null                                null                                ✅ YES
+CHAR_OCTET_LENGTH              null                                null                                ✅ YES
+ORDINAL_POSITION               6                                   6                                   ✅ YES
+IS_NULLABLE                    YES                                 YES                                 ✅ YES
+SCOPE_CATALOG                  null                                null                                ✅ YES
+SCOPE_SCHEMA                   null                                null                                ✅ YES
+SCOPE_TABLE                    null                                null                                ✅ YES
+SOURCE_DATA_TYPE               null                                null                                ✅ YES
+IS_AUTO_INCREMENT              NO                                  NO                                  ✅ YES
+BASE_TYPE_NAME                 DOUBLE                              DOUBLE                              ✅ YES
+
+Row 7:
+------------------------------------------------------------------------------------------------------------------------
+Column                         Thrift Value                        SEA Value                           Match?
+------------------------------------------------------------------------------------------------------------------------
+TABLE_CAT                      main                                main                                ✅ YES
+TABLE_SCHEM                    adbc_testing                        adbc_testing                        ✅ YES
+TABLE_NAME                     all_column_types                    all_column_types                    ✅ YES
+COLUMN_NAME                    c_string                            c_string                            ✅ YES
+DATA_TYPE                      12                                  12                                  ✅ YES
+TYPE_NAME                      STRING                              STRING                              ✅ YES
+COLUMN_SIZE                    2147483647                          2147483647                          ✅ YES
+BUFFER_LENGTH                  null                                null                                ✅ YES
+DECIMAL_DIGITS                 0                                   0                                   ✅ YES
+NUM_PREC_RADIX                 null                                null                                ✅ YES
+NULLABLE                       0                                   0                                   ✅ YES
+REMARKS                                                                                                ✅ YES
+COLUMN_DEF                     null                                null                                ✅ YES
+SQL_DATA_TYPE                  null                                12                                  ❌ NO
+SQL_DATETIME_SUB               null                                null                                ✅ YES
+CHAR_OCTET_LENGTH              null                                2147483647                          ❌ NO
+ORDINAL_POSITION               7                                   7                                   ✅ YES
+IS_NULLABLE                    YES                                 NO                                  ❌ NO
+SCOPE_CATALOG                  null                                null                                ✅ YES
+SCOPE_SCHEMA                   null                                null                                ✅ YES
+SCOPE_TABLE                    null                                null                                ✅ YES
+SOURCE_DATA_TYPE               null                                null                                ✅ YES
+IS_AUTO_INCREMENT              NO                                  NO                                  ✅ YES
+BASE_TYPE_NAME                 STRING                              STRING                              ✅ YES
+
+Row 8:
+------------------------------------------------------------------------------------------------------------------------
+Column                         Thrift Value                        SEA Value                           Match?
+------------------------------------------------------------------------------------------------------------------------
+TABLE_CAT                      main                                main                                ✅ YES
+TABLE_SCHEM                    adbc_testing                        adbc_testing                        ✅ YES
+TABLE_NAME                     all_column_types                    all_column_types                    ✅ YES
+COLUMN_NAME                    c_binary                            c_binary                            ✅ YES
+DATA_TYPE                      -2                                  -2                                  ✅ YES
+TYPE_NAME                      BINARY                              BINARY                              ✅ YES
+COLUMN_SIZE                    0                                   0                                   ✅ YES
+BUFFER_LENGTH                  null                                null                                ✅ YES
+DECIMAL_DIGITS                 0                                   0                                   ✅ YES
+NUM_PREC_RADIX                 null                                null                                ✅ YES
+NULLABLE                       1                                   1                                   ✅ YES
+REMARKS                                                                                                ✅ YES
+COLUMN_DEF                     null                                null                                ✅ YES
+SQL_DATA_TYPE                  null                                -2                                  ❌ NO
+SQL_DATETIME_SUB               null                                null                                ✅ YES
+CHAR_OCTET_LENGTH              null                                null                                ✅ YES
+ORDINAL_POSITION               8                                   8                                   ✅ YES
+IS_NULLABLE                    YES                                 YES                                 ✅ YES
+SCOPE_CATALOG                  null                                null                                ✅ YES
+SCOPE_SCHEMA                   null                                null                                ✅ YES
+SCOPE_TABLE                    null                                null                                ✅ YES
+SOURCE_DATA_TYPE               null                                null                                ✅ YES
+IS_AUTO_INCREMENT              NO                                  NO                                  ✅ YES
+BASE_TYPE_NAME                 BINARY                              BINARY                              ✅ YES
+
+Row 9:
+------------------------------------------------------------------------------------------------------------------------
+Column                         Thrift Value                        SEA Value                           Match?
+------------------------------------------------------------------------------------------------------------------------
+TABLE_CAT                      main                                main                                ✅ YES
+TABLE_SCHEM                    adbc_testing                        adbc_testing                        ✅ YES
+TABLE_NAME                     all_column_types                    all_column_types                    ✅ YES
+COLUMN_NAME                    c_boolean                           c_boolean                           ✅ YES
+DATA_TYPE                      16                                  16                                  ✅ YES
+TYPE_NAME                      BOOLEAN                             BOOLEAN                             ✅ YES
+COLUMN_SIZE                    1                                   1                                   ✅ YES
+BUFFER_LENGTH                  null                                1                                   ❌ NO
+DECIMAL_DIGITS                 0                                   0                                   ✅ YES
+NUM_PREC_RADIX                 null                                null                                ✅ YES
+NULLABLE                       1                                   1                                   ✅ YES
+REMARKS                                                                                                ✅ YES
+COLUMN_DEF                     null                                null                                ✅ YES
+SQL_DATA_TYPE                  null                                16                                  ❌ NO
+SQL_DATETIME_SUB               null                                null                                ✅ YES
+CHAR_OCTET_LENGTH              null                                null                                ✅ YES
+ORDINAL_POSITION               9                                   9                                   ✅ YES
+IS_NULLABLE                    YES                                 YES                                 ✅ YES
+SCOPE_CATALOG                  null                                null                                ✅ YES
+SCOPE_SCHEMA                   null                                null                                ✅ YES
+SCOPE_TABLE                    null                                null                                ✅ YES
+SOURCE_DATA_TYPE               null                                null                                ✅ YES
+IS_AUTO_INCREMENT              NO                                  NO                                  ✅ YES
+BASE_TYPE_NAME                 BOOLEAN                             BOOLEAN                             ✅ YES
+
+Row 10:
+------------------------------------------------------------------------------------------------------------------------
+Column                         Thrift Value                        SEA Value                           Match?
+------------------------------------------------------------------------------------------------------------------------
+TABLE_CAT                      main                                main                                ✅ YES
+TABLE_SCHEM                    adbc_testing                        adbc_testing                        ✅ YES
+TABLE_NAME                     all_column_types                    all_column_types                    ✅ YES
+COLUMN_NAME                    c_date                              c_date                              ✅ YES
+DATA_TYPE                      91                                  91                                  ✅ YES
+TYPE_NAME                      DATE                                DATE                                ✅ YES
+COLUMN_SIZE                    4                                   4                                   ✅ YES
+BUFFER_LENGTH                  null                                null                                ✅ YES
+DECIMAL_DIGITS                 0                                   0                                   ✅ YES
+NUM_PREC_RADIX                 null                                null                                ✅ YES
+NULLABLE                       1                                   1                                   ✅ YES
+REMARKS                                                                                                ✅ YES
+COLUMN_DEF                     null                                null                                ✅ YES
+SQL_DATA_TYPE                  null                                91                                  ❌ NO
+SQL_DATETIME_SUB               null                                null                                ✅ YES
+CHAR_OCTET_LENGTH              null                                null                                ✅ YES
+ORDINAL_POSITION               10                                  10                                  ✅ YES
+IS_NULLABLE                    YES                                 YES                                 ✅ YES
+SCOPE_CATALOG                  null                                null                                ✅ YES
+SCOPE_SCHEMA                   null                                null                                ✅ YES
+SCOPE_TABLE                    null                                null                                ✅ YES
+SOURCE_DATA_TYPE               null                                null                                ✅ YES
+IS_AUTO_INCREMENT              NO                                  NO                                  ✅ YES
+BASE_TYPE_NAME                 DATE                                DATE                                ✅ YES
+
+Row 11:
+------------------------------------------------------------------------------------------------------------------------
+Column                         Thrift Value                        SEA Value                           Match?
+------------------------------------------------------------------------------------------------------------------------
+TABLE_CAT                      main                                main                                ✅ YES
+TABLE_SCHEM                    adbc_testing                        adbc_testing                        ✅ YES
+TABLE_NAME                     all_column_types                    all_column_types                    ✅ YES
+COLUMN_NAME                    c_timestamp                         c_timestamp                         ✅ YES
+DATA_TYPE                      93                                  93                                  ✅ YES
+TYPE_NAME                      TIMESTAMP                           TIMESTAMP                           ✅ YES
+COLUMN_SIZE                    8                                   8                                   ✅ YES
+BUFFER_LENGTH                  null                                null                                ✅ YES
+DECIMAL_DIGITS                 6                                   6                                   ✅ YES
+NUM_PREC_RADIX                 null                                null                                ✅ YES
+NULLABLE                       1                                   1                                   ✅ YES
+REMARKS                                                                                                ✅ YES
+COLUMN_DEF                     null                                null                                ✅ YES
+SQL_DATA_TYPE                  null                                93                                  ❌ NO
+SQL_DATETIME_SUB               null                                null                                ✅ YES
+CHAR_OCTET_LENGTH              null                                null                                ✅ YES
+ORDINAL_POSITION               11                                  11                                  ✅ YES
+IS_NULLABLE                    YES                                 YES                                 ✅ YES
+SCOPE_CATALOG                  null                                null                                ✅ YES
+SCOPE_SCHEMA                   null                                null                                ✅ YES
+SCOPE_TABLE                    null                                null                                ✅ YES
+SOURCE_DATA_TYPE               null                                null                                ✅ YES
+IS_AUTO_INCREMENT              NO                                  NO                                  ✅ YES
+BASE_TYPE_NAME                 TIMESTAMP                           TIMESTAMP                           ✅ YES
+
+Row 12:
+------------------------------------------------------------------------------------------------------------------------
+Column                         Thrift Value                        SEA Value                           Match?
+------------------------------------------------------------------------------------------------------------------------
+TABLE_CAT                      main                                main                                ✅ YES
+TABLE_SCHEM                    adbc_testing                        adbc_testing                        ✅ YES
+TABLE_NAME                     all_column_types                    all_column_types                    ✅ YES
+COLUMN_NAME                    c_timestamp_ntz                     c_timestamp_ntz                     ✅ YES
+DATA_TYPE                      93                                  93                                  ✅ YES
+TYPE_NAME                      TIMESTAMP_NTZ                       TIMESTAMP_NTZ                       ✅ YES
+COLUMN_SIZE                    8                                   8                                   ✅ YES
+BUFFER_LENGTH                  null                                null                                ✅ YES
+DECIMAL_DIGITS                 6                                   6                                   ✅ YES
+NUM_PREC_RADIX                 null                                null                                ✅ YES
+NULLABLE                       1                                   1                                   ✅ YES
+REMARKS                                                                                                ✅ YES
+COLUMN_DEF                     null                                null                                ✅ YES
+SQL_DATA_TYPE                  null                                93                                  ❌ NO
+SQL_DATETIME_SUB               null                                null                                ✅ YES
+CHAR_OCTET_LENGTH              null                                null                                ✅ YES
+ORDINAL_POSITION               12                                  12                                  ✅ YES
+IS_NULLABLE                    YES                                 YES                                 ✅ YES
+SCOPE_CATALOG                  null                                null                                ✅ YES
+SCOPE_SCHEMA                   null                                null                                ✅ YES
+SCOPE_TABLE                    null                                null                                ✅ YES
+SOURCE_DATA_TYPE               null                                null                                ✅ YES
+IS_AUTO_INCREMENT              NO                                  NO                                  ✅ YES
+BASE_TYPE_NAME                 TIMESTAMP                           TIMESTAMP                           ✅ YES
+
+Row 13:
+------------------------------------------------------------------------------------------------------------------------
+Column                         Thrift Value                        SEA Value                           Match?
+------------------------------------------------------------------------------------------------------------------------
+TABLE_CAT                      main                                main                                ✅ YES
+TABLE_SCHEM                    adbc_testing                        adbc_testing                        ✅ YES
+TABLE_NAME                     all_column_types                    all_column_types                    ✅ YES
+COLUMN_NAME                    c_interval_ym                       c_interval_ym                       ✅ YES
+DATA_TYPE                      1111                                1111                                ✅ YES
+TYPE_NAME                      INTERVAL YEAR TO MONTH              INTERVAL YEAR TO MONTH              ✅ YES
+COLUMN_SIZE                    4                                   4                                   ✅ YES
+BUFFER_LENGTH                  null                                null                                ✅ YES
+DECIMAL_DIGITS                 0                                   0                                   ✅ YES
+NUM_PREC_RADIX                 null                                null                                ✅ YES
+NULLABLE                       1                                   1                                   ✅ YES
+REMARKS                                                                                                ✅ YES
+COLUMN_DEF                     null                                null                                ✅ YES
+SQL_DATA_TYPE                  null                                1111                                ❌ NO
+SQL_DATETIME_SUB               null                                null                                ✅ YES
+CHAR_OCTET_LENGTH              null                                null                                ✅ YES
+ORDINAL_POSITION               13                                  13                                  ✅ YES
+IS_NULLABLE                    YES                                 YES                                 ✅ YES
+SCOPE_CATALOG                  null                                null                                ✅ YES
+SCOPE_SCHEMA                   null                                null                                ✅ YES
+SCOPE_TABLE                    null                                null                                ✅ YES
+SOURCE_DATA_TYPE               null                                null                                ✅ YES
+IS_AUTO_INCREMENT              NO                                  NO                                  ✅ YES
+BASE_TYPE_NAME                 INTERVAL                            INTERVAL                            ✅ YES
+
+Row 14:
+------------------------------------------------------------------------------------------------------------------------
+Column                         Thrift Value                        SEA Value                           Match?
+------------------------------------------------------------------------------------------------------------------------
+TABLE_CAT                      main                                main                                ✅ YES
+TABLE_SCHEM                    adbc_testing                        adbc_testing                        ✅ YES
+TABLE_NAME                     all_column_types                    all_column_types                    ✅ YES
+COLUMN_NAME                    c_interval_ds                       c_interval_ds                       ✅ YES
+DATA_TYPE                      1111                                1111                                ✅ YES
+TYPE_NAME                      INTERVAL DAY TO SECOND              INTERVAL DAY TO SECOND              ✅ YES
+COLUMN_SIZE                    8                                   8                                   ✅ YES
+BUFFER_LENGTH                  null                                null                                ✅ YES
+DECIMAL_DIGITS                 0                                   0                                   ✅ YES
+NUM_PREC_RADIX                 null                                null                                ✅ YES
+NULLABLE                       1                                   1                                   ✅ YES
+REMARKS                                                                                                ✅ YES
+COLUMN_DEF                     null                                null                                ✅ YES
+SQL_DATA_TYPE                  null                                1111                                ❌ NO
+SQL_DATETIME_SUB               null                                null                                ✅ YES
+CHAR_OCTET_LENGTH              null                                null                                ✅ YES
+ORDINAL_POSITION               14                                  14                                  ✅ YES
+IS_NULLABLE                    YES                                 YES                                 ✅ YES
+SCOPE_CATALOG                  null                                null                                ✅ YES
+SCOPE_SCHEMA                   null                                null                                ✅ YES
+SCOPE_TABLE                    null                                null                                ✅ YES
+SOURCE_DATA_TYPE               null                                null                                ✅ YES
+IS_AUTO_INCREMENT              NO                                  NO                                  ✅ YES
+BASE_TYPE_NAME                 INTERVAL                            INTERVAL                            ✅ YES
+
+Row 15:
+------------------------------------------------------------------------------------------------------------------------
+Column                         Thrift Value                        SEA Value                           Match?
+------------------------------------------------------------------------------------------------------------------------
+TABLE_CAT                      main                                main                                ✅ YES
+TABLE_SCHEM                    adbc_testing                        adbc_testing                        ✅ YES
+TABLE_NAME                     all_column_types                    all_column_types                    ✅ YES
+COLUMN_NAME                    c_array                             c_array                             ✅ YES
+DATA_TYPE                      2003                                2003                                ✅ YES
+TYPE_NAME                      ARRAY<INT>                          ARRAY<INT>                          ✅ YES
+COLUMN_SIZE                    0                                   0                                   ✅ YES
+BUFFER_LENGTH                  null                                null                                ✅ YES
+DECIMAL_DIGITS                 0                                   0                                   ✅ YES
+NUM_PREC_RADIX                 null                                null                                ✅ YES
+NULLABLE                       1                                   1                                   ✅ YES
+REMARKS                                                                                                ✅ YES
+COLUMN_DEF                     null                                null                                ✅ YES
+SQL_DATA_TYPE                  null                                2003                                ❌ NO
+SQL_DATETIME_SUB               null                                null                                ✅ YES
+CHAR_OCTET_LENGTH              null                                null                                ✅ YES
+ORDINAL_POSITION               15                                  15                                  ✅ YES
+IS_NULLABLE                    YES                                 YES                                 ✅ YES
+SCOPE_CATALOG                  null                                null                                ✅ YES
+SCOPE_SCHEMA                   null                                null                                ✅ YES
+SCOPE_TABLE                    null                                null                                ✅ YES
+SOURCE_DATA_TYPE               null                                null                                ✅ YES
+IS_AUTO_INCREMENT              NO                                  NO                                  ✅ YES
+BASE_TYPE_NAME                 ARRAY                               ARRAY                               ✅ YES
+
+Row 16:
+------------------------------------------------------------------------------------------------------------------------
+Column                         Thrift Value                        SEA Value                           Match?
+------------------------------------------------------------------------------------------------------------------------
+TABLE_CAT                      main                                main                                ✅ YES
+TABLE_SCHEM                    adbc_testing                        adbc_testing                        ✅ YES
+TABLE_NAME                     all_column_types                    all_column_types                    ✅ YES
+COLUMN_NAME                    c_map                               c_map                               ✅ YES
+DATA_TYPE                      2000                                2000                                ✅ YES
+TYPE_NAME                      MAP<STRING, INT>                    MAP<STRING, INT>                    ✅ YES
+COLUMN_SIZE                    0                                   0                                   ✅ YES
+BUFFER_LENGTH                  null                                null                                ✅ YES
+DECIMAL_DIGITS                 0                                   0                                   ✅ YES
+NUM_PREC_RADIX                 null                                null                                ✅ YES
+NULLABLE                       1                                   1                                   ✅ YES
+REMARKS                                                                                                ✅ YES
+COLUMN_DEF                     null                                null                                ✅ YES
+SQL_DATA_TYPE                  null                                2000                                ❌ NO
+SQL_DATETIME_SUB               null                                null                                ✅ YES
+CHAR_OCTET_LENGTH              null                                null                                ✅ YES
+ORDINAL_POSITION               16                                  16                                  ✅ YES
+IS_NULLABLE                    YES                                 YES                                 ✅ YES
+SCOPE_CATALOG                  null                                null                                ✅ YES
+SCOPE_SCHEMA                   null                                null                                ✅ YES
+SCOPE_TABLE                    null                                null                                ✅ YES
+SOURCE_DATA_TYPE               null                                null                                ✅ YES
+IS_AUTO_INCREMENT              NO                                  NO                                  ✅ YES
+BASE_TYPE_NAME                 MAP                                 MAP                                 ✅ YES
+
+Row 17:
+------------------------------------------------------------------------------------------------------------------------
+Column                         Thrift Value                        SEA Value                           Match?
+------------------------------------------------------------------------------------------------------------------------
+TABLE_CAT                      main                                main                                ✅ YES
+TABLE_SCHEM                    adbc_testing                        adbc_testing                        ✅ YES
+TABLE_NAME                     all_column_types                    all_column_types                    ✅ YES
+COLUMN_NAME                    c_struct                            c_struct                            ✅ YES
+DATA_TYPE                      2002                                2002                                ✅ YES
+TYPE_NAME                      STRUCT<f1: STRING, f2: INT, f3...   STRUCT<f1: STRING, f2: INT, f3...   ✅ YES
+COLUMN_SIZE                    0                                   0                                   ✅ YES
+BUFFER_LENGTH                  null                                null                                ✅ YES
+DECIMAL_DIGITS                 0                                   0                                   ✅ YES
+NUM_PREC_RADIX                 null                                null                                ✅ YES
+NULLABLE                       1                                   1                                   ✅ YES
+REMARKS                                                                                                ✅ YES
+COLUMN_DEF                     null                                null                                ✅ YES
+SQL_DATA_TYPE                  null                                2002                                ❌ NO
+SQL_DATETIME_SUB               null                                null                                ✅ YES
+CHAR_OCTET_LENGTH              null                                null                                ✅ YES
+ORDINAL_POSITION               17                                  17                                  ✅ YES
+IS_NULLABLE                    YES                                 YES                                 ✅ YES
+SCOPE_CATALOG                  null                                null                                ✅ YES
+SCOPE_SCHEMA                   null                                null                                ✅ YES
+SCOPE_TABLE                    null                                null                                ✅ YES
+SOURCE_DATA_TYPE               null                                null                                ✅ YES
+IS_AUTO_INCREMENT              NO                                  NO                                  ✅ YES
+BASE_TYPE_NAME                 STRUCT                              STRUCT                              ✅ YES
+
+Row 18:
+------------------------------------------------------------------------------------------------------------------------
+Column                         Thrift Value                        SEA Value                           Match?
+------------------------------------------------------------------------------------------------------------------------
+TABLE_CAT                      main                                main                                ✅ YES
+TABLE_SCHEM                    adbc_testing                        adbc_testing                        ✅ YES
+TABLE_NAME                     all_column_types                    all_column_types                    ✅ YES
+COLUMN_NAME                    c_variant                           c_variant                           ✅ YES
+DATA_TYPE                      1111                                1111                                ✅ YES
+TYPE_NAME                      VARIANT                             VARIANT                             ✅ YES
+COLUMN_SIZE                    0                                   0                                   ✅ YES
+BUFFER_LENGTH                  null                                null                                ✅ YES
+DECIMAL_DIGITS                 0                                   0                                   ✅ YES
+NUM_PREC_RADIX                 null                                null                                ✅ YES
+NULLABLE                       1                                   1                                   ✅ YES
+REMARKS                                                                                                ✅ YES
+COLUMN_DEF                     null                                null                                ✅ YES
+SQL_DATA_TYPE                  null                                1111                                ❌ NO
+SQL_DATETIME_SUB               null                                null                                ✅ YES
+CHAR_OCTET_LENGTH              null                                null                                ✅ YES
+ORDINAL_POSITION               18                                  18                                  ✅ YES
+IS_NULLABLE                    YES                                 YES                                 ✅ YES
+SCOPE_CATALOG                  null                                null                                ✅ YES
+SCOPE_SCHEMA                   null                                null                                ✅ YES
+SCOPE_TABLE                    null                                null                                ✅ YES
+SOURCE_DATA_TYPE               null                                null                                ✅ YES
+IS_AUTO_INCREMENT              NO                                  NO                                  ✅ YES
+BASE_TYPE_NAME                 VARIANT                             VARIANT                             ✅ YES
+
+Row 19:
+------------------------------------------------------------------------------------------------------------------------
+Column                         Thrift Value                        SEA Value                           Match?
+------------------------------------------------------------------------------------------------------------------------
+TABLE_CAT                      main                                main                                ✅ YES
+TABLE_SCHEM                    adbc_testing                        adbc_testing                        ✅ YES
+TABLE_NAME                     all_column_types                    all_column_types                    ✅ YES
+COLUMN_NAME                    c_void                              c_void                              ✅ YES
+DATA_TYPE                      0                                   0                                   ✅ YES
+TYPE_NAME                      VOID                                VOID                                ✅ YES
+COLUMN_SIZE                    1                                   1                                   ✅ YES
+BUFFER_LENGTH                  null                                null                                ✅ YES
+DECIMAL_DIGITS                 0                                   0                                   ✅ YES
+NUM_PREC_RADIX                 null                                null                                ✅ YES
+NULLABLE                       1                                   1                                   ✅ YES
+REMARKS                                                                                                ✅ YES
+COLUMN_DEF                     null                                null                                ✅ YES
+SQL_DATA_TYPE                  null                                0                                   ❌ NO
+SQL_DATETIME_SUB               null                                null                                ✅ YES
+CHAR_OCTET_LENGTH              null                                null                                ✅ YES
+ORDINAL_POSITION               19                                  19                                  ✅ YES
+IS_NULLABLE                    YES                                 YES                                 ✅ YES
+SCOPE_CATALOG                  null                                null                                ✅ YES
+SCOPE_SCHEMA                   null                                null                                ✅ YES
+SCOPE_TABLE                    null                                null                                ✅ YES
+SOURCE_DATA_TYPE               null                                null                                ✅ YES
+IS_AUTO_INCREMENT              NO                                  NO                                  ✅ YES
+BASE_TYPE_NAME                 VOID                                VOID                                ✅ YES
+
+========================================================================================================================
+STATEMENT-BASED SUMMARY:
+  Total cell comparisons: 480
+  Matches: 449
+  Mismatches: 31
+  Match percentage: 93.54%
+========================================================================================================================
+
+
+████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████
+PART 5: GETPRIMARYKEYS METADATA COMPARISON
+████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████
+
+Executing GetPrimaryKeys metadata command on both protocols...
+
+[SEA SQL]: SHOW KEYS IN CATALOG `main` IN SCHEMA `adbc_testing` IN TABLE `all_column_types`
+SCHEMA COMPARISON:
+------------------------------------------------------------------------------------------------------------------------
+Column Name                    Thrift          SEA             Match?
+------------------------------------------------------------------------------------------------------------------------
+TABLE_CAT                      Present         Present         ✅ YES
+TABLE_SCHEM                    Present         Present         ✅ YES
+TABLE_NAME                     Present         Present         ✅ YES
+COLUMN_NAME                    Present         Present         ✅ YES
+KEQ_SEQ                        Present         Present         ✅ YES
+PK_NAME                        Present         Present         ✅ YES
+------------------------------------------------------------------------------------------------------------------------
+Schema Summary: 6 matches, 0 mismatches
+Thrift has 6 columns, SEA has 6 columns
+
+
+ROW-BY-ROW DATA COMPARISON:
+------------------------------------------------------------------------------------------------------------------------
+Processing 2 rows...
+
+Row 0:
+------------------------------------------------------------------------------------------------------------------------
+Column                         Thrift Value                        SEA Value                           Match?
+------------------------------------------------------------------------------------------------------------------------
+TABLE_CAT                      main                                main                                ✅ YES
+TABLE_SCHEM                    adbc_testing                        adbc_testing                        ✅ YES
+TABLE_NAME                     all_column_types                    all_column_types                    ✅ YES
+COLUMN_NAME                    c_string                            c_string                            ✅ YES
+KEQ_SEQ                        1                                   1                                   ✅ YES
+PK_NAME                        all_column_types_pk                 all_column_types_pk                 ✅ YES
+
+Row 1:
+------------------------------------------------------------------------------------------------------------------------
+Column                         Thrift Value                        SEA Value                           Match?
+------------------------------------------------------------------------------------------------------------------------
+TABLE_CAT                      main                                main                                ✅ YES
+TABLE_SCHEM                    adbc_testing                        adbc_testing                        ✅ YES
+TABLE_NAME                     all_column_types                    all_column_types                    ✅ YES
+COLUMN_NAME                    c_int                               c_int                               ✅ YES
+KEQ_SEQ                        2                                   2                                   ✅ YES
+PK_NAME                        all_column_types_pk                 all_column_types_pk                 ✅ YES
+
+========================================================================================================================
+GETPRIMARYKEYS SUMMARY:
+  Total cell comparisons: 12
+  Matches: 12
+  Mismatches: 0
+  Match percentage: 100.00%
+========================================================================================================================
+
+
+████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████
+PART 6: GETCROSSREFERENCE METADATA COMPARISON
+████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████
+
+Executing GetCrossReference metadata command on both protocols...
+
+[SEA SQL]: SHOW FOREIGN KEYS IN CATALOG `main` IN SCHEMA `adbc_testing` IN TABLE `all_column_types`
+SCHEMA COMPARISON:
+------------------------------------------------------------------------------------------------------------------------
+Column Name                    Thrift          SEA             Match?
+------------------------------------------------------------------------------------------------------------------------
+PKTABLE_CAT                    Present         Present         ✅ YES
+PKTABLE_SCHEM                  Present         Present         ✅ YES
+PKTABLE_NAME                   Present         Present         ✅ YES
+PKCOLUMN_NAME                  Present         Present         ✅ YES
+FKTABLE_CAT                    Present         Present         ✅ YES
+FKTABLE_SCHEM                  Present         Present         ✅ YES
+FKTABLE_NAME                   Present         Present         ✅ YES
+FKCOLUMN_NAME                  Present         Present         ✅ YES
+KEQ_SEQ                        Present         Present         ✅ YES
+UPDATE_RULE                    Present         Present         ✅ YES
+DELETE_RULE                    Present         Present         ✅ YES
+FK_NAME                        Present         Present         ✅ YES
+PK_NAME                        Present         Present         ✅ YES
+DEFERRABILITY                  Present         Present         ✅ YES
+------------------------------------------------------------------------------------------------------------------------
+Schema Summary: 14 matches, 0 mismatches
+Thrift has 14 columns, SEA has 14 columns
+
+
+ROW-BY-ROW DATA COMPARISON:
+------------------------------------------------------------------------------------------------------------------------
+Processing 0 rows...
+
+========================================================================================================================
+GETCROSSREFERENCE SUMMARY:
+  Total cell comparisons: 0
+  Matches: 0
+  Mismatches: 0
+========================================================================================================================
+
+
+████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████
+PART 7: GETOBJECTS METADATA COMPARISON (ADBC Nested Structure)
+████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████
+
+Executing GetObjects on both protocols...
+
+Getting SEA data with protocol=rest...
+SEA Connection type: StatementExecutionConnection
+[SEA SQL]: SHOW CATALOGS LIKE 'main'
+[SEA SQL]: SHOW SCHEMAS IN `main` LIKE 'adbc.testing'
+[SEA SQL]: SHOW TABLES IN CATALOG `main` SCHEMA LIKE 'adbc.testing' LIKE 'all.column.types'
+[SEA SQL]: SHOW COLUMNS IN CATALOG `main` SCHEMA LIKE 'adbc.testing' TABLE LIKE 'all.column.types'
+Getting Thrift data with protocol=thrift...
+Thrift Connection type: DatabricksConnection
+Thrift returned 20 columns
+SEA returned 20 columns
+
+COLUMN-BY-COLUMN COMPARISON:
+------------------------------------------------------------------------------------------------------------------------
+Column 0:
+------------------------------------------------------------------------------------------------------------------------
+Field Name                               Thrift Value                   SEA Value                      Match?
+------------------------------------------------------------------------------------------------------------------------
+column_name                              c_tinyint                      c_tinyint                      ✅ YES
+ordinal_position                         1                              1                              ✅ YES
+remarks                                  TINYINT                        TINYINT                        ✅ YES
+xdbc_data_type                           -6                             -6                             ✅ YES
+xdbc_type_name                           TINYINT                        TINYINT                        ✅ YES
+xdbc_column_size                         null                           1                              ❌ NO
+xdbc_decimal_digits                      null                           0                              ❌ NO
+xdbc_num_prec_radix                      null                           10                             ❌ NO
+xdbc_nullable                            1                              1                              ✅ YES
+xdbc_column_def                                                                                        ✅ YES
+xdbc_sql_data_type                       -6                             -6                             ✅ YES
+xdbc_datetime_sub                        null                           null                           ✅ YES
+xdbc_char_octet_length                   null                           null                           ✅ YES
+xdbc_is_nullable                         YES                            YES                            ✅ YES
+xdbc_scope_catalog                       null                           null                           ✅ YES
+xdbc_scope_schema                        null                           null                           ✅ YES
+xdbc_scope_table                         null                           null                           ✅ YES
+xdbc_is_autoincrement                    False                          False                          ✅ YES
+xdbc_is_generatedcolumn                  True                           True                           ✅ YES
+
+Column 1:
+------------------------------------------------------------------------------------------------------------------------
+Field Name                               Thrift Value                   SEA Value                      Match?
+------------------------------------------------------------------------------------------------------------------------
+column_name                              c_smallint                     c_smallint                     ✅ YES
+ordinal_position                         2                              2                              ✅ YES
+remarks                                  SMALLINT                       SMALLINT                       ✅ YES
+xdbc_data_type                           5                              5                              ✅ YES
+xdbc_type_name                           SMALLINT                       SMALLINT                       ✅ YES
+xdbc_column_size                         null                           2                              ❌ NO
+xdbc_decimal_digits                      null                           0                              ❌ NO
+xdbc_num_prec_radix                      null                           10                             ❌ NO
+xdbc_nullable                            1                              1                              ✅ YES
+xdbc_column_def                                                                                        ✅ YES
+xdbc_sql_data_type                       5                              5                              ✅ YES
+xdbc_datetime_sub                        null                           null                           ✅ YES
+xdbc_char_octet_length                   null                           null                           ✅ YES
+xdbc_is_nullable                         YES                            YES                            ✅ YES
+xdbc_scope_catalog                       null                           null                           ✅ YES
+xdbc_scope_schema                        null                           null                           ✅ YES
+xdbc_scope_table                         null                           null                           ✅ YES
+xdbc_is_autoincrement                    False                          False                          ✅ YES
+xdbc_is_generatedcolumn                  True                           True                           ✅ YES
+
+Column 2:
+------------------------------------------------------------------------------------------------------------------------
+Field Name                               Thrift Value                   SEA Value                      Match?
+------------------------------------------------------------------------------------------------------------------------
+column_name                              c_int                          c_int                          ✅ YES
+ordinal_position                         3                              3                              ✅ YES
+remarks                                  INT                            INT                            ✅ YES
+xdbc_data_type                           4                              4                              ✅ YES
+xdbc_type_name                           INTEGER                        INTEGER                        ✅ YES
+xdbc_column_size                         null                           4                              ❌ NO
+xdbc_decimal_digits                      null                           0                              ❌ NO
+xdbc_num_prec_radix                      null                           10                             ❌ NO
+xdbc_nullable                            0                              0                              ✅ YES
+xdbc_column_def                                                                                        ✅ YES
+xdbc_sql_data_type                       4                              4                              ✅ YES
+xdbc_datetime_sub                        null                           null                           ✅ YES
+xdbc_char_octet_length                   null                           null                           ✅ YES
+xdbc_is_nullable                         YES                            NO                             ❌ NO
+xdbc_scope_catalog                       null                           null                           ✅ YES
+xdbc_scope_schema                        null                           null                           ✅ YES
+xdbc_scope_table                         null                           null                           ✅ YES
+xdbc_is_autoincrement                    False                          False                          ✅ YES
+xdbc_is_generatedcolumn                  True                           True                           ✅ YES
+
+Column 3:
+------------------------------------------------------------------------------------------------------------------------
+Field Name                               Thrift Value                   SEA Value                      Match?
+------------------------------------------------------------------------------------------------------------------------
+column_name                              c_bigint                       c_bigint                       ✅ YES
+ordinal_position                         4                              4                              ✅ YES
+remarks                                  BIGINT                         BIGINT                         ✅ YES
+xdbc_data_type                           -5                             -5                             ✅ YES
+xdbc_type_name                           BIGINT                         BIGINT                         ✅ YES
+xdbc_column_size                         null                           8                              ❌ NO
+xdbc_decimal_digits                      null                           0                              ❌ NO
+xdbc_num_prec_radix                      null                           10                             ❌ NO
+xdbc_nullable                            1                              1                              ✅ YES
+xdbc_column_def                                                                                        ✅ YES
+xdbc_sql_data_type                       -5                             -5                             ✅ YES
+xdbc_datetime_sub                        null                           null                           ✅ YES
+xdbc_char_octet_length                   null                           null                           ✅ YES
+xdbc_is_nullable                         YES                            YES                            ✅ YES
+xdbc_scope_catalog                       null                           null                           ✅ YES
+xdbc_scope_schema                        null                           null                           ✅ YES
+xdbc_scope_table                         null                           null                           ✅ YES
+xdbc_is_autoincrement                    False                          False                          ✅ YES
+xdbc_is_generatedcolumn                  True                           True                           ✅ YES
+
+Column 4:
+------------------------------------------------------------------------------------------------------------------------
+Field Name                               Thrift Value                   SEA Value                      Match?
+------------------------------------------------------------------------------------------------------------------------
+column_name                              c_decimal                      c_decimal                      ✅ YES
+ordinal_position                         5                              5                              ✅ YES
+remarks                                  DECIMAL(10,2)                  DECIMAL(10,2)                  ✅ YES
+xdbc_data_type                           3                              3                              ✅ YES
+xdbc_type_name                           DECIMAL                        DECIMAL                        ✅ YES
+xdbc_column_size                         10                             10                             ✅ YES
+xdbc_decimal_digits                      2                              2                              ✅ YES
+xdbc_num_prec_radix                      null                           10                             ❌ NO
+xdbc_nullable                            1                              1                              ✅ YES
+xdbc_column_def                                                                                        ✅ YES
+xdbc_sql_data_type                       3                              3                              ✅ YES
+xdbc_datetime_sub                        null                           null                           ✅ YES
+xdbc_char_octet_length                   null                           null                           ✅ YES
+xdbc_is_nullable                         YES                            YES                            ✅ YES
+xdbc_scope_catalog                       null                           null                           ✅ YES
+xdbc_scope_schema                        null                           null                           ✅ YES
+xdbc_scope_table                         null                           null                           ✅ YES
+xdbc_is_autoincrement                    False                          False                          ✅ YES
+xdbc_is_generatedcolumn                  True                           True                           ✅ YES
+
+Column 5:
+------------------------------------------------------------------------------------------------------------------------
+Field Name                               Thrift Value                   SEA Value                      Match?
+------------------------------------------------------------------------------------------------------------------------
+column_name                              c_float                        c_float                        ✅ YES
+ordinal_position                         6                              6                              ✅ YES
+remarks                                  FLOAT                          FLOAT                          ✅ YES
+xdbc_data_type                           6                              6                              ✅ YES
+xdbc_type_name                           FLOAT                          FLOAT                          ✅ YES
+xdbc_column_size                         null                           4                              ❌ NO
+xdbc_decimal_digits                      null                           7                              ❌ NO
+xdbc_num_prec_radix                      null                           10                             ❌ NO
+xdbc_nullable                            1                              1                              ✅ YES
+xdbc_column_def                                                                                        ✅ YES
+xdbc_sql_data_type                       6                              6                              ✅ YES
+xdbc_datetime_sub                        null                           null                           ✅ YES
+xdbc_char_octet_length                   null                           null                           ✅ YES
+xdbc_is_nullable                         YES                            YES                            ✅ YES
+xdbc_scope_catalog                       null                           null                           ✅ YES
+xdbc_scope_schema                        null                           null                           ✅ YES
+xdbc_scope_table                         null                           null                           ✅ YES
+xdbc_is_autoincrement                    False                          False                          ✅ YES
+xdbc_is_generatedcolumn                  True                           True                           ✅ YES
+
+Column 6:
+------------------------------------------------------------------------------------------------------------------------
+Field Name                               Thrift Value                   SEA Value                      Match?
+------------------------------------------------------------------------------------------------------------------------
+column_name                              c_double                       c_double                       ✅ YES
+ordinal_position                         7                              7                              ✅ YES
+remarks                                  DOUBLE                         DOUBLE                         ✅ YES
+xdbc_data_type                           8                              8                              ✅ YES
+xdbc_type_name                           DOUBLE                         DOUBLE                         ✅ YES
+xdbc_column_size                         null                           8                              ❌ NO
+xdbc_decimal_digits                      null                           15                             ❌ NO
+xdbc_num_prec_radix                      null                           10                             ❌ NO
+xdbc_nullable                            1                              1                              ✅ YES
+xdbc_column_def                                                                                        ✅ YES
+xdbc_sql_data_type                       8                              8                              ✅ YES
+xdbc_datetime_sub                        null                           null                           ✅ YES
+xdbc_char_octet_length                   null                           null                           ✅ YES
+xdbc_is_nullable                         YES                            YES                            ✅ YES
+xdbc_scope_catalog                       null                           null                           ✅ YES
+xdbc_scope_schema                        null                           null                           ✅ YES
+xdbc_scope_table                         null                           null                           ✅ YES
+xdbc_is_autoincrement                    False                          False                          ✅ YES
+xdbc_is_generatedcolumn                  True                           True                           ✅ YES
+
+Column 7:
+------------------------------------------------------------------------------------------------------------------------
+Field Name                               Thrift Value                   SEA Value                      Match?
+------------------------------------------------------------------------------------------------------------------------
+column_name                              c_string                       c_string                       ✅ YES
+ordinal_position                         8                              8                              ✅ YES
+remarks                                  STRING                         STRING                         ✅ YES
+xdbc_data_type                           12                             12                             ✅ YES
+xdbc_type_name                           STRING                         STRING                         ✅ YES
+xdbc_column_size                         2147483647                     2147483647                     ✅ YES
+xdbc_decimal_digits                      null                           0                              ❌ NO
+xdbc_num_prec_radix                      null                           null                           ✅ YES
+xdbc_nullable                            0                              0                              ✅ YES
+xdbc_column_def                                                                                        ✅ YES
+xdbc_sql_data_type                       12                             12                             ✅ YES
+xdbc_datetime_sub                        null                           null                           ✅ YES
+xdbc_char_octet_length                   null                           2147483647                     ❌ NO
+xdbc_is_nullable                         YES                            NO                             ❌ NO
+xdbc_scope_catalog                       null                           null                           ✅ YES
+xdbc_scope_schema                        null                           null                           ✅ YES
+xdbc_scope_table                         null                           null                           ✅ YES
+xdbc_is_autoincrement                    False                          False                          ✅ YES
+xdbc_is_generatedcolumn                  True                           True                           ✅ YES
+
+Column 8:
+------------------------------------------------------------------------------------------------------------------------
+Field Name                               Thrift Value                   SEA Value                      Match?
+------------------------------------------------------------------------------------------------------------------------
+column_name                              c_binary                       c_binary                       ✅ YES
+ordinal_position                         9                              9                              ✅ YES
+remarks                                  BINARY                         BINARY                         ✅ YES
+xdbc_data_type                           -2                             -2                             ✅ YES
+xdbc_type_name                           BINARY                         BINARY                         ✅ YES
+xdbc_column_size                         null                           0                              ❌ NO
+xdbc_decimal_digits                      null                           0                              ❌ NO
+xdbc_num_prec_radix                      null                           null                           ✅ YES
+xdbc_nullable                            1                              1                              ✅ YES
+xdbc_column_def                                                                                        ✅ YES
+xdbc_sql_data_type                       -2                             -2                             ✅ YES
+xdbc_datetime_sub                        null                           null                           ✅ YES
+xdbc_char_octet_length                   null                           null                           ✅ YES
+xdbc_is_nullable                         YES                            YES                            ✅ YES
+xdbc_scope_catalog                       null                           null                           ✅ YES
+xdbc_scope_schema                        null                           null                           ✅ YES
+xdbc_scope_table                         null                           null                           ✅ YES
+xdbc_is_autoincrement                    False                          False                          ✅ YES
+xdbc_is_generatedcolumn                  True                           True                           ✅ YES
+
+Column 9:
+------------------------------------------------------------------------------------------------------------------------
+Field Name                               Thrift Value                   SEA Value                      Match?
+------------------------------------------------------------------------------------------------------------------------
+column_name                              c_boolean                      c_boolean                      ✅ YES
+ordinal_position                         10                             10                             ✅ YES
+remarks                                  BOOLEAN                        BOOLEAN                        ✅ YES
+xdbc_data_type                           16                             16                             ✅ YES
+xdbc_type_name                           BOOLEAN                        BOOLEAN                        ✅ YES
+xdbc_column_size                         null                           1                              ❌ NO
+xdbc_decimal_digits                      null                           0                              ❌ NO
+xdbc_num_prec_radix                      null                           null                           ✅ YES
+xdbc_nullable                            1                              1                              ✅ YES
+xdbc_column_def                                                                                        ✅ YES
+xdbc_sql_data_type                       16                             16                             ✅ YES
+xdbc_datetime_sub                        null                           null                           ✅ YES
+xdbc_char_octet_length                   null                           null                           ✅ YES
+xdbc_is_nullable                         YES                            YES                            ✅ YES
+xdbc_scope_catalog                       null                           null                           ✅ YES
+xdbc_scope_schema                        null                           null                           ✅ YES
+xdbc_scope_table                         null                           null                           ✅ YES
+xdbc_is_autoincrement                    False                          False                          ✅ YES
+xdbc_is_generatedcolumn                  True                           True                           ✅ YES
+
+Column 10:
+------------------------------------------------------------------------------------------------------------------------
+Field Name                               Thrift Value                   SEA Value                      Match?
+------------------------------------------------------------------------------------------------------------------------
+column_name                              c_date                         c_date                         ✅ YES
+ordinal_position                         11                             11                             ✅ YES
+remarks                                  DATE                           DATE                           ✅ YES
+xdbc_data_type                           91                             91                             ✅ YES
+xdbc_type_name                           DATE                           DATE                           ✅ YES
+xdbc_column_size                         null                           4                              ❌ NO
+xdbc_decimal_digits                      null                           0                              ❌ NO
+xdbc_num_prec_radix                      null                           null                           ✅ YES
+xdbc_nullable                            1                              1                              ✅ YES
+xdbc_column_def                                                                                        ✅ YES
+xdbc_sql_data_type                       91                             91                             ✅ YES
+xdbc_datetime_sub                        null                           null                           ✅ YES
+xdbc_char_octet_length                   null                           null                           ✅ YES
+xdbc_is_nullable                         YES                            YES                            ✅ YES
+xdbc_scope_catalog                       null                           null                           ✅ YES
+xdbc_scope_schema                        null                           null                           ✅ YES
+xdbc_scope_table                         null                           null                           ✅ YES
+xdbc_is_autoincrement                    False                          False                          ✅ YES
+xdbc_is_generatedcolumn                  True                           True                           ✅ YES
+
+Column 11:
+------------------------------------------------------------------------------------------------------------------------
+Field Name                               Thrift Value                   SEA Value                      Match?
+------------------------------------------------------------------------------------------------------------------------
+column_name                              c_timestamp                    c_timestamp                    ✅ YES
+ordinal_position                         12                             12                             ✅ YES
+remarks                                  TIMESTAMP                      TIMESTAMP                      ✅ YES
+xdbc_data_type                           93                             93                             ✅ YES
+xdbc_type_name                           TIMESTAMP                      TIMESTAMP                      ✅ YES
+xdbc_column_size                         null                           8                              ❌ NO
+xdbc_decimal_digits                      null                           6                              ❌ NO
+xdbc_num_prec_radix                      null                           null                           ✅ YES
+xdbc_nullable                            1                              1                              ✅ YES
+xdbc_column_def                                                                                        ✅ YES
+xdbc_sql_data_type                       93                             93                             ✅ YES
+xdbc_datetime_sub                        null                           null                           ✅ YES
+xdbc_char_octet_length                   null                           null                           ✅ YES
+xdbc_is_nullable                         YES                            YES                            ✅ YES
+xdbc_scope_catalog                       null                           null                           ✅ YES
+xdbc_scope_schema                        null                           null                           ✅ YES
+xdbc_scope_table                         null                           null                           ✅ YES
+xdbc_is_autoincrement                    False                          False                          ✅ YES
+xdbc_is_generatedcolumn                  True                           True                           ✅ YES
+
+Column 12:
+------------------------------------------------------------------------------------------------------------------------
+Field Name                               Thrift Value                   SEA Value                      Match?
+------------------------------------------------------------------------------------------------------------------------
+column_name                              c_timestamp_ntz                c_timestamp_ntz                ✅ YES
+ordinal_position                         13                             13                             ✅ YES
+remarks                                  TIMESTAMP_NTZ                  TIMESTAMP_NTZ                  ✅ YES
+xdbc_data_type                           93                             93                             ✅ YES
+xdbc_type_name                           TIMESTAMP                      TIMESTAMP                      ✅ YES
+xdbc_column_size                         null                           8                              ❌ NO
+xdbc_decimal_digits                      null                           6                              ❌ NO
+xdbc_num_prec_radix                      null                           null                           ✅ YES
+xdbc_nullable                            1                              1                              ✅ YES
+xdbc_column_def                                                                                        ✅ YES
+xdbc_sql_data_type                       93                             93                             ✅ YES
+xdbc_datetime_sub                        null                           null                           ✅ YES
+xdbc_char_octet_length                   null                           null                           ✅ YES
+xdbc_is_nullable                         YES                            YES                            ✅ YES
+xdbc_scope_catalog                       null                           null                           ✅ YES
+xdbc_scope_schema                        null                           null                           ✅ YES
+xdbc_scope_table                         null                           null                           ✅ YES
+xdbc_is_autoincrement                    False                          False                          ✅ YES
+xdbc_is_generatedcolumn                  True                           True                           ✅ YES
+
+Column 13:
+------------------------------------------------------------------------------------------------------------------------
+Field Name                               Thrift Value                   SEA Value                      Match?
+------------------------------------------------------------------------------------------------------------------------
+column_name                              c_interval_ym                  c_interval_ym                  ✅ YES
+ordinal_position                         14                             14                             ✅ YES
+remarks                                  INTERVAL YEAR TO MONTH         INTERVAL YEAR TO MONTH         ✅ YES
+xdbc_data_type                           1111                           1111                           ✅ YES
+xdbc_type_name                           INTERVAL                       INTERVAL                       ✅ YES
+xdbc_column_size                         null                           4                              ❌ NO
+xdbc_decimal_digits                      null                           0                              ❌ NO
+xdbc_num_prec_radix                      null                           null                           ✅ YES
+xdbc_nullable                            1                              1                              ✅ YES
+xdbc_column_def                                                                                        ✅ YES
+xdbc_sql_data_type                       1111                           1111                           ✅ YES
+xdbc_datetime_sub                        null                           null                           ✅ YES
+xdbc_char_octet_length                   null                           null                           ✅ YES
+xdbc_is_nullable                         YES                            YES                            ✅ YES
+xdbc_scope_catalog                       null                           null                           ✅ YES
+xdbc_scope_schema                        null                           null                           ✅ YES
+xdbc_scope_table                         null                           null                           ✅ YES
+xdbc_is_autoincrement                    False                          False                          ✅ YES
+xdbc_is_generatedcolumn                  True                           True                           ✅ YES
+
+Column 14:
+------------------------------------------------------------------------------------------------------------------------
+Field Name                               Thrift Value                   SEA Value                      Match?
+------------------------------------------------------------------------------------------------------------------------
+column_name                              c_interval_ds                  c_interval_ds                  ✅ YES
+ordinal_position                         15                             15                             ✅ YES
+remarks                                  INTERVAL DAY TO SECOND         INTERVAL DAY TO SECOND         ✅ YES
+xdbc_data_type                           1111                           1111                           ✅ YES
+xdbc_type_name                           INTERVAL                       INTERVAL                       ✅ YES
+xdbc_column_size                         null                           8                              ❌ NO
+xdbc_decimal_digits                      null                           0                              ❌ NO
+xdbc_num_prec_radix                      null                           null                           ✅ YES
+xdbc_nullable                            1                              1                              ✅ YES
+xdbc_column_def                                                                                        ✅ YES
+xdbc_sql_data_type                       1111                           1111                           ✅ YES
+xdbc_datetime_sub                        null                           null                           ✅ YES
+xdbc_char_octet_length                   null                           null                           ✅ YES
+xdbc_is_nullable                         YES                            YES                            ✅ YES
+xdbc_scope_catalog                       null                           null                           ✅ YES
+xdbc_scope_schema                        null                           null                           ✅ YES
+xdbc_scope_table                         null                           null                           ✅ YES
+xdbc_is_autoincrement                    False                          False                          ✅ YES
+xdbc_is_generatedcolumn                  True                           True                           ✅ YES
+
+Column 15:
+------------------------------------------------------------------------------------------------------------------------
+Field Name                               Thrift Value                   SEA Value                      Match?
+------------------------------------------------------------------------------------------------------------------------
+column_name                              c_array                        c_array                        ✅ YES
+ordinal_position                         16                             16                             ✅ YES
+remarks                                  ARRAY<INT>                     ARRAY<INT>                     ✅ YES
+xdbc_data_type                           2003                           2003                           ✅ YES
+xdbc_type_name                           ARRAY                          ARRAY                          ✅ YES
+xdbc_column_size                         null                           0                              ❌ NO
+xdbc_decimal_digits                      null                           0                              ❌ NO
+xdbc_num_prec_radix                      null                           null                           ✅ YES
+xdbc_nullable                            1                              1                              ✅ YES
+xdbc_column_def                                                                                        ✅ YES
+xdbc_sql_data_type                       2003                           2003                           ✅ YES
+xdbc_datetime_sub                        null                           null                           ✅ YES
+xdbc_char_octet_length                   null                           null                           ✅ YES
+xdbc_is_nullable                         YES                            YES                            ✅ YES
+xdbc_scope_catalog                       null                           null                           ✅ YES
+xdbc_scope_schema                        null                           null                           ✅ YES
+xdbc_scope_table                         null                           null                           ✅ YES
+xdbc_is_autoincrement                    False                          False                          ✅ YES
+xdbc_is_generatedcolumn                  True                           True                           ✅ YES
+
+Column 16:
+------------------------------------------------------------------------------------------------------------------------
+Field Name                               Thrift Value                   SEA Value                      Match?
+------------------------------------------------------------------------------------------------------------------------
+column_name                              c_map                          c_map                          ✅ YES
+ordinal_position                         17                             17                             ✅ YES
+remarks                                  MAP<STRING, INT>               MAP<STRING, INT>               ✅ YES
+xdbc_data_type                           2000                           2000                           ✅ YES
+xdbc_type_name                           MAP                            MAP                            ✅ YES
+xdbc_column_size                         null                           0                              ❌ NO
+xdbc_decimal_digits                      null                           0                              ❌ NO
+xdbc_num_prec_radix                      null                           null                           ✅ YES
+xdbc_nullable                            1                              1                              ✅ YES
+xdbc_column_def                                                                                        ✅ YES
+xdbc_sql_data_type                       2000                           2000                           ✅ YES
+xdbc_datetime_sub                        null                           null                           ✅ YES
+xdbc_char_octet_length                   null                           null                           ✅ YES
+xdbc_is_nullable                         YES                            YES                            ✅ YES
+xdbc_scope_catalog                       null                           null                           ✅ YES
+xdbc_scope_schema                        null                           null                           ✅ YES
+xdbc_scope_table                         null                           null                           ✅ YES
+xdbc_is_autoincrement                    False                          False                          ✅ YES
+xdbc_is_generatedcolumn                  True                           True                           ✅ YES
+
+Column 17:
+------------------------------------------------------------------------------------------------------------------------
+Field Name                               Thrift Value                   SEA Value                      Match?
+------------------------------------------------------------------------------------------------------------------------
+column_name                              c_struct                       c_struct                       ✅ YES
+ordinal_position                         18                             18                             ✅ YES
+remarks                                  STRUCT<f1: STRING, f2: IN...   STRUCT<f1: STRING, f2: IN...   ✅ YES
+xdbc_data_type                           2002                           2002                           ✅ YES
+xdbc_type_name                           STRUCT                         STRUCT                         ✅ YES
+xdbc_column_size                         null                           0                              ❌ NO
+xdbc_decimal_digits                      null                           0                              ❌ NO
+xdbc_num_prec_radix                      null                           null                           ✅ YES
+xdbc_nullable                            1                              1                              ✅ YES
+xdbc_column_def                                                                                        ✅ YES
+xdbc_sql_data_type                       2002                           2002                           ✅ YES
+xdbc_datetime_sub                        null                           null                           ✅ YES
+xdbc_char_octet_length                   null                           null                           ✅ YES
+xdbc_is_nullable                         YES                            YES                            ✅ YES
+xdbc_scope_catalog                       null                           null                           ✅ YES
+xdbc_scope_schema                        null                           null                           ✅ YES
+xdbc_scope_table                         null                           null                           ✅ YES
+xdbc_is_autoincrement                    False                          False                          ✅ YES
+xdbc_is_generatedcolumn                  True                           True                           ✅ YES
+
+Column 18:
+------------------------------------------------------------------------------------------------------------------------
+Field Name                               Thrift Value                   SEA Value                      Match?
+------------------------------------------------------------------------------------------------------------------------
+column_name                              c_variant                      c_variant                      ✅ YES
+ordinal_position                         19                             19                             ✅ YES
+remarks                                  VARIANT                        VARIANT                        ✅ YES
+xdbc_data_type                           1111                           1111                           ✅ YES
+xdbc_type_name                           VARIANT                        VARIANT                        ✅ YES
+xdbc_column_size                         null                           0                              ❌ NO
+xdbc_decimal_digits                      null                           0                              ❌ NO
+xdbc_num_prec_radix                      null                           null                           ✅ YES
+xdbc_nullable                            1                              1                              ✅ YES
+xdbc_column_def                                                                                        ✅ YES
+xdbc_sql_data_type                       1111                           1111                           ✅ YES
+xdbc_datetime_sub                        null                           null                           ✅ YES
+xdbc_char_octet_length                   null                           null                           ✅ YES
+xdbc_is_nullable                         YES                            YES                            ✅ YES
+xdbc_scope_catalog                       null                           null                           ✅ YES
+xdbc_scope_schema                        null                           null                           ✅ YES
+xdbc_scope_table                         null                           null                           ✅ YES
+xdbc_is_autoincrement                    False                          False                          ✅ YES
+xdbc_is_generatedcolumn                  True                           True                           ✅ YES
+
+Column 19:
+------------------------------------------------------------------------------------------------------------------------
+Field Name                               Thrift Value                   SEA Value                      Match?
+------------------------------------------------------------------------------------------------------------------------
+column_name                              c_void                         c_void                         ✅ YES
+ordinal_position                         20                             20                             ✅ YES
+remarks                                  VOID                           VOID                           ✅ YES
+xdbc_data_type                           0                              0                              ✅ YES
+xdbc_type_name                           VOID                           VOID                           ✅ YES
+xdbc_column_size                         null                           1                              ❌ NO
+xdbc_decimal_digits                      null                           0                              ❌ NO
+xdbc_num_prec_radix                      null                           null                           ✅ YES
+xdbc_nullable                            1                              1                              ✅ YES
+xdbc_column_def                                                                                        ✅ YES
+xdbc_sql_data_type                       0                              0                              ✅ YES
+xdbc_datetime_sub                        null                           null                           ✅ YES
+xdbc_char_octet_length                   null                           null                           ✅ YES
+xdbc_is_nullable                         YES                            YES                            ✅ YES
+xdbc_scope_catalog                       null                           null                           ✅ YES
+xdbc_scope_schema                        null                           null                           ✅ YES
+xdbc_scope_table                         null                           null                           ✅ YES
+xdbc_is_autoincrement                    False                          False                          ✅ YES
+xdbc_is_generatedcolumn                  True                           True                           ✅ YES
+
+========================================================================================================================
+GETOBJECTS SUMMARY:
+  Total field comparisons: 380
+  Matches: 333
+  Mismatches: 47
+  Match percentage: 87.63%
+========================================================================================================================
+
+KEY GAPS IDENTIFIED:
+  ❌ SEA GetObjects returns xdbc_data_type = null (should be XDBC type code like -6, 4, 12)
+  ❌ SEA statement-based missing 18 of 24 JDBC columns
+  📋 Reference: Thrift implementation returns complete XDBC metadata from HiveServer2
+  📋 Action: Review JDBC driver implementation for DatabricksTypeMapper integration
+
+========================================================================================================================
+✅ Output saved to: /Users/madhavendra.rathore/Desktop/adbc-databricks/databricks/csharp/examples/metadata_comparison_output.txt
+========================================================================================================================

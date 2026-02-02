@@ -72,7 +72,7 @@ namespace Apache.Arrow.Adbc.Drivers.Apache.Hive2.Metadata
         /// Transfer size of the data in bytes (BUFFER_LENGTH in statement-based metadata)
         /// Nullable for most types, only applicable for certain binary types
         /// </summary>
-        public byte? BufferLength { get; set; }
+        public int? BufferLength { get; set; }
 
         /// <summary>
         /// Number of fractional digits (DECIMAL_DIGITS in statement-based metadata)
