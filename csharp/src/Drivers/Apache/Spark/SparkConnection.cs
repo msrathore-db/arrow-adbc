@@ -78,19 +78,50 @@ namespace Apache.Arrow.Adbc.Drivers.Apache.Spark
             // Keep the original type name
             tableInfo?.TypeName.Add(typeName);
 
-            // Use ColumnTypeMapper to extract type information
-            // This eliminates code duplication with the shared metadata abstractions
+            // Use ColumnTypeMapper for base type name extraction
             var mapper = new ColumnTypeMapper();
-
-            // Extract base type name and precision/scale
             string? baseTypeName = mapper.GetBaseTypeName(typeName);
-            int? precision = mapper.GetColumnSize(typeName);
-            int? scale = mapper.GetDecimalDigits(typeName);
 
-            // Populate TableInfo with synthesized values
-            tableInfo?.BaseTypeName.Add(baseTypeName);
-            tableInfo?.Precision.Add(precision);
-            tableInfo?.Scale.Add(scale.HasValue ? (short)scale.Value : null);
+            // Preserve original behavior: only populate precision/scale for specific types
+            switch (colType)
+            {
+                case (short)ColumnTypeId.DECIMAL:
+                case (short)ColumnTypeId.NUMERIC:
+                    {
+                        // For DECIMAL, use ColumnTypeMapper to extract precision/scale
+                        int? precision = mapper.GetColumnSize(typeName);
+                        int? scale = mapper.GetDecimalDigits(typeName);
+                        tableInfo?.Precision.Add(precision);
+                        tableInfo?.Scale.Add(scale.HasValue ? (short)scale.Value : null);
+                        tableInfo?.BaseTypeName.Add(baseTypeName);
+                        break;
+                    }
+
+                case (short)ColumnTypeId.CHAR:
+                case (short)ColumnTypeId.NCHAR:
+                case (short)ColumnTypeId.VARCHAR:
+                case (short)ColumnTypeId.LONGVARCHAR:
+                case (short)ColumnTypeId.LONGNVARCHAR:
+                case (short)ColumnTypeId.NVARCHAR:
+                    {
+                        // For character types, use ColumnTypeMapper to extract column size
+                        int? columnSizeValue = mapper.GetColumnSize(typeName);
+                        tableInfo?.Precision.Add(columnSizeValue);
+                        tableInfo?.Scale.Add(null);
+                        tableInfo?.BaseTypeName.Add(baseTypeName);
+                        break;
+                    }
+
+                default:
+                    {
+                        // For all other types (INTEGER, BIGINT, FLOAT, etc.), use null for precision/scale
+                        // This preserves the original Thrift behavior
+                        tableInfo?.Precision.Add(null);
+                        tableInfo?.Scale.Add(null);
+                        tableInfo?.BaseTypeName.Add(baseTypeName);
+                        break;
+                    }
+            }
         }
 
         protected override string InfoDriverName => DriverName;

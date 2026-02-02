@@ -1,0 +1,1323 @@
+========================================================================================================================
+THRIFT METADATA CAPTURE - Verifying Refactored Implementation
+Timestamp: 2026-02-03 02:37:59
+========================================================================================================================
+
+████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████
+PART 1: GETOBJECTS METADATA (Hierarchical ADBC Structure)
+████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████
+
+Executing GetObjects with depth=All, catalogPattern='main', dbSchemaPattern='default'...
+
+Batch 1:
+------------------------------------------------------------------------------------------------------------------------
+Schema:
+  - catalog_name: Apache.Arrow.Types.StringType
+  - catalog_db_schemas: Apache.Arrow.Types.ListType
+
+Catalog: main
+  Schema: default
+    Table: table_table_b05e898a_0da0_4352_9e42_40274a52d35c (Type: TABLE)
+      Columns (1 total):
+        Column 0:
+          column_name: col1
+          ordinal_position: 1
+          remarks: INT
+          xdbc_data_type: 4
+          xdbc_type_name: INTEGER
+          xdbc_column_size: 4
+          xdbc_decimal_digits: 0
+          xdbc_num_prec_radix: null
+          xdbc_nullable: 1
+          xdbc_column_def:
+          xdbc_sql_data_type: 4
+          xdbc_datetime_sub: null
+          xdbc_char_octet_length: null
+          xdbc_is_nullable: YES
+          xdbc_scope_catalog: null
+          xdbc_scope_schema: null
+          xdbc_scope_table: null
+          xdbc_is_autoincrement: False
+          xdbc_is_generatedcolumn: True
+    Table: test_repro_tblproperties (Type: TABLE)
+      Columns (2 total):
+        Column 0:
+          column_name: test
+          ordinal_position: 1
+          remarks: BIGINT
+          xdbc_data_type: -5
+          xdbc_type_name: BIGINT
+          xdbc_column_size: 8
+          xdbc_decimal_digits: 0
+          xdbc_num_prec_radix: null
+          xdbc_nullable: 1
+          xdbc_column_def:
+          xdbc_sql_data_type: -5
+          xdbc_datetime_sub: null
+          xdbc_char_octet_length: null
+          xdbc_is_nullable: YES
+          xdbc_scope_catalog: null
+          xdbc_scope_schema: null
+          xdbc_scope_table: null
+          xdbc_is_autoincrement: False
+          xdbc_is_generatedcolumn: True
+        Column 1:
+          column_name: test2
+          ordinal_position: 2
+          remarks: BIGINT
+          xdbc_data_type: -5
+          xdbc_type_name: BIGINT
+          xdbc_column_size: 8
+          xdbc_decimal_digits: 0
+          xdbc_num_prec_radix: null
+          xdbc_nullable: 1
+          xdbc_column_def:
+          xdbc_sql_data_type: -5
+          xdbc_datetime_sub: null
+          xdbc_char_octet_length: null
+          xdbc_is_nullable: YES
+          xdbc_scope_catalog: null
+          xdbc_scope_schema: null
+          xdbc_scope_table: null
+          xdbc_is_autoincrement: False
+          xdbc_is_generatedcolumn: True
+    Table: test_repro_tblproperties_03c32053 (Type: TABLE)
+      Columns (2 total):
+        Column 0:
+          column_name: test
+          ordinal_position: 1
+          remarks: BIGINT
+          xdbc_data_type: -5
+          xdbc_type_name: BIGINT
+          xdbc_column_size: 8
+          xdbc_decimal_digits: 0
+          xdbc_num_prec_radix: null
+          xdbc_nullable: 1
+          xdbc_column_def:
+          xdbc_sql_data_type: -5
+          xdbc_datetime_sub: null
+          xdbc_char_octet_length: null
+          xdbc_is_nullable: YES
+          xdbc_scope_catalog: null
+          xdbc_scope_schema: null
+          xdbc_scope_table: null
+          xdbc_is_autoincrement: False
+          xdbc_is_generatedcolumn: True
+        Column 1:
+          column_name: test2
+          ordinal_position: 2
+          remarks: BIGINT
+          xdbc_data_type: -5
+          xdbc_type_name: BIGINT
+          xdbc_column_size: 8
+          xdbc_decimal_digits: 0
+          xdbc_num_prec_radix: null
+          xdbc_nullable: 1
+          xdbc_column_def:
+          xdbc_sql_data_type: -5
+          xdbc_datetime_sub: null
+          xdbc_char_octet_length: null
+          xdbc_is_nullable: YES
+          xdbc_scope_catalog: null
+          xdbc_scope_schema: null
+          xdbc_scope_table: null
+          xdbc_is_autoincrement: False
+          xdbc_is_generatedcolumn: True
+    Table: test_repro_tblproperties_138e0848 (Type: TABLE)
+      Columns (2 total):
+        Column 0:
+          column_name: test
+          ordinal_position: 1
+          remarks: BIGINT
+          xdbc_data_type: -5
+          xdbc_type_name: BIGINT
+          xdbc_column_size: 8
+          xdbc_decimal_digits: 0
+          xdbc_num_prec_radix: null
+          xdbc_nullable: 1
+          xdbc_column_def:
+          xdbc_sql_data_type: -5
+          xdbc_datetime_sub: null
+          xdbc_char_octet_length: null
+          xdbc_is_nullable: YES
+          xdbc_scope_catalog: null
+          xdbc_scope_schema: null
+          xdbc_scope_table: null
+          xdbc_is_autoincrement: False
+          xdbc_is_generatedcolumn: True
+        Column 1:
+          column_name: test2
+          ordinal_position: 2
+          remarks: BIGINT
+          xdbc_data_type: -5
+          xdbc_type_name: BIGINT
+          xdbc_column_size: 8
+          xdbc_decimal_digits: 0
+          xdbc_num_prec_radix: null
+          xdbc_nullable: 1
+          xdbc_column_def:
+          xdbc_sql_data_type: -5
+          xdbc_datetime_sub: null
+          xdbc_char_octet_length: null
+          xdbc_is_nullable: YES
+          xdbc_scope_catalog: null
+          xdbc_scope_schema: null
+          xdbc_scope_table: null
+          xdbc_is_autoincrement: False
+          xdbc_is_generatedcolumn: True
+    Table: test_repro_tblproperties_44add94f (Type: TABLE)
+      Columns (2 total):
+        Column 0:
+          column_name: test
+          ordinal_position: 1
+          remarks: BIGINT
+          xdbc_data_type: -5
+          xdbc_type_name: BIGINT
+          xdbc_column_size: 8
+          xdbc_decimal_digits: 0
+          xdbc_num_prec_radix: null
+          xdbc_nullable: 1
+          xdbc_column_def:
+          xdbc_sql_data_type: -5
+          xdbc_datetime_sub: null
+          xdbc_char_octet_length: null
+          xdbc_is_nullable: YES
+          xdbc_scope_catalog: null
+          xdbc_scope_schema: null
+          xdbc_scope_table: null
+          xdbc_is_autoincrement: False
+          xdbc_is_generatedcolumn: True
+        Column 1:
+          column_name: test2
+          ordinal_position: 2
+          remarks: BIGINT
+          xdbc_data_type: -5
+          xdbc_type_name: BIGINT
+          xdbc_column_size: 8
+          xdbc_decimal_digits: 0
+          xdbc_num_prec_radix: null
+          xdbc_nullable: 1
+          xdbc_column_def:
+          xdbc_sql_data_type: -5
+          xdbc_datetime_sub: null
+          xdbc_char_octet_length: null
+          xdbc_is_nullable: YES
+          xdbc_scope_catalog: null
+          xdbc_scope_schema: null
+          xdbc_scope_table: null
+          xdbc_is_autoincrement: False
+          xdbc_is_generatedcolumn: True
+    Table: test_repro_tblproperties_45a49302 (Type: TABLE)
+      Columns (2 total):
+        Column 0:
+          column_name: test
+          ordinal_position: 1
+          remarks: BIGINT
+          xdbc_data_type: -5
+          xdbc_type_name: BIGINT
+          xdbc_column_size: 8
+          xdbc_decimal_digits: 0
+          xdbc_num_prec_radix: null
+          xdbc_nullable: 1
+          xdbc_column_def:
+          xdbc_sql_data_type: -5
+          xdbc_datetime_sub: null
+          xdbc_char_octet_length: null
+          xdbc_is_nullable: YES
+          xdbc_scope_catalog: null
+          xdbc_scope_schema: null
+          xdbc_scope_table: null
+          xdbc_is_autoincrement: False
+          xdbc_is_generatedcolumn: True
+        Column 1:
+          column_name: test2
+          ordinal_position: 2
+          remarks: BIGINT
+          xdbc_data_type: -5
+          xdbc_type_name: BIGINT
+          xdbc_column_size: 8
+          xdbc_decimal_digits: 0
+          xdbc_num_prec_radix: null
+          xdbc_nullable: 1
+          xdbc_column_def:
+          xdbc_sql_data_type: -5
+          xdbc_datetime_sub: null
+          xdbc_char_octet_length: null
+          xdbc_is_nullable: YES
+          xdbc_scope_catalog: null
+          xdbc_scope_schema: null
+          xdbc_scope_table: null
+          xdbc_is_autoincrement: False
+          xdbc_is_generatedcolumn: True
+    Table: test_repro_tblproperties_532e23e5 (Type: TABLE)
+      Columns (2 total):
+        Column 0:
+          column_name: test
+          ordinal_position: 1
+          remarks: BIGINT
+          xdbc_data_type: -5
+          xdbc_type_name: BIGINT
+          xdbc_column_size: 8
+          xdbc_decimal_digits: 0
+          xdbc_num_prec_radix: null
+          xdbc_nullable: 1
+          xdbc_column_def:
+          xdbc_sql_data_type: -5
+          xdbc_datetime_sub: null
+          xdbc_char_octet_length: null
+          xdbc_is_nullable: YES
+          xdbc_scope_catalog: null
+          xdbc_scope_schema: null
+          xdbc_scope_table: null
+          xdbc_is_autoincrement: False
+          xdbc_is_generatedcolumn: True
+        Column 1:
+          column_name: test2
+          ordinal_position: 2
+          remarks: BIGINT
+          xdbc_data_type: -5
+          xdbc_type_name: BIGINT
+          xdbc_column_size: 8
+          xdbc_decimal_digits: 0
+          xdbc_num_prec_radix: null
+          xdbc_nullable: 1
+          xdbc_column_def:
+          xdbc_sql_data_type: -5
+          xdbc_datetime_sub: null
+          xdbc_char_octet_length: null
+          xdbc_is_nullable: YES
+          xdbc_scope_catalog: null
+          xdbc_scope_schema: null
+          xdbc_scope_table: null
+          xdbc_is_autoincrement: False
+          xdbc_is_generatedcolumn: True
+    Table: test_repro_tblproperties_6f314d61 (Type: TABLE)
+      Columns (2 total):
+        Column 0:
+          column_name: test
+          ordinal_position: 1
+          remarks: BIGINT
+          xdbc_data_type: -5
+          xdbc_type_name: BIGINT
+          xdbc_column_size: 8
+          xdbc_decimal_digits: 0
+          xdbc_num_prec_radix: null
+          xdbc_nullable: 1
+          xdbc_column_def:
+          xdbc_sql_data_type: -5
+          xdbc_datetime_sub: null
+          xdbc_char_octet_length: null
+          xdbc_is_nullable: YES
+          xdbc_scope_catalog: null
+          xdbc_scope_schema: null
+          xdbc_scope_table: null
+          xdbc_is_autoincrement: False
+          xdbc_is_generatedcolumn: True
+        Column 1:
+          column_name: test2
+          ordinal_position: 2
+          remarks: BIGINT
+          xdbc_data_type: -5
+          xdbc_type_name: BIGINT
+          xdbc_column_size: 8
+          xdbc_decimal_digits: 0
+          xdbc_num_prec_radix: null
+          xdbc_nullable: 1
+          xdbc_column_def:
+          xdbc_sql_data_type: -5
+          xdbc_datetime_sub: null
+          xdbc_char_octet_length: null
+          xdbc_is_nullable: YES
+          xdbc_scope_catalog: null
+          xdbc_scope_schema: null
+          xdbc_scope_table: null
+          xdbc_is_autoincrement: False
+          xdbc_is_generatedcolumn: True
+    Table: test_repro_tblproperties_743f2fb1 (Type: TABLE)
+      Columns (2 total):
+        Column 0:
+          column_name: test
+          ordinal_position: 1
+          remarks: BIGINT
+          xdbc_data_type: -5
+          xdbc_type_name: BIGINT
+          xdbc_column_size: 8
+          xdbc_decimal_digits: 0
+          xdbc_num_prec_radix: null
+          xdbc_nullable: 1
+          xdbc_column_def:
+          xdbc_sql_data_type: -5
+          xdbc_datetime_sub: null
+          xdbc_char_octet_length: null
+          xdbc_is_nullable: YES
+          xdbc_scope_catalog: null
+          xdbc_scope_schema: null
+          xdbc_scope_table: null
+          xdbc_is_autoincrement: False
+          xdbc_is_generatedcolumn: True
+        Column 1:
+          column_name: test2
+          ordinal_position: 2
+          remarks: BIGINT
+          xdbc_data_type: -5
+          xdbc_type_name: BIGINT
+          xdbc_column_size: 8
+          xdbc_decimal_digits: 0
+          xdbc_num_prec_radix: null
+          xdbc_nullable: 1
+          xdbc_column_def:
+          xdbc_sql_data_type: -5
+          xdbc_datetime_sub: null
+          xdbc_char_octet_length: null
+          xdbc_is_nullable: YES
+          xdbc_scope_catalog: null
+          xdbc_scope_schema: null
+          xdbc_scope_table: null
+          xdbc_is_autoincrement: False
+          xdbc_is_generatedcolumn: True
+    Table: test_repro_tblproperties_773f7009 (Type: TABLE)
+      Columns (2 total):
+        Column 0:
+          column_name: test
+          ordinal_position: 1
+          remarks: BIGINT
+          xdbc_data_type: -5
+          xdbc_type_name: BIGINT
+          xdbc_column_size: 8
+          xdbc_decimal_digits: 0
+          xdbc_num_prec_radix: null
+          xdbc_nullable: 1
+          xdbc_column_def:
+          xdbc_sql_data_type: -5
+          xdbc_datetime_sub: null
+          xdbc_char_octet_length: null
+          xdbc_is_nullable: YES
+          xdbc_scope_catalog: null
+          xdbc_scope_schema: null
+          xdbc_scope_table: null
+          xdbc_is_autoincrement: False
+          xdbc_is_generatedcolumn: True
+        Column 1:
+          column_name: test2
+          ordinal_position: 2
+          remarks: BIGINT
+          xdbc_data_type: -5
+          xdbc_type_name: BIGINT
+          xdbc_column_size: 8
+          xdbc_decimal_digits: 0
+          xdbc_num_prec_radix: null
+          xdbc_nullable: 1
+          xdbc_column_def:
+          xdbc_sql_data_type: -5
+          xdbc_datetime_sub: null
+          xdbc_char_octet_length: null
+          xdbc_is_nullable: YES
+          xdbc_scope_catalog: null
+          xdbc_scope_schema: null
+          xdbc_scope_table: null
+          xdbc_is_autoincrement: False
+          xdbc_is_generatedcolumn: True
+    Table: test_repro_tblproperties_810b3be4 (Type: TABLE)
+      Columns (2 total):
+        Column 0:
+          column_name: test
+          ordinal_position: 1
+          remarks: BIGINT
+          xdbc_data_type: -5
+          xdbc_type_name: BIGINT
+          xdbc_column_size: 8
+          xdbc_decimal_digits: 0
+          xdbc_num_prec_radix: null
+          xdbc_nullable: 1
+          xdbc_column_def:
+          xdbc_sql_data_type: -5
+          xdbc_datetime_sub: null
+          xdbc_char_octet_length: null
+          xdbc_is_nullable: YES
+          xdbc_scope_catalog: null
+          xdbc_scope_schema: null
+          xdbc_scope_table: null
+          xdbc_is_autoincrement: False
+          xdbc_is_generatedcolumn: True
+        Column 1:
+          column_name: test2
+          ordinal_position: 2
+          remarks: BIGINT
+          xdbc_data_type: -5
+          xdbc_type_name: BIGINT
+          xdbc_column_size: 8
+          xdbc_decimal_digits: 0
+          xdbc_num_prec_radix: null
+          xdbc_nullable: 1
+          xdbc_column_def:
+          xdbc_sql_data_type: -5
+          xdbc_datetime_sub: null
+          xdbc_char_octet_length: null
+          xdbc_is_nullable: YES
+          xdbc_scope_catalog: null
+          xdbc_scope_schema: null
+          xdbc_scope_table: null
+          xdbc_is_autoincrement: False
+          xdbc_is_generatedcolumn: True
+    Table: test_repro_tblproperties_86d2e526 (Type: TABLE)
+      Columns (2 total):
+        Column 0:
+          column_name: test
+          ordinal_position: 1
+          remarks: BIGINT
+          xdbc_data_type: -5
+          xdbc_type_name: BIGINT
+          xdbc_column_size: 8
+          xdbc_decimal_digits: 0
+          xdbc_num_prec_radix: null
+          xdbc_nullable: 1
+          xdbc_column_def:
+          xdbc_sql_data_type: -5
+          xdbc_datetime_sub: null
+          xdbc_char_octet_length: null
+          xdbc_is_nullable: YES
+          xdbc_scope_catalog: null
+          xdbc_scope_schema: null
+          xdbc_scope_table: null
+          xdbc_is_autoincrement: False
+          xdbc_is_generatedcolumn: True
+        Column 1:
+          column_name: test2
+          ordinal_position: 2
+          remarks: BIGINT
+          xdbc_data_type: -5
+          xdbc_type_name: BIGINT
+          xdbc_column_size: 8
+          xdbc_decimal_digits: 0
+          xdbc_num_prec_radix: null
+          xdbc_nullable: 1
+          xdbc_column_def:
+          xdbc_sql_data_type: -5
+          xdbc_datetime_sub: null
+          xdbc_char_octet_length: null
+          xdbc_is_nullable: YES
+          xdbc_scope_catalog: null
+          xdbc_scope_schema: null
+          xdbc_scope_table: null
+          xdbc_is_autoincrement: False
+          xdbc_is_generatedcolumn: True
+    Table: test_repro_tblproperties_aaba6990 (Type: TABLE)
+      Columns (2 total):
+        Column 0:
+          column_name: test
+          ordinal_position: 1
+          remarks: BIGINT
+          xdbc_data_type: -5
+          xdbc_type_name: BIGINT
+          xdbc_column_size: 8
+          xdbc_decimal_digits: 0
+          xdbc_num_prec_radix: null
+          xdbc_nullable: 1
+          xdbc_column_def:
+          xdbc_sql_data_type: -5
+          xdbc_datetime_sub: null
+          xdbc_char_octet_length: null
+          xdbc_is_nullable: YES
+          xdbc_scope_catalog: null
+          xdbc_scope_schema: null
+          xdbc_scope_table: null
+          xdbc_is_autoincrement: False
+          xdbc_is_generatedcolumn: True
+        Column 1:
+          column_name: test2
+          ordinal_position: 2
+          remarks: BIGINT
+          xdbc_data_type: -5
+          xdbc_type_name: BIGINT
+          xdbc_column_size: 8
+          xdbc_decimal_digits: 0
+          xdbc_num_prec_radix: null
+          xdbc_nullable: 1
+          xdbc_column_def:
+          xdbc_sql_data_type: -5
+          xdbc_datetime_sub: null
+          xdbc_char_octet_length: null
+          xdbc_is_nullable: YES
+          xdbc_scope_catalog: null
+          xdbc_scope_schema: null
+          xdbc_scope_table: null
+          xdbc_is_autoincrement: False
+          xdbc_is_generatedcolumn: True
+    Table: test_repro_tblproperties_ab00c7a0 (Type: TABLE)
+      Columns (2 total):
+        Column 0:
+          column_name: test
+          ordinal_position: 1
+          remarks: BIGINT
+          xdbc_data_type: -5
+          xdbc_type_name: BIGINT
+          xdbc_column_size: 8
+          xdbc_decimal_digits: 0
+          xdbc_num_prec_radix: null
+          xdbc_nullable: 1
+          xdbc_column_def:
+          xdbc_sql_data_type: -5
+          xdbc_datetime_sub: null
+          xdbc_char_octet_length: null
+          xdbc_is_nullable: YES
+          xdbc_scope_catalog: null
+          xdbc_scope_schema: null
+          xdbc_scope_table: null
+          xdbc_is_autoincrement: False
+          xdbc_is_generatedcolumn: True
+        Column 1:
+          column_name: test2
+          ordinal_position: 2
+          remarks: BIGINT
+          xdbc_data_type: -5
+          xdbc_type_name: BIGINT
+          xdbc_column_size: 8
+          xdbc_decimal_digits: 0
+          xdbc_num_prec_radix: null
+          xdbc_nullable: 1
+          xdbc_column_def:
+          xdbc_sql_data_type: -5
+          xdbc_datetime_sub: null
+          xdbc_char_octet_length: null
+          xdbc_is_nullable: YES
+          xdbc_scope_catalog: null
+          xdbc_scope_schema: null
+          xdbc_scope_table: null
+          xdbc_is_autoincrement: False
+          xdbc_is_generatedcolumn: True
+    Table: test_repro_tblproperties_af78bedf (Type: TABLE)
+      Columns (2 total):
+        Column 0:
+          column_name: test
+          ordinal_position: 1
+          remarks: BIGINT
+          xdbc_data_type: -5
+          xdbc_type_name: BIGINT
+          xdbc_column_size: 8
+          xdbc_decimal_digits: 0
+          xdbc_num_prec_radix: null
+          xdbc_nullable: 1
+          xdbc_column_def:
+          xdbc_sql_data_type: -5
+          xdbc_datetime_sub: null
+          xdbc_char_octet_length: null
+          xdbc_is_nullable: YES
+          xdbc_scope_catalog: null
+          xdbc_scope_schema: null
+          xdbc_scope_table: null
+          xdbc_is_autoincrement: False
+          xdbc_is_generatedcolumn: True
+        Column 1:
+          column_name: test2
+          ordinal_position: 2
+          remarks: BIGINT
+          xdbc_data_type: -5
+          xdbc_type_name: BIGINT
+          xdbc_column_size: 8
+          xdbc_decimal_digits: 0
+          xdbc_num_prec_radix: null
+          xdbc_nullable: 1
+          xdbc_column_def:
+          xdbc_sql_data_type: -5
+          xdbc_datetime_sub: null
+          xdbc_char_octet_length: null
+          xdbc_is_nullable: YES
+          xdbc_scope_catalog: null
+          xdbc_scope_schema: null
+          xdbc_scope_table: null
+          xdbc_is_autoincrement: False
+          xdbc_is_generatedcolumn: True
+    Table: test_repro_tblproperties_b76546d3 (Type: TABLE)
+      Columns (2 total):
+        Column 0:
+          column_name: test
+          ordinal_position: 1
+          remarks: BIGINT
+          xdbc_data_type: -5
+          xdbc_type_name: BIGINT
+          xdbc_column_size: 8
+          xdbc_decimal_digits: 0
+          xdbc_num_prec_radix: null
+          xdbc_nullable: 1
+          xdbc_column_def:
+          xdbc_sql_data_type: -5
+          xdbc_datetime_sub: null
+          xdbc_char_octet_length: null
+          xdbc_is_nullable: YES
+          xdbc_scope_catalog: null
+          xdbc_scope_schema: null
+          xdbc_scope_table: null
+          xdbc_is_autoincrement: False
+          xdbc_is_generatedcolumn: True
+        Column 1:
+          column_name: test2
+          ordinal_position: 2
+          remarks: BIGINT
+          xdbc_data_type: -5
+          xdbc_type_name: BIGINT
+          xdbc_column_size: 8
+          xdbc_decimal_digits: 0
+          xdbc_num_prec_radix: null
+          xdbc_nullable: 1
+          xdbc_column_def:
+          xdbc_sql_data_type: -5
+          xdbc_datetime_sub: null
+          xdbc_char_octet_length: null
+          xdbc_is_nullable: YES
+          xdbc_scope_catalog: null
+          xdbc_scope_schema: null
+          xdbc_scope_table: null
+          xdbc_is_autoincrement: False
+          xdbc_is_generatedcolumn: True
+    Table: test_repro_tblproperties_bb2e4755 (Type: TABLE)
+      Columns (2 total):
+        Column 0:
+          column_name: test
+          ordinal_position: 1
+          remarks: BIGINT
+          xdbc_data_type: -5
+          xdbc_type_name: BIGINT
+          xdbc_column_size: 8
+          xdbc_decimal_digits: 0
+          xdbc_num_prec_radix: null
+          xdbc_nullable: 1
+          xdbc_column_def:
+          xdbc_sql_data_type: -5
+          xdbc_datetime_sub: null
+          xdbc_char_octet_length: null
+          xdbc_is_nullable: YES
+          xdbc_scope_catalog: null
+          xdbc_scope_schema: null
+          xdbc_scope_table: null
+          xdbc_is_autoincrement: False
+          xdbc_is_generatedcolumn: True
+        Column 1:
+          column_name: test2
+          ordinal_position: 2
+          remarks: BIGINT
+          xdbc_data_type: -5
+          xdbc_type_name: BIGINT
+          xdbc_column_size: 8
+          xdbc_decimal_digits: 0
+          xdbc_num_prec_radix: null
+          xdbc_nullable: 1
+          xdbc_column_def:
+          xdbc_sql_data_type: -5
+          xdbc_datetime_sub: null
+          xdbc_char_octet_length: null
+          xdbc_is_nullable: YES
+          xdbc_scope_catalog: null
+          xdbc_scope_schema: null
+          xdbc_scope_table: null
+          xdbc_is_autoincrement: False
+          xdbc_is_generatedcolumn: True
+    Table: test_repro_tblproperties_d4013a83 (Type: TABLE)
+      Columns (2 total):
+        Column 0:
+          column_name: test
+          ordinal_position: 1
+          remarks: BIGINT
+          xdbc_data_type: -5
+          xdbc_type_name: BIGINT
+          xdbc_column_size: 8
+          xdbc_decimal_digits: 0
+          xdbc_num_prec_radix: null
+          xdbc_nullable: 1
+          xdbc_column_def:
+          xdbc_sql_data_type: -5
+          xdbc_datetime_sub: null
+          xdbc_char_octet_length: null
+          xdbc_is_nullable: YES
+          xdbc_scope_catalog: null
+          xdbc_scope_schema: null
+          xdbc_scope_table: null
+          xdbc_is_autoincrement: False
+          xdbc_is_generatedcolumn: True
+        Column 1:
+          column_name: test2
+          ordinal_position: 2
+          remarks: BIGINT
+          xdbc_data_type: -5
+          xdbc_type_name: BIGINT
+          xdbc_column_size: 8
+          xdbc_decimal_digits: 0
+          xdbc_num_prec_radix: null
+          xdbc_nullable: 1
+          xdbc_column_def:
+          xdbc_sql_data_type: -5
+          xdbc_datetime_sub: null
+          xdbc_char_octet_length: null
+          xdbc_is_nullable: YES
+          xdbc_scope_catalog: null
+          xdbc_scope_schema: null
+          xdbc_scope_table: null
+          xdbc_is_autoincrement: False
+          xdbc_is_generatedcolumn: True
+
+Total batches processed: 1
+
+
+████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████
+PART 2: GETCATALOGS METADATA (Statement-Based)
+████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████
+
+Executing GetCatalogs with options:
+
+Schema:
+------------------------------------------------------------------------------------------------------------------------
+Column Name                              Data Type
+------------------------------------------------------------------------------------------------------------------------
+TABLE_CAT                                Apache.Arrow.Types.StringType
+
+Data:
+------------------------------------------------------------------------------------------------------------------------
+Row 0:
+  TABLE_CAT: adbc_test
+
+Row 1:
+  TABLE_CAT: adbc_test_2
+
+Row 2:
+  TABLE_CAT: aw-catalog
+
+Row 3:
+  TABLE_CAT: cujs
+
+Row 4:
+  TABLE_CAT: excel
+
+Row 5:
+  TABLE_CAT: hive_metastore
+
+Row 6:
+  TABLE_CAT: main
+
+Row 7:
+  TABLE_CAT: market_trends
+
+Row 8:
+  TABLE_CAT: powerbi
+
+Row 9:
+  TABLE_CAT: samples
+
+  ... (displaying first 10 rows only)
+------------------------------------------------------------------------------------------------------------------------
+Total rows: 10
+
+
+████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████
+PART 3: GETSCHEMAS METADATA (Statement-Based)
+████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████
+
+Executing GetSchemas with options:
+  adbc.get_metadata.target_catalog = main
+
+Schema:
+------------------------------------------------------------------------------------------------------------------------
+Column Name                              Data Type
+------------------------------------------------------------------------------------------------------------------------
+TABLE_SCHEM                              Apache.Arrow.Types.StringType
+TABLE_CATALOG                            Apache.Arrow.Types.StringType
+
+Data:
+------------------------------------------------------------------------------------------------------------------------
+Row 0:
+  TABLE_SCHEM: 55075ff6123c4cae8bf6885184e3a5aa
+  TABLE_CATALOG: main
+
+Row 1:
+  TABLE_SCHEM: adbc_testing
+  TABLE_CATALOG: main
+
+Row 2:
+  TABLE_SCHEM: b1aa2e0683fa49c784167e5e436b8e3c
+  TABLE_CATALOG: main
+
+Row 3:
+  TABLE_SCHEM: copilot_test
+  TABLE_CATALOG: main
+
+Row 4:
+  TABLE_SCHEM: dais
+  TABLE_CATALOG: main
+
+Row 5:
+  TABLE_SCHEM: dbdemos_iot_turbine
+  TABLE_CATALOG: main
+
+Row 6:
+  TABLE_SCHEM: default
+  TABLE_CATALOG: main
+
+Row 7:
+  TABLE_SCHEM: empty_schema
+  TABLE_CATALOG: main
+
+Row 8:
+  TABLE_SCHEM: fivetran_metadata
+  TABLE_CATALOG: main
+
+Row 9:
+  TABLE_SCHEM: gsheet_metric_views_test
+  TABLE_CATALOG: main
+
+  ... (displaying first 10 rows only)
+------------------------------------------------------------------------------------------------------------------------
+Total rows: 10
+
+
+████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████
+PART 4: GETTABLES METADATA (Statement-Based)
+████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████
+
+Executing GetTables with options:
+  adbc.get_metadata.target_catalog = main
+  adbc.get_metadata.target_db_schema = default
+
+Schema:
+------------------------------------------------------------------------------------------------------------------------
+Column Name                              Data Type
+------------------------------------------------------------------------------------------------------------------------
+TABLE_CAT                                Apache.Arrow.Types.StringType
+TABLE_SCHEM                              Apache.Arrow.Types.StringType
+TABLE_NAME                               Apache.Arrow.Types.StringType
+TABLE_TYPE                               Apache.Arrow.Types.StringType
+REMARKS                                  Apache.Arrow.Types.StringType
+TYPE_CAT                                 Apache.Arrow.Types.StringType
+TYPE_SCHEM                               Apache.Arrow.Types.StringType
+TYPE_NAME                                Apache.Arrow.Types.StringType
+SELF_REFERENCING_COL_NAME                Apache.Arrow.Types.StringType
+REF_GENERATION                           Apache.Arrow.Types.StringType
+
+Data:
+------------------------------------------------------------------------------------------------------------------------
+Row 0:
+  TABLE_CAT: main
+  TABLE_SCHEM: default
+  TABLE_NAME: table_table_b05e898a_0da0_4352_9e42_40274a52d35c
+  TABLE_TYPE: TABLE
+  REMARKS:
+  TYPE_CAT: null
+  TYPE_SCHEM: null
+  TYPE_NAME: null
+  SELF_REFERENCING_COL_NAME: null
+  REF_GENERATION: null
+
+Row 1:
+  TABLE_CAT: main
+  TABLE_SCHEM: default
+  TABLE_NAME: test_repro_tblproperties
+  TABLE_TYPE: TABLE
+  REMARKS:
+  TYPE_CAT: null
+  TYPE_SCHEM: null
+  TYPE_NAME: null
+  SELF_REFERENCING_COL_NAME: null
+  REF_GENERATION: null
+
+Row 2:
+  TABLE_CAT: main
+  TABLE_SCHEM: default
+  TABLE_NAME: test_repro_tblproperties_03c32053
+  TABLE_TYPE: TABLE
+  REMARKS:
+  TYPE_CAT: null
+  TYPE_SCHEM: null
+  TYPE_NAME: null
+  SELF_REFERENCING_COL_NAME: null
+  REF_GENERATION: null
+
+Row 3:
+  TABLE_CAT: main
+  TABLE_SCHEM: default
+  TABLE_NAME: test_repro_tblproperties_138e0848
+  TABLE_TYPE: TABLE
+  REMARKS:
+  TYPE_CAT: null
+  TYPE_SCHEM: null
+  TYPE_NAME: null
+  SELF_REFERENCING_COL_NAME: null
+  REF_GENERATION: null
+
+Row 4:
+  TABLE_CAT: main
+  TABLE_SCHEM: default
+  TABLE_NAME: test_repro_tblproperties_44add94f
+  TABLE_TYPE: TABLE
+  REMARKS:
+  TYPE_CAT: null
+  TYPE_SCHEM: null
+  TYPE_NAME: null
+  SELF_REFERENCING_COL_NAME: null
+  REF_GENERATION: null
+
+Row 5:
+  TABLE_CAT: main
+  TABLE_SCHEM: default
+  TABLE_NAME: test_repro_tblproperties_45a49302
+  TABLE_TYPE: TABLE
+  REMARKS:
+  TYPE_CAT: null
+  TYPE_SCHEM: null
+  TYPE_NAME: null
+  SELF_REFERENCING_COL_NAME: null
+  REF_GENERATION: null
+
+Row 6:
+  TABLE_CAT: main
+  TABLE_SCHEM: default
+  TABLE_NAME: test_repro_tblproperties_532e23e5
+  TABLE_TYPE: TABLE
+  REMARKS:
+  TYPE_CAT: null
+  TYPE_SCHEM: null
+  TYPE_NAME: null
+  SELF_REFERENCING_COL_NAME: null
+  REF_GENERATION: null
+
+Row 7:
+  TABLE_CAT: main
+  TABLE_SCHEM: default
+  TABLE_NAME: test_repro_tblproperties_6f314d61
+  TABLE_TYPE: TABLE
+  REMARKS:
+  TYPE_CAT: null
+  TYPE_SCHEM: null
+  TYPE_NAME: null
+  SELF_REFERENCING_COL_NAME: null
+  REF_GENERATION: null
+
+Row 8:
+  TABLE_CAT: main
+  TABLE_SCHEM: default
+  TABLE_NAME: test_repro_tblproperties_743f2fb1
+  TABLE_TYPE: TABLE
+  REMARKS:
+  TYPE_CAT: null
+  TYPE_SCHEM: null
+  TYPE_NAME: null
+  SELF_REFERENCING_COL_NAME: null
+  REF_GENERATION: null
+
+Row 9:
+  TABLE_CAT: main
+  TABLE_SCHEM: default
+  TABLE_NAME: test_repro_tblproperties_773f7009
+  TABLE_TYPE: TABLE
+  REMARKS:
+  TYPE_CAT: null
+  TYPE_SCHEM: null
+  TYPE_NAME: null
+  SELF_REFERENCING_COL_NAME: null
+  REF_GENERATION: null
+
+  ... (displaying first 10 rows only)
+------------------------------------------------------------------------------------------------------------------------
+Total rows: 10
+
+
+████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████
+PART 5: GETCOLUMNS METADATA (Statement-Based)
+████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████
+
+Executing GetColumns with options:
+  adbc.get_metadata.target_catalog = main
+  adbc.get_metadata.target_db_schema = default
+  adbc.get_metadata.target_table = %
+  adbc.get_metadata.target_column = %
+
+Schema:
+------------------------------------------------------------------------------------------------------------------------
+Column Name                              Data Type
+------------------------------------------------------------------------------------------------------------------------
+TABLE_CAT                                Apache.Arrow.Types.StringType
+TABLE_SCHEM                              Apache.Arrow.Types.StringType
+TABLE_NAME                               Apache.Arrow.Types.StringType
+COLUMN_NAME                              Apache.Arrow.Types.StringType
+DATA_TYPE                                Apache.Arrow.Types.Int32Type
+TYPE_NAME                                Apache.Arrow.Types.StringType
+COLUMN_SIZE                              Apache.Arrow.Types.Int32Type
+BUFFER_LENGTH                            Apache.Arrow.Types.Int8Type
+DECIMAL_DIGITS                           Apache.Arrow.Types.Int32Type
+NUM_PREC_RADIX                           Apache.Arrow.Types.Int32Type
+NULLABLE                                 Apache.Arrow.Types.Int32Type
+REMARKS                                  Apache.Arrow.Types.StringType
+COLUMN_DEF                               Apache.Arrow.Types.StringType
+SQL_DATA_TYPE                            Apache.Arrow.Types.Int32Type
+SQL_DATETIME_SUB                         Apache.Arrow.Types.Int32Type
+CHAR_OCTET_LENGTH                        Apache.Arrow.Types.Int32Type
+ORDINAL_POSITION                         Apache.Arrow.Types.Int32Type
+IS_NULLABLE                              Apache.Arrow.Types.StringType
+SCOPE_CATALOG                            Apache.Arrow.Types.StringType
+SCOPE_SCHEMA                             Apache.Arrow.Types.StringType
+SCOPE_TABLE                              Apache.Arrow.Types.StringType
+SOURCE_DATA_TYPE                         Apache.Arrow.Types.Int16Type
+IS_AUTO_INCREMENT                        Apache.Arrow.Types.StringType
+BASE_TYPE_NAME                           Apache.Arrow.Types.StringType
+
+Data:
+------------------------------------------------------------------------------------------------------------------------
+Row 0:
+  TABLE_CAT: main
+  TABLE_SCHEM: default
+  TABLE_NAME: table_table_b05e898a_0da0_4352_9e42_40274a52d35c
+  COLUMN_NAME: col1
+  DATA_TYPE: 4
+  TYPE_NAME: INT
+  COLUMN_SIZE: 4
+  BUFFER_LENGTH: null
+  DECIMAL_DIGITS: 0
+  NUM_PREC_RADIX: 10
+  NULLABLE: 1
+  REMARKS:
+  COLUMN_DEF: null
+  SQL_DATA_TYPE: null
+  SQL_DATETIME_SUB: null
+  CHAR_OCTET_LENGTH: null
+  ORDINAL_POSITION: 0
+  IS_NULLABLE: YES
+  SCOPE_CATALOG: null
+  SCOPE_SCHEMA: null
+  SCOPE_TABLE: null
+  SOURCE_DATA_TYPE: null
+  IS_AUTO_INCREMENT: NO
+  BASE_TYPE_NAME: INTEGER
+
+Row 1:
+  TABLE_CAT: main
+  TABLE_SCHEM: default
+  TABLE_NAME: test_repro_tblproperties
+  COLUMN_NAME: test
+  DATA_TYPE: -5
+  TYPE_NAME: BIGINT
+  COLUMN_SIZE: 8
+  BUFFER_LENGTH: null
+  DECIMAL_DIGITS: 0
+  NUM_PREC_RADIX: 10
+  NULLABLE: 1
+  REMARKS:
+  COLUMN_DEF: null
+  SQL_DATA_TYPE: null
+  SQL_DATETIME_SUB: null
+  CHAR_OCTET_LENGTH: null
+  ORDINAL_POSITION: 0
+  IS_NULLABLE: YES
+  SCOPE_CATALOG: null
+  SCOPE_SCHEMA: null
+  SCOPE_TABLE: null
+  SOURCE_DATA_TYPE: null
+  IS_AUTO_INCREMENT: NO
+  BASE_TYPE_NAME: BIGINT
+
+Row 2:
+  TABLE_CAT: main
+  TABLE_SCHEM: default
+  TABLE_NAME: test_repro_tblproperties
+  COLUMN_NAME: test2
+  DATA_TYPE: -5
+  TYPE_NAME: BIGINT
+  COLUMN_SIZE: 8
+  BUFFER_LENGTH: null
+  DECIMAL_DIGITS: 0
+  NUM_PREC_RADIX: 10
+  NULLABLE: 1
+  REMARKS:
+  COLUMN_DEF: null
+  SQL_DATA_TYPE: null
+  SQL_DATETIME_SUB: null
+  CHAR_OCTET_LENGTH: null
+  ORDINAL_POSITION: 1
+  IS_NULLABLE: YES
+  SCOPE_CATALOG: null
+  SCOPE_SCHEMA: null
+  SCOPE_TABLE: null
+  SOURCE_DATA_TYPE: null
+  IS_AUTO_INCREMENT: NO
+  BASE_TYPE_NAME: BIGINT
+
+Row 3:
+  TABLE_CAT: main
+  TABLE_SCHEM: default
+  TABLE_NAME: test_repro_tblproperties_03c32053
+  COLUMN_NAME: test
+  DATA_TYPE: -5
+  TYPE_NAME: BIGINT
+  COLUMN_SIZE: 8
+  BUFFER_LENGTH: null
+  DECIMAL_DIGITS: 0
+  NUM_PREC_RADIX: 10
+  NULLABLE: 1
+  REMARKS:
+  COLUMN_DEF: null
+  SQL_DATA_TYPE: null
+  SQL_DATETIME_SUB: null
+  CHAR_OCTET_LENGTH: null
+  ORDINAL_POSITION: 0
+  IS_NULLABLE: YES
+  SCOPE_CATALOG: null
+  SCOPE_SCHEMA: null
+  SCOPE_TABLE: null
+  SOURCE_DATA_TYPE: null
+  IS_AUTO_INCREMENT: NO
+  BASE_TYPE_NAME: BIGINT
+
+Row 4:
+  TABLE_CAT: main
+  TABLE_SCHEM: default
+  TABLE_NAME: test_repro_tblproperties_03c32053
+  COLUMN_NAME: test2
+  DATA_TYPE: -5
+  TYPE_NAME: BIGINT
+  COLUMN_SIZE: 8
+  BUFFER_LENGTH: null
+  DECIMAL_DIGITS: 0
+  NUM_PREC_RADIX: 10
+  NULLABLE: 1
+  REMARKS:
+  COLUMN_DEF: null
+  SQL_DATA_TYPE: null
+  SQL_DATETIME_SUB: null
+  CHAR_OCTET_LENGTH: null
+  ORDINAL_POSITION: 1
+  IS_NULLABLE: YES
+  SCOPE_CATALOG: null
+  SCOPE_SCHEMA: null
+  SCOPE_TABLE: null
+  SOURCE_DATA_TYPE: null
+  IS_AUTO_INCREMENT: NO
+  BASE_TYPE_NAME: BIGINT
+
+Row 5:
+  TABLE_CAT: main
+  TABLE_SCHEM: default
+  TABLE_NAME: test_repro_tblproperties_138e0848
+  COLUMN_NAME: test
+  DATA_TYPE: -5
+  TYPE_NAME: BIGINT
+  COLUMN_SIZE: 8
+  BUFFER_LENGTH: null
+  DECIMAL_DIGITS: 0
+  NUM_PREC_RADIX: 10
+  NULLABLE: 1
+  REMARKS:
+  COLUMN_DEF: null
+  SQL_DATA_TYPE: null
+  SQL_DATETIME_SUB: null
+  CHAR_OCTET_LENGTH: null
+  ORDINAL_POSITION: 0
+  IS_NULLABLE: YES
+  SCOPE_CATALOG: null
+  SCOPE_SCHEMA: null
+  SCOPE_TABLE: null
+  SOURCE_DATA_TYPE: null
+  IS_AUTO_INCREMENT: NO
+  BASE_TYPE_NAME: BIGINT
+
+Row 6:
+  TABLE_CAT: main
+  TABLE_SCHEM: default
+  TABLE_NAME: test_repro_tblproperties_138e0848
+  COLUMN_NAME: test2
+  DATA_TYPE: -5
+  TYPE_NAME: BIGINT
+  COLUMN_SIZE: 8
+  BUFFER_LENGTH: null
+  DECIMAL_DIGITS: 0
+  NUM_PREC_RADIX: 10
+  NULLABLE: 1
+  REMARKS:
+  COLUMN_DEF: null
+  SQL_DATA_TYPE: null
+  SQL_DATETIME_SUB: null
+  CHAR_OCTET_LENGTH: null
+  ORDINAL_POSITION: 1
+  IS_NULLABLE: YES
+  SCOPE_CATALOG: null
+  SCOPE_SCHEMA: null
+  SCOPE_TABLE: null
+  SOURCE_DATA_TYPE: null
+  IS_AUTO_INCREMENT: NO
+  BASE_TYPE_NAME: BIGINT
+
+Row 7:
+  TABLE_CAT: main
+  TABLE_SCHEM: default
+  TABLE_NAME: test_repro_tblproperties_44add94f
+  COLUMN_NAME: test
+  DATA_TYPE: -5
+  TYPE_NAME: BIGINT
+  COLUMN_SIZE: 8
+  BUFFER_LENGTH: null
+  DECIMAL_DIGITS: 0
+  NUM_PREC_RADIX: 10
+  NULLABLE: 1
+  REMARKS:
+  COLUMN_DEF: null
+  SQL_DATA_TYPE: null
+  SQL_DATETIME_SUB: null
+  CHAR_OCTET_LENGTH: null
+  ORDINAL_POSITION: 0
+  IS_NULLABLE: YES
+  SCOPE_CATALOG: null
+  SCOPE_SCHEMA: null
+  SCOPE_TABLE: null
+  SOURCE_DATA_TYPE: null
+  IS_AUTO_INCREMENT: NO
+  BASE_TYPE_NAME: BIGINT
+
+Row 8:
+  TABLE_CAT: main
+  TABLE_SCHEM: default
+  TABLE_NAME: test_repro_tblproperties_44add94f
+  COLUMN_NAME: test2
+  DATA_TYPE: -5
+  TYPE_NAME: BIGINT
+  COLUMN_SIZE: 8
+  BUFFER_LENGTH: null
+  DECIMAL_DIGITS: 0
+  NUM_PREC_RADIX: 10
+  NULLABLE: 1
+  REMARKS:
+  COLUMN_DEF: null
+  SQL_DATA_TYPE: null
+  SQL_DATETIME_SUB: null
+  CHAR_OCTET_LENGTH: null
+  ORDINAL_POSITION: 1
+  IS_NULLABLE: YES
+  SCOPE_CATALOG: null
+  SCOPE_SCHEMA: null
+  SCOPE_TABLE: null
+  SOURCE_DATA_TYPE: null
+  IS_AUTO_INCREMENT: NO
+  BASE_TYPE_NAME: BIGINT
+
+Row 9:
+  TABLE_CAT: main
+  TABLE_SCHEM: default
+  TABLE_NAME: test_repro_tblproperties_45a49302
+  COLUMN_NAME: test
+  DATA_TYPE: -5
+  TYPE_NAME: BIGINT
+  COLUMN_SIZE: 8
+  BUFFER_LENGTH: null
+  DECIMAL_DIGITS: 0
+  NUM_PREC_RADIX: 10
+  NULLABLE: 1
+  REMARKS:
+  COLUMN_DEF: null
+  SQL_DATA_TYPE: null
+  SQL_DATETIME_SUB: null
+  CHAR_OCTET_LENGTH: null
+  ORDINAL_POSITION: 0
+  IS_NULLABLE: YES
+  SCOPE_CATALOG: null
+  SCOPE_SCHEMA: null
+  SCOPE_TABLE: null
+  SOURCE_DATA_TYPE: null
+  IS_AUTO_INCREMENT: NO
+  BASE_TYPE_NAME: BIGINT
+
+  ... (displaying first 10 rows only)
+------------------------------------------------------------------------------------------------------------------------
+Total rows: 10
