@@ -115,7 +115,6 @@ namespace Apache.Arrow.Adbc.Drivers.Apache.Spark
                 default:
                     {
                         // For all other types (INTEGER, BIGINT, FLOAT, etc.), use null for precision/scale
-                        // This preserves the original Thrift behavior
                         tableInfo?.Precision.Add(null);
                         tableInfo?.Scale.Add(null);
                         tableInfo?.BaseTypeName.Add(baseTypeName);

@@ -254,7 +254,7 @@ namespace Apache.Arrow.Adbc.Drivers.Apache.Hive2.Metadata
 
         /// <summary>
         /// Virtual extension point for populating vendor-specific custom fields on column metadata.
-        /// Override in derived classes to add Delta Lake, Iceberg, or other vendor-specific fields.
+        /// Override in derived classes to add additional metadata fields beyond the standard JDBC/ODBC columns.
         /// </summary>
         /// <param name="record">The column metadata record to populate</param>
         /// <param name="customData">Custom data from the vendor-specific protocol</param>

@@ -653,7 +653,6 @@ namespace Apache.Arrow.Adbc.Drivers.Apache.Hive2
                                                        (bool?)null;
 
                                 // Get precision/scale from Thrift using SetPrecisionScaleAndTypeName
-                                // This preserves the original Thrift behavior of using server-provided values
                                 var tempTableInfo = new TableInfo(string.Empty);
                                 SetPrecisionScaleAndTypeName(colType, typeName, tempTableInfo, columnSize, decimalDigits);
 

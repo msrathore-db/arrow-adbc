@@ -625,8 +625,6 @@ namespace Apache.Arrow.Adbc.Drivers.Apache.Hive2
                 );
 
                 // Extract values with fallback to Thrift-provided values
-                // This preserves the existing behavior where parsed values take precedence,
-                // but Thrift values are used if parsing fails or returns null
                 string baseTypeName = record.BaseTypeName ?? typeName ?? string.Empty;
                 int finalColumnSize = record.XdbcColumnSize ?? columnSize;
                 int finalDecimalDigits = record.XdbcDecimalDigits ?? decimalDigits;
