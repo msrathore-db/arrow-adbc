@@ -140,13 +140,13 @@ namespace Apache.Arrow.Adbc.Drivers.Apache.Hive2.Metadata
             record.Remarks = remarks;
             record.ColumnDefault = columnDefault;
 
-            // Synthesize XDBC fields using ColumnTypeMapper
-            record.XdbcDataType = (int?)_columnTypeMapper.GetXdbcDataType(typeName);
-            record.BaseTypeName = _columnTypeMapper.GetBaseTypeName(typeName);
+            // Synthesize XDBC fields using virtual methods (allows override in derived classes)
+            record.XdbcDataType = (int?)GetXdbcDataType(typeName);
+            record.BaseTypeName = GetBaseTypeName(typeName);
             record.XdbcColumnSize = GetColumnSize(typeName);
             record.BufferLength = null;  // Original Thrift always returned null from server
             record.XdbcDecimalDigits = GetDecimalDigits(typeName);
-            record.XdbcNumPrecRadix = (int?)_columnTypeMapper.GetNumPrecRadix(typeName);
+            record.XdbcNumPrecRadix = (int?)GetNumPrecRadix(typeName);
             record.XdbcCharOctetLength = GetCharOctetLength(typeName);
 
             // Nullability fields
@@ -154,8 +154,8 @@ namespace Apache.Arrow.Adbc.Drivers.Apache.Hive2.Metadata
             record.IsNullable = isNullable.HasValue ? (isNullable.Value ? "YES" : "NO") : "";
 
             // SQL type fields (same as XDBC for most types)
-            record.SqlDataType = (int?)_columnTypeMapper.GetSqlDataType(typeName);
-            record.SqlDatetimeSub = (int?)_columnTypeMapper.GetSqlDatetimeSub(typeName);
+            record.SqlDataType = (int?)GetSqlDataType(typeName);
+            record.SqlDatetimeSub = (int?)GetSqlDatetimeSub(typeName);
 
             // Scope fields for REF types (typically null)
             record.ScopeCatalog = null;
@@ -295,6 +295,61 @@ namespace Apache.Arrow.Adbc.Drivers.Apache.Hive2.Metadata
         protected virtual int? GetCharOctetLength(string? typeName)
         {
             return _columnTypeMapper.GetCharOctetLength(typeName);
+        }
+
+        /// <summary>
+        /// Virtual extension point for determining XDBC data type.
+        /// Override in derived classes for custom type handling.
+        /// </summary>
+        /// <param name="typeName">The type name</param>
+        /// <returns>The XDBC data type code</returns>
+        protected virtual short? GetXdbcDataType(string? typeName)
+        {
+            return _columnTypeMapper.GetXdbcDataType(typeName);
+        }
+
+        /// <summary>
+        /// Virtual extension point for extracting base type name.
+        /// Override in derived classes for custom type handling.
+        /// </summary>
+        /// <param name="typeName">The type name</param>
+        /// <returns>The base type name without parameters</returns>
+        protected virtual string? GetBaseTypeName(string? typeName)
+        {
+            return _columnTypeMapper.GetBaseTypeName(typeName);
+        }
+
+        /// <summary>
+        /// Virtual extension point for determining numeric precision radix.
+        /// Override in derived classes for custom type handling.
+        /// </summary>
+        /// <param name="typeName">The type name</param>
+        /// <returns>The numeric precision radix (typically 10 or 2)</returns>
+        protected virtual short? GetNumPrecRadix(string? typeName)
+        {
+            return _columnTypeMapper.GetNumPrecRadix(typeName);
+        }
+
+        /// <summary>
+        /// Virtual extension point for determining SQL data type.
+        /// Override in derived classes for custom type handling.
+        /// </summary>
+        /// <param name="typeName">The type name</param>
+        /// <returns>The SQL data type code</returns>
+        protected virtual short? GetSqlDataType(string? typeName)
+        {
+            return _columnTypeMapper.GetSqlDataType(typeName);
+        }
+
+        /// <summary>
+        /// Virtual extension point for determining SQL datetime subtype.
+        /// Override in derived classes for custom type handling.
+        /// </summary>
+        /// <param name="typeName">The type name</param>
+        /// <returns>The SQL datetime subtype code</returns>
+        protected virtual short? GetSqlDatetimeSub(string? typeName)
+        {
+            return _columnTypeMapper.GetSqlDatetimeSub(typeName);
         }
     }
 }

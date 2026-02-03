@@ -621,8 +621,8 @@ namespace Apache.Arrow.Adbc.Drivers.Apache.Hive2
                         ReadOnlySpan<int> columnSizeList = rowSet.Columns[columnMap[columnNames.ColumnSize]].I32Val.Values.Values;
                         ReadOnlySpan<int> decimalDigitsList = rowSet.Columns[columnMap[columnNames.DecimalDigits]].I32Val.Values.Values;
 
-                        // Create metadata populator for field synthesis
-                        var populator = new Metadata.MetadataFieldPopulator();
+                        // Create metadata populator for field synthesis (allows override in derived classes)
+                        var populator = CreateMetadataFieldPopulator();
 
                         for (int i = 0; i < catalogList.Count; i++)
                         {
@@ -958,6 +958,16 @@ namespace Apache.Arrow.Adbc.Drivers.Apache.Hive2
         protected abstract bool GetObjectsPatternsRequireLowerCase { get; }
 
         protected abstract bool IsColumnSizeValidForDecimal { get; }
+
+        /// <summary>
+        /// Factory method to create a MetadataFieldPopulator instance.
+        /// Override in derived classes to provide custom field population logic.
+        /// </summary>
+        /// <returns>A MetadataFieldPopulator instance for field synthesis</returns>
+        protected virtual Metadata.MetadataFieldPopulator CreateMetadataFieldPopulator()
+        {
+            return new Metadata.MetadataFieldPopulator();
+        }
 
         public override void SetOption(string key, string? value)
         {
