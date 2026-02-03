@@ -71,8 +71,9 @@ namespace Apache.Arrow.Adbc.Drivers.Apache.Hive2.Metadata
         /// <summary>
         /// Transfer size of the data in bytes (BUFFER_LENGTH in statement-based metadata)
         /// Nullable for most types, only applicable for certain binary types
+        /// Uses sbyte to match Int8Type from original Thrift schema
         /// </summary>
-        public int? BufferLength { get; set; }
+        public sbyte? BufferLength { get; set; }
 
         /// <summary>
         /// Number of fractional digits (DECIMAL_DIGITS in statement-based metadata)

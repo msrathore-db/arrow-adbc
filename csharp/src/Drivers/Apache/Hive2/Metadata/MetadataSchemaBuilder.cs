@@ -546,20 +546,11 @@ namespace Apache.Arrow.Adbc.Drivers.Apache.Hive2.Metadata
 
         /// <summary>
         /// Appends a value or null to an Int8Array.Builder.
-        /// Validates range for Int8 (-128 to 127) before casting.
         /// </summary>
-        private static void AppendOrNull(Int8Array.Builder builder, int? value)
+        private static void AppendOrNull(Int8Array.Builder builder, sbyte? value)
         {
             if (value.HasValue)
-            {
-                // Validate range for Int8
-                if (value.Value < -128 || value.Value > 127)
-                {
-                    throw new ArgumentOutOfRangeException(nameof(value),
-                        $"Value {value.Value} is out of range for Int8 (-128 to 127)");
-                }
-                builder.Append((sbyte)value.Value);
-            }
+                builder.Append(value.Value);
             else
                 builder.AppendNull();
         }

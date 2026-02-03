@@ -144,7 +144,7 @@ namespace Apache.Arrow.Adbc.Drivers.Apache.Hive2.Metadata
             record.XdbcDataType = (int?)_columnTypeMapper.GetXdbcDataType(typeName);
             record.BaseTypeName = _columnTypeMapper.GetBaseTypeName(typeName);
             record.XdbcColumnSize = GetColumnSize(typeName);
-            record.BufferLength = (byte?)_columnTypeMapper.GetBufferLength(typeName);
+            record.BufferLength = null;  // Original Thrift always returned null from server
             record.XdbcDecimalDigits = GetDecimalDigits(typeName);
             record.XdbcNumPrecRadix = (int?)_columnTypeMapper.GetNumPrecRadix(typeName);
             record.XdbcCharOctetLength = GetCharOctetLength(typeName);
