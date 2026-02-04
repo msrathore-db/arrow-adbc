@@ -19,7 +19,7 @@ namespace Apache.Arrow.Adbc.Drivers.Apache.Hive2.Metadata
 {
     /// <summary>
     /// Protocol-agnostic data model for schema metadata.
-    /// Used by both HiveServer2 (Thrift) and StatementExecution API (REST) protocols.
+    /// Supports multiple protocol implementations including REST and RPC-based protocols.
     /// </summary>
     public class SchemaMetadataRecord
     {

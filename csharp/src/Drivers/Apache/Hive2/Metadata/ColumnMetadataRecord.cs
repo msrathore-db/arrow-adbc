@@ -21,8 +21,8 @@ namespace Apache.Arrow.Adbc.Drivers.Apache.Hive2.Metadata
 {
     /// <summary>
     /// Protocol-agnostic data model for column metadata.
-    /// Used by both HiveServer2 (Thrift) and StatementExecution API (REST) protocols.
-    /// Contains 24 fields: 23 standard fields plus BASE_TYPE_NAME (a Databricks/Spark extension).
+    /// Supports multiple protocol implementations including REST and RPC-based protocols.
+    /// Contains 24 fields: 23 standard XDBC fields plus BASE_TYPE_NAME (a Databricks/Spark extension).
     /// </summary>
     public class ColumnMetadataRecord
     {
@@ -70,8 +70,8 @@ namespace Apache.Arrow.Adbc.Drivers.Apache.Hive2.Metadata
 
         /// <summary>
         /// Transfer size of the data in bytes (BUFFER_LENGTH in statement-based metadata)
-        /// Nullable for most types, only applicable for certain binary types
-        /// Uses sbyte to match Int8Type from original Thrift schema
+        /// Nullable for most types, only applicable for certain binary types.
+        /// Uses sbyte to match Int8Type as per the ADBC schema specification.
         /// </summary>
         public sbyte? BufferLength { get; set; }
 

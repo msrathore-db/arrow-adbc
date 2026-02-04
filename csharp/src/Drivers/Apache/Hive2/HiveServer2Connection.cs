@@ -108,13 +108,14 @@ namespace Apache.Arrow.Adbc.Drivers.Apache.Hive2
         }
 
         /// <summary>
-        /// The data type definitions based on the <see href="https://docs.oracle.com/en%2Fjava%2Fjavase%2F21%2Fdocs%2Fapi%2F%2F/java.sql/java/sql/Types.html">JDBC Types</see> constants.
+        /// The data type definitions based on SQL/CLI specification (ISO/IEC 9075-3).
         /// </summary>
         /// <remarks>
-        /// This enumeration can be used to determine the drivers specific data types that are contained in fields <c>xdbc_data_type</c> and <c>xdbc_sql_data_type</c>
+        /// This enumeration can be used to determine the driver's specific data types that are contained in fields <c>xdbc_data_type</c> and <c>xdbc_sql_data_type</c>
         /// in the column metadata <see cref="StandardSchemas.ColumnSchema"/>. This column metadata is returned as a result of a call to
         /// <see cref="AdbcConnection.GetObjects(GetObjectsDepth, string?, string?, string?, IReadOnlyList{string}?, string?)"/>
         /// when <c>depth</c> is set to <see cref="AdbcConnection.GetObjectsDepth.All"/>.
+        /// For new code, prefer using <see cref="Metadata.ColumnTypeId"/> instead.
         /// </remarks>
         internal enum ColumnTypeId
         {
@@ -652,7 +653,7 @@ namespace Apache.Arrow.Adbc.Drivers.Apache.Hive2
                                                        isNullable.Equals("NO", StringComparison.InvariantCultureIgnoreCase) ? false :
                                                        (bool?)null;
 
-                                // Get precision/scale from Thrift using SetPrecisionScaleAndTypeName
+                                // Extract precision/scale using protocol-specific parsing
                                 var tempTableInfo = new TableInfo(string.Empty);
                                 SetPrecisionScaleAndTypeName(colType, typeName, tempTableInfo, columnSize, decimalDigits);
 
@@ -665,22 +666,22 @@ namespace Apache.Arrow.Adbc.Drivers.Apache.Hive2
                                     typeName,
                                     ordinalPos,
                                     isNullableBool,
-                                    remarks: null, // Not available in Thrift GetObjects
+                                    remarks: null,
                                     columnDefault: columnDefault,
                                     customData: null
                                 );
 
-                                // Override ALL fields with Thrift-provided values to preserve exact original behavior
-                                record.XdbcDataType = colType;                                               // From Thrift
-                                record.XdbcColumnSize = tempTableInfo.Precision.Count > 0 ? tempTableInfo.Precision[0] : null;  // From Thrift/parsing
-                                record.XdbcDecimalDigits = tempTableInfo.Scale.Count > 0 ? tempTableInfo.Scale[0] : null;       // From Thrift/parsing
-                                record.XdbcNumPrecRadix = null;                                              // Original Thrift: always null
-                                record.SqlDataType = colType;                                                // From Thrift (same as XdbcDataType)
-                                record.XdbcCharOctetLength = null;                                           // Original Thrift: always null
-                                record.SqlDatetimeSub = null;                                                // Original Thrift: always null
-                                record.Nullable = nullable;                                                  // From Thrift
-                                record.IsNullable = isNullable;                                              // From Thrift
-                                record.IsAutoIncrement = isAutoIncrement ? "YES" : "NO";                     // From Thrift
+                                // Override synthesized fields with protocol-provided values
+                                record.XdbcDataType = colType;
+                                record.XdbcColumnSize = tempTableInfo.Precision.Count > 0 ? tempTableInfo.Precision[0] : null;
+                                record.XdbcDecimalDigits = tempTableInfo.Scale.Count > 0 ? tempTableInfo.Scale[0] : null;
+                                record.XdbcNumPrecRadix = null;
+                                record.SqlDataType = colType;
+                                record.XdbcCharOctetLength = null;
+                                record.SqlDatetimeSub = null;
+                                record.Nullable = nullable;
+                                record.IsNullable = isNullable;
+                                record.IsAutoIncrement = isAutoIncrement ? "YES" : "NO";
 
                                 tableMeta.Value.Columns.Add(record);
                             }
@@ -1487,7 +1488,7 @@ namespace Apache.Arrow.Adbc.Drivers.Apache.Hive2
                     else
                     {
                         // Note: parsing the type name for SQL DECIMAL types as the precision and scale values
-                        // may not be returned in the Thrift call to GetColumns
+                        // may not be returned in the GetColumns response
                         return SqlTypeNameParser<SqlDecimalParserResult>
                             .Parse(typeName, columnTypeId)
                             .Decimal128Type;

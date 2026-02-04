@@ -70,8 +70,8 @@ namespace Apache.Arrow.Adbc.Drivers.Apache.Hive2
         }
 
         /// <summary>
-        /// Gets the schema from metadata response. Base implementation uses traditional Thrift schema.
-        /// Subclasses can override to support Arrow schema parsing.
+        /// Gets the schema from metadata response. Base implementation uses the standard schema parser.
+        /// Subclasses can override to support alternative schema parsing strategies.
         /// </summary>
         /// <param name="metadata">The metadata response containing schema information</param>
         /// <returns>The Arrow schema</returns>
@@ -624,7 +624,7 @@ namespace Apache.Arrow.Adbc.Drivers.Apache.Hive2
                     customData: null
                 );
 
-                // Extract values with fallback to Thrift-provided values
+                // Extract values with fallback to protocol-provided values
                 string baseTypeName = record.BaseTypeName ?? typeName ?? string.Empty;
                 int finalColumnSize = record.XdbcColumnSize ?? columnSize;
                 int finalDecimalDigits = record.XdbcDecimalDigits ?? decimalDigits;

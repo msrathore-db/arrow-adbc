@@ -144,7 +144,7 @@ namespace Apache.Arrow.Adbc.Drivers.Apache.Hive2.Metadata
             record.XdbcDataType = (int?)GetXdbcDataType(typeName);
             record.BaseTypeName = GetBaseTypeName(typeName);
             record.XdbcColumnSize = GetColumnSize(typeName);
-            record.BufferLength = null;  // Original Thrift always returned null from server
+            record.BufferLength = null;  // Not typically populated by server responses
             record.XdbcDecimalDigits = GetDecimalDigits(typeName);
             record.XdbcNumPrecRadix = (int?)GetNumPrecRadix(typeName);
             record.XdbcCharOctetLength = GetCharOctetLength(typeName);
@@ -254,7 +254,7 @@ namespace Apache.Arrow.Adbc.Drivers.Apache.Hive2.Metadata
 
         /// <summary>
         /// Virtual extension point for populating vendor-specific custom fields on column metadata.
-        /// Override in derived classes to add additional metadata fields beyond the standard JDBC/ODBC columns.
+        /// Override in derived classes to add additional metadata fields beyond the standard XDBC columns.
         /// </summary>
         /// <param name="record">The column metadata record to populate</param>
         /// <param name="customData">Custom data from the vendor-specific protocol</param>

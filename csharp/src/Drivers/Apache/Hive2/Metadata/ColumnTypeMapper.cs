@@ -17,22 +17,21 @@
 
 using System;
 using System.Collections.Generic;
-using System.Text.RegularExpressions;
 
 namespace Apache.Arrow.Adbc.Drivers.Apache.Hive2.Metadata
 {
     /// <summary>
-    /// Provides unified type mapping for converting database type names to XDBC (JDBC/ODBC) metadata.
-    /// This class serves as a single source of truth for type mappings across HiveServer2 (Thrift)
-    /// and StatementExecution API (REST) protocols.
+    /// Provides unified type mapping for converting database type names to XDBC metadata.
+    /// This class serves as a single source of truth for type mappings, supporting extensibility
+    /// for different protocol implementations.
     ///
-    /// Internally uses <see cref="HiveServer2Connection.ColumnTypeId"/> enum and <see cref="SqlTypeNameParser"/>
+    /// Internally uses <see cref="HiveServer2Connection.ColumnTypeId"/> enum and <see cref="SqlTypeNameParser{T}"/>
     /// for consistent type mapping and parsing logic.
     /// </summary>
     public class ColumnTypeMapper
     {
         /// <summary>
-        /// Maps base type names to XDBC (ODBC/JDBC) SQL type codes using ColumnTypeId enum values.
+        /// Maps base type names to XDBC SQL type codes using ColumnTypeId enum values.
         /// Type codes follow the SQL/CLI specification (ISO/IEC 9075-3).
         /// </summary>
         private static readonly Dictionary<string, short> XdbcTypeCodes = new Dictionary<string, short>(StringComparer.OrdinalIgnoreCase)
@@ -84,7 +83,6 @@ namespace Apache.Arrow.Adbc.Drivers.Apache.Hive2.Metadata
 
         /// <summary>
         /// Default column sizes for types when size is not specified.
-        /// These values match the HiveServer2 protocol for ADBC parity.
         /// For numeric types, this represents the byte size of the type's binary representation.
         /// </summary>
         private static readonly Dictionary<string, int> DefaultColumnSizes = new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase)
@@ -133,13 +131,13 @@ namespace Apache.Arrow.Adbc.Drivers.Apache.Hive2.Metadata
 
         /// <summary>
         /// Numeric precision radix for numeric types.
-        /// All numeric types use base-10 to match HiveServer2 protocol.
+        /// All numeric types use base-10.
         /// </summary>
         private const short DecimalRadix = 10;
 
         /// <summary>
         /// Extracts the base type name from a parameterized type string.
-        /// Applies XDBC normalization for compatibility with HiveServer2 protocol.
+        /// Applies XDBC normalization for compatibility.
         /// Examples:
         ///   "INT" -> "INTEGER" (XDBC normalization)
         ///   "DECIMAL(10,2)" -> "DECIMAL"
@@ -153,6 +151,14 @@ namespace Apache.Arrow.Adbc.Drivers.Apache.Hive2.Metadata
         /// <param name="typeName">The full type name</param>
         /// <returns>The base type name without parameters, with XDBC normalization applied</returns>
         public string GetBaseTypeName(string? typeName)
+        {
+            return GetBaseTypeNameStatic(typeName);
+        }
+
+        /// <summary>
+        /// Static version of GetBaseTypeName for stateless usage.
+        /// </summary>
+        public static string GetBaseTypeNameStatic(string? typeName)
         {
             if (string.IsNullOrEmpty(typeName))
                 return string.Empty;
@@ -185,14 +191,14 @@ namespace Apache.Arrow.Adbc.Drivers.Apache.Hive2.Metadata
 
             var baseType = typeName.ToUpperInvariant();
 
-            // Apply XDBC normalization to match HiveServer2 behavior
+            // Apply XDBC normalization
             if (baseType == "TIMESTAMP_NTZ")
                 return "TIMESTAMP";
 
             if (baseType.StartsWith("INTERVAL ", StringComparison.OrdinalIgnoreCase))
                 return "INTERVAL";
 
-            // Normalize INT to INTEGER to match HiveServer2
+            // Normalize INT to INTEGER per XDBC specification
             if (baseType == "INT")
                 return "INTEGER";
 
@@ -200,12 +206,20 @@ namespace Apache.Arrow.Adbc.Drivers.Apache.Hive2.Metadata
         }
 
         /// <summary>
-        /// Maps a type name to its XDBC (ODBC/JDBC) SQL type code.
+        /// Maps a type name to its XDBC SQL type code.
         /// Returns null if the type is not recognized.
         /// </summary>
         /// <param name="typeName">The type name (e.g., "INT", "VARCHAR", "ARRAY")</param>
         /// <returns>The XDBC type code, or null if not found</returns>
         public short? GetXdbcDataType(string? typeName)
+        {
+            return GetXdbcDataTypeStatic(typeName);
+        }
+
+        /// <summary>
+        /// Static version of GetXdbcDataType for stateless usage.
+        /// </summary>
+        public static short? GetXdbcDataTypeStatic(string? typeName)
         {
             if (string.IsNullOrEmpty(typeName))
                 return null;
@@ -221,7 +235,7 @@ namespace Apache.Arrow.Adbc.Drivers.Apache.Hive2.Metadata
                 }
             }
 
-            var baseType = GetBaseTypeName(typeName);
+            var baseType = GetBaseTypeNameStatic(typeName);
             if (XdbcTypeCodes.TryGetValue(baseType, out var code))
             {
                 return code;
@@ -235,11 +249,18 @@ namespace Apache.Arrow.Adbc.Drivers.Apache.Hive2.Metadata
         /// For numeric types (INT, BIGINT, FLOAT, DOUBLE, etc.), returns the byte size of the binary representation.
         /// For DECIMAL/NUMERIC types, returns the precision.
         /// For character types, returns the maximum character length.
-        /// This matches the HiveServer2 protocol behavior for ADBC parity.
         /// </summary>
         /// <param name="typeName">The full type name (e.g., "DECIMAL(10,2)", "VARCHAR(100)")</param>
         /// <returns>The column size, or null if not applicable</returns>
         public int? GetColumnSize(string? typeName)
+        {
+            return GetColumnSizeStatic(typeName);
+        }
+
+        /// <summary>
+        /// Static version of GetColumnSize for stateless usage.
+        /// </summary>
+        public static int? GetColumnSizeStatic(string? typeName)
         {
             if (string.IsNullOrEmpty(typeName))
                 return null;
@@ -255,14 +276,14 @@ namespace Apache.Arrow.Adbc.Drivers.Apache.Hive2.Metadata
                 return 4; // Default INTERVAL size
             }
 
-            var baseType = GetBaseTypeName(typeName);
+            var baseType = GetBaseTypeNameStatic(typeName);
 
             // For DECIMAL(p,s), extract precision using SqlTypeNameParser
             if (baseType == "DECIMAL" || baseType == "NUMERIC")
             {
                 try
                 {
-                    var typeCode = (int?)GetXdbcDataType(typeName);
+                    var typeCode = (int?)GetXdbcDataTypeStatic(typeName);
                     SqlDecimalParserResult result = SqlTypeNameParser<SqlDecimalParserResult>.Parse(typeName!, typeCode);
                     return result.Precision;
                 }
@@ -279,7 +300,7 @@ namespace Apache.Arrow.Adbc.Drivers.Apache.Hive2.Metadata
             {
                 try
                 {
-                    var typeCode = (int?)GetXdbcDataType(typeName);
+                    var typeCode = (int?)GetXdbcDataTypeStatic(typeName);
                     SqlCharVarcharParserResult result = SqlTypeNameParser<SqlCharVarcharParserResult>.Parse(typeName!, typeCode);
                     return result.ColumnSize;
                 }
@@ -311,10 +332,18 @@ namespace Apache.Arrow.Adbc.Drivers.Apache.Hive2.Metadata
         /// <returns>The buffer length in bytes, or null if not applicable</returns>
         public int? GetBufferLength(string? typeName)
         {
+            return GetBufferLengthStatic(typeName);
+        }
+
+        /// <summary>
+        /// Static version of GetBufferLength for stateless usage.
+        /// </summary>
+        public static int? GetBufferLengthStatic(string? typeName)
+        {
             if (string.IsNullOrEmpty(typeName))
                 return null;
 
-            var baseType = GetBaseTypeName(typeName);
+            var baseType = GetBaseTypeNameStatic(typeName);
 
             if (BufferLengths.TryGetValue(baseType, out var length))
             {
@@ -326,7 +355,7 @@ namespace Apache.Arrow.Adbc.Drivers.Apache.Hive2.Metadata
             {
                 try
                 {
-                    var typeCode = (int?)GetXdbcDataType(typeName);
+                    var typeCode = (int?)GetXdbcDataTypeStatic(typeName);
                     SqlDecimalParserResult result = SqlTypeNameParser<SqlDecimalParserResult>.Parse(typeName!, typeCode);
                     // Approximate: 5 bytes per 9 digits + 1 byte overhead
                     return ((result.Precision + 8) / 9) * 5 + 1;
@@ -350,10 +379,18 @@ namespace Apache.Arrow.Adbc.Drivers.Apache.Hive2.Metadata
         /// <returns>The character octet length, or null if not applicable</returns>
         public int? GetCharOctetLength(string? typeName)
         {
+            return GetCharOctetLengthStatic(typeName);
+        }
+
+        /// <summary>
+        /// Static version of GetCharOctetLength for stateless usage.
+        /// </summary>
+        public static int? GetCharOctetLengthStatic(string? typeName)
+        {
             if (string.IsNullOrEmpty(typeName))
                 return null;
 
-            var baseType = GetBaseTypeName(typeName);
+            var baseType = GetBaseTypeNameStatic(typeName);
 
             // Only applicable for character types
             if (baseType != "STRING" && baseType != "VARCHAR" && baseType != "CHAR")
@@ -362,7 +399,7 @@ namespace Apache.Arrow.Adbc.Drivers.Apache.Hive2.Metadata
             // Extract length from VARCHAR(n) or CHAR(n)
             try
             {
-                var typeCode = (int?)GetXdbcDataType(typeName);
+                var typeCode = (int?)GetXdbcDataTypeStatic(typeName);
                 SqlCharVarcharParserResult result = SqlTypeNameParser<SqlCharVarcharParserResult>.Parse(typeName!, typeCode);
                 return result.ColumnSize;
             }
@@ -379,7 +416,7 @@ namespace Apache.Arrow.Adbc.Drivers.Apache.Hive2.Metadata
         /// Extracts the DECIMAL_DIGITS (scale) metadata field for numeric types.
         /// For DECIMAL(p,s), this returns s (the number of digits after the decimal point).
         /// For integer types, returns 0.
-        /// For floating-point types, returns the fractional precision (matches HiveServer2).
+        /// For floating-point types, returns the fractional precision.
         /// For TIMESTAMP types, returns 6 (microsecond precision).
         /// For DATE type, returns 0.
         /// For other types (VARCHAR, CHAR, BINARY, ARRAY, etc.), returns null.
@@ -388,17 +425,25 @@ namespace Apache.Arrow.Adbc.Drivers.Apache.Hive2.Metadata
         /// <returns>The decimal digits (scale), or null if not applicable</returns>
         public int? GetDecimalDigits(string? typeName)
         {
+            return GetDecimalDigitsStatic(typeName);
+        }
+
+        /// <summary>
+        /// Static version of GetDecimalDigits for stateless usage.
+        /// </summary>
+        public static int? GetDecimalDigitsStatic(string? typeName)
+        {
             if (string.IsNullOrEmpty(typeName))
                 return null;
 
-            var baseType = GetBaseTypeName(typeName);
+            var baseType = GetBaseTypeNameStatic(typeName);
 
             // For DECIMAL(p,s), extract scale
             if (baseType == "DECIMAL" || baseType == "NUMERIC")
             {
                 try
                 {
-                    var typeCode = (int?)GetXdbcDataType(typeName);
+                    var typeCode = (int?)GetXdbcDataTypeStatic(typeName);
                     SqlDecimalParserResult result = SqlTypeNameParser<SqlDecimalParserResult>.Parse(typeName!, typeCode);
                     return result.Scale;
                 }
@@ -415,7 +460,7 @@ namespace Apache.Arrow.Adbc.Drivers.Apache.Hive2.Metadata
                 return 0;
             }
 
-            // For floating-point types, return fractional precision (matches HiveServer2)
+            // For floating-point types, return fractional precision
             if (baseType == "FLOAT" || baseType == "REAL")
             {
                 return 7; // Single precision fractional digits
@@ -426,38 +471,45 @@ namespace Apache.Arrow.Adbc.Drivers.Apache.Hive2.Metadata
                 return 15; // Double precision fractional digits
             }
 
-            // For TIMESTAMP types, return fractional seconds precision (matches HiveServer2)
+            // For TIMESTAMP types, return fractional seconds precision
             if (baseType == "TIMESTAMP" || baseType == "TIMESTAMP_NTZ")
             {
                 return 6; // Microsecond precision
             }
 
-            // For DATE type, return 0 (matches HiveServer2)
+            // For DATE type, return 0
             if (baseType == "DATE")
             {
                 return 0;
             }
 
             // For all other types (STRING, CHAR, VARCHAR, BINARY, ARRAY, etc.), return null
-            // This matches the HiveServer2 GetObjects behavior where types without decimal components have null scale
             return null;
         }
 
         /// <summary>
         /// Gets the NUM_PREC_RADIX metadata field for numeric types.
-        /// Returns 10 for all numeric types to match HiveServer2 protocol.
+        /// Returns 10 for all numeric types.
         /// Returns null for non-numeric types.
         /// </summary>
         /// <param name="typeName">The type name</param>
         /// <returns>The numeric precision radix (10), or null if not applicable</returns>
         public short? GetNumPrecRadix(string? typeName)
         {
+            return GetNumPrecRadixStatic(typeName);
+        }
+
+        /// <summary>
+        /// Static version of GetNumPrecRadix for stateless usage.
+        /// </summary>
+        public static short? GetNumPrecRadixStatic(string? typeName)
+        {
             if (string.IsNullOrEmpty(typeName))
                 return null;
 
-            var baseType = GetBaseTypeName(typeName);
+            var baseType = GetBaseTypeNameStatic(typeName);
 
-            // All numeric types use base-10 (matches HiveServer2)
+            // All numeric types use base-10
             if (baseType == "TINYINT" || baseType == "SMALLINT" ||
                 baseType == "INT" || baseType == "INTEGER" || baseType == "BIGINT" ||
                 baseType == "DECIMAL" || baseType == "NUMERIC" ||
@@ -473,29 +525,42 @@ namespace Apache.Arrow.Adbc.Drivers.Apache.Hive2.Metadata
         /// Gets the SQL data type category for SQL_DATA_TYPE metadata field.
         /// This follows the ODBC specification for SQL_DATA_TYPE values.
         /// For most types, this is the same as the XDBC type code.
-        /// Matches HiveServer2 behavior: returns the specific type code (e.g., 91 for DATE, 93 for TIMESTAMP).
         /// </summary>
         /// <param name="typeName">The type name</param>
         /// <returns>The SQL data type code, or null if not applicable</returns>
         public short? GetSqlDataType(string? typeName)
         {
+            return GetSqlDataTypeStatic(typeName);
+        }
+
+        /// <summary>
+        /// Static version of GetSqlDataType for stateless usage.
+        /// </summary>
+        public static short? GetSqlDataTypeStatic(string? typeName)
+        {
             // SQL_DATA_TYPE is the same as DATA_TYPE (XDBC type code) for all types
-            // This matches HiveServer2 behavior
-            return GetXdbcDataType(typeName);
+            return GetXdbcDataTypeStatic(typeName);
         }
 
         /// <summary>
         /// Gets the SQL datetime subtype for SQL_DATETIME_SUB metadata field.
         /// Only applicable for date/time types.
-        /// Returns null to match HiveServer2 behavior (uses specific type codes in SQL_DATA_TYPE instead).
+        /// Returns null as this driver uses specific type codes in SQL_DATA_TYPE instead.
         /// </summary>
         /// <param name="typeName">The type name</param>
-        /// <returns>The datetime subtype code, or null if not a datetime type</returns>
+        /// <returns>The datetime subtype code, or null</returns>
         public short? GetSqlDatetimeSub(string? typeName)
         {
-            // HiveServer2 returns null for SQL_DATETIME_SUB because it uses
-            // specific type codes (91 for DATE, 93 for TIMESTAMP) in SQL_DATA_TYPE
-            // instead of the generic SQL_DATETIME (9) approach
+            return GetSqlDatetimeSubStatic(typeName);
+        }
+
+        /// <summary>
+        /// Static version of GetSqlDatetimeSub for stateless usage.
+        /// </summary>
+        public static short? GetSqlDatetimeSubStatic(string? typeName)
+        {
+            // Returns null because specific type codes (91 for DATE, 93 for TIMESTAMP)
+            // are used in SQL_DATA_TYPE instead of the generic SQL_DATETIME (9) approach
             return null;
         }
     }

@@ -78,19 +78,18 @@ namespace Apache.Arrow.Adbc.Drivers.Apache.Spark
             // Keep the original type name
             tableInfo?.TypeName.Add(typeName);
 
-            // Use ColumnTypeMapper for base type name extraction
-            var mapper = new ColumnTypeMapper();
-            string? baseTypeName = mapper.GetBaseTypeName(typeName);
+            // Use static methods for base type name extraction
+            string? baseTypeName = ColumnTypeMapper.GetBaseTypeNameStatic(typeName);
 
-            // Preserve original behavior: only populate precision/scale for specific types
+            // Populate precision/scale based on type category
             switch (colType)
             {
                 case (short)ColumnTypeId.DECIMAL:
                 case (short)ColumnTypeId.NUMERIC:
                     {
-                        // For DECIMAL, use ColumnTypeMapper to extract precision/scale
-                        int? precision = mapper.GetColumnSize(typeName);
-                        int? scale = mapper.GetDecimalDigits(typeName);
+                        // For DECIMAL, extract precision/scale from type name
+                        int? precision = ColumnTypeMapper.GetColumnSizeStatic(typeName);
+                        int? scale = ColumnTypeMapper.GetDecimalDigitsStatic(typeName);
                         tableInfo?.Precision.Add(precision);
                         tableInfo?.Scale.Add(scale.HasValue ? (short)scale.Value : null);
                         tableInfo?.BaseTypeName.Add(baseTypeName);
@@ -104,8 +103,8 @@ namespace Apache.Arrow.Adbc.Drivers.Apache.Spark
                 case (short)ColumnTypeId.LONGNVARCHAR:
                 case (short)ColumnTypeId.NVARCHAR:
                     {
-                        // For character types, use ColumnTypeMapper to extract column size
-                        int? columnSizeValue = mapper.GetColumnSize(typeName);
+                        // For character types, extract column size from type name
+                        int? columnSizeValue = ColumnTypeMapper.GetColumnSizeStatic(typeName);
                         tableInfo?.Precision.Add(columnSizeValue);
                         tableInfo?.Scale.Add(null);
                         tableInfo?.BaseTypeName.Add(baseTypeName);
@@ -114,7 +113,7 @@ namespace Apache.Arrow.Adbc.Drivers.Apache.Spark
 
                 default:
                     {
-                        // For all other types (INTEGER, BIGINT, FLOAT, etc.), use null for precision/scale
+                        // For other types (INTEGER, BIGINT, FLOAT, etc.), precision/scale not applicable
                         tableInfo?.Precision.Add(null);
                         tableInfo?.Scale.Add(null);
                         tableInfo?.BaseTypeName.Add(baseTypeName);
