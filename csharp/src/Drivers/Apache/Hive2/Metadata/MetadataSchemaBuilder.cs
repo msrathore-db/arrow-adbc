@@ -509,6 +509,103 @@ namespace Apache.Arrow.Adbc.Drivers.Apache.Hive2.Metadata
 
         #endregion
 
+        #region Schema Building Methods
+
+        /// <summary>
+        /// Converts XDBC type metadata to Arrow type.
+        /// Handles all standard SQL types including DECIMAL with precision/scale.
+        /// </summary>
+        /// <param name="columnTypeId">JDBC/ODBC type code</param>
+        /// <param name="typeName">Type name string (e.g., "DECIMAL(10,2)")</param>
+        /// <param name="isColumnSizeValid">Whether column size can be trusted for DECIMAL types</param>
+        /// <param name="columnSize">Column size/precision value</param>
+        /// <param name="decimalDigits">Decimal digits/scale value</param>
+        /// <returns>Arrow type corresponding to the XDBC type</returns>
+        public static IArrowType GetArrowType(int columnTypeId, string typeName, bool isColumnSizeValid, int? columnSize, int? decimalDigits)
+        {
+            switch (columnTypeId)
+            {
+                case (int)HiveServer2Connection.ColumnTypeId.BOOLEAN:
+                    return BooleanType.Default;
+                case (int)HiveServer2Connection.ColumnTypeId.TINYINT:
+                    return Int8Type.Default;
+                case (int)HiveServer2Connection.ColumnTypeId.SMALLINT:
+                    return Int16Type.Default;
+                case (int)HiveServer2Connection.ColumnTypeId.INTEGER:
+                    return Int32Type.Default;
+                case (int)HiveServer2Connection.ColumnTypeId.BIGINT:
+                    return Int64Type.Default;
+                case (int)HiveServer2Connection.ColumnTypeId.FLOAT:
+                case (int)HiveServer2Connection.ColumnTypeId.REAL:
+                    return FloatType.Default;
+                case (int)HiveServer2Connection.ColumnTypeId.DOUBLE:
+                    return DoubleType.Default;
+                case (int)HiveServer2Connection.ColumnTypeId.VARCHAR:
+                case (int)HiveServer2Connection.ColumnTypeId.NVARCHAR:
+                case (int)HiveServer2Connection.ColumnTypeId.LONGVARCHAR:
+                case (int)HiveServer2Connection.ColumnTypeId.LONGNVARCHAR:
+                    return StringType.Default;
+                case (int)HiveServer2Connection.ColumnTypeId.TIMESTAMP:
+                    return new TimestampType(TimeUnit.Microsecond, timezone: (string?)null);
+                case (int)HiveServer2Connection.ColumnTypeId.BINARY:
+                case (int)HiveServer2Connection.ColumnTypeId.VARBINARY:
+                case (int)HiveServer2Connection.ColumnTypeId.LONGVARBINARY:
+                    return BinaryType.Default;
+                case (int)HiveServer2Connection.ColumnTypeId.DATE:
+                    return Date32Type.Default;
+                case (int)HiveServer2Connection.ColumnTypeId.CHAR:
+                case (int)HiveServer2Connection.ColumnTypeId.NCHAR:
+                    return StringType.Default;
+                case (int)HiveServer2Connection.ColumnTypeId.DECIMAL:
+                case (int)HiveServer2Connection.ColumnTypeId.NUMERIC:
+                    if (isColumnSizeValid && columnSize.HasValue && decimalDigits.HasValue)
+                    {
+                        return new Decimal128Type(columnSize.Value, decimalDigits.Value);
+                    }
+                    else
+                    {
+                        // Parse type name for precision/scale when not provided
+                        return SqlTypeNameParser<SqlDecimalParserResult>
+                            .Parse(typeName, columnTypeId)
+                            .Decimal128Type;
+                    }
+                case (int)HiveServer2Connection.ColumnTypeId.NULL:
+                    return NullType.Default;
+                case (int)HiveServer2Connection.ColumnTypeId.ARRAY:
+                case (int)HiveServer2Connection.ColumnTypeId.JAVA_OBJECT:
+                case (int)HiveServer2Connection.ColumnTypeId.STRUCT:
+                    return StringType.Default;
+                default:
+                    throw new NotImplementedException($"Column type id: {columnTypeId} is not supported.");
+            }
+        }
+
+        /// <summary>
+        /// Builds an Arrow Schema from column metadata records.
+        /// Used by GetTableSchema to convert metadata into Arrow schema format.
+        /// </summary>
+        /// <param name="records">Collection of column metadata records</param>
+        /// <param name="isColumnSizeValidForDecimal">Whether column size can be trusted for DECIMAL types</param>
+        /// <returns>Arrow Schema with fields for each column</returns>
+        public static Schema BuildSchemaFromColumnMetadata(IEnumerable<ColumnMetadataRecord> records, bool isColumnSizeValidForDecimal)
+        {
+            var fields = new List<Field>();
+            foreach (var record in records)
+            {
+                IArrowType arrowType = GetArrowType(
+                    record.XdbcDataType ?? 0,
+                    record.TypeName ?? "",
+                    isColumnSizeValidForDecimal,
+                    record.XdbcColumnSize,
+                    record.XdbcDecimalDigits
+                );
+                fields.Add(new Field(record.ColumnName, arrowType, record.Nullable == 1));
+            }
+            return new Schema(fields.ToArray(), null);
+        }
+
+        #endregion
+
         #region Helper Methods
 
         /// <summary>
@@ -547,10 +644,10 @@ namespace Apache.Arrow.Adbc.Drivers.Apache.Hive2.Metadata
         /// <summary>
         /// Appends a value or null to an Int8Array.Builder.
         /// </summary>
-        private static void AppendOrNull(Int8Array.Builder builder, sbyte? value)
+        private static void AppendOrNull(Int8Array.Builder builder, byte? value)
         {
             if (value.HasValue)
-                builder.Append(value.Value);
+                builder.Append((sbyte)value.Value);
             else
                 builder.AppendNull();
         }

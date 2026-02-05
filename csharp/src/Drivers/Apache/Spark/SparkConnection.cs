@@ -68,60 +68,6 @@ namespace Apache.Arrow.Adbc.Drivers.Apache.Spark
 
         protected override int ColumnMapIndexOffset => 1;
 
-        internal override void SetPrecisionScaleAndTypeName(
-            short colType,
-            string typeName,
-            TableInfo? tableInfo,
-            int columnSize,
-            int decimalDigits)
-        {
-            // Keep the original type name
-            tableInfo?.TypeName.Add(typeName);
-
-            // Use static methods for base type name extraction
-            string? baseTypeName = ColumnTypeMapper.GetBaseTypeNameStatic(typeName);
-
-            // Populate precision/scale based on type category
-            switch (colType)
-            {
-                case (short)ColumnTypeId.DECIMAL:
-                case (short)ColumnTypeId.NUMERIC:
-                    {
-                        // For DECIMAL, extract precision/scale from type name
-                        int? precision = ColumnTypeMapper.GetColumnSizeStatic(typeName);
-                        int? scale = ColumnTypeMapper.GetDecimalDigitsStatic(typeName);
-                        tableInfo?.Precision.Add(precision);
-                        tableInfo?.Scale.Add(scale.HasValue ? (short)scale.Value : null);
-                        tableInfo?.BaseTypeName.Add(baseTypeName);
-                        break;
-                    }
-
-                case (short)ColumnTypeId.CHAR:
-                case (short)ColumnTypeId.NCHAR:
-                case (short)ColumnTypeId.VARCHAR:
-                case (short)ColumnTypeId.LONGVARCHAR:
-                case (short)ColumnTypeId.LONGNVARCHAR:
-                case (short)ColumnTypeId.NVARCHAR:
-                    {
-                        // For character types, extract column size from type name
-                        int? columnSizeValue = ColumnTypeMapper.GetColumnSizeStatic(typeName);
-                        tableInfo?.Precision.Add(columnSizeValue);
-                        tableInfo?.Scale.Add(null);
-                        tableInfo?.BaseTypeName.Add(baseTypeName);
-                        break;
-                    }
-
-                default:
-                    {
-                        // For other types (INTEGER, BIGINT, FLOAT, etc.), precision/scale not applicable
-                        tableInfo?.Precision.Add(null);
-                        tableInfo?.Scale.Add(null);
-                        tableInfo?.BaseTypeName.Add(baseTypeName);
-                        break;
-                    }
-            }
-        }
-
         protected override string InfoDriverName => DriverName;
 
         protected override string InfoDriverArrowVersion => ArrowVersion;

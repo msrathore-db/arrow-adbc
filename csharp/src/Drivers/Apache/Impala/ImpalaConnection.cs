@@ -68,19 +68,6 @@ namespace Apache.Arrow.Adbc.Drivers.Apache.Impala
         protected override Task<TRowSet> GetRowSetAsync(IResponse response, CancellationToken cancellationToken = default) =>
             FetchResultsAsync(response.OperationHandle!, cancellationToken: cancellationToken);
 
-        internal override void SetPrecisionScaleAndTypeName(
-            short colType,
-            string typeName,
-            TableInfo? tableInfo,
-            int columnSize,
-            int decimalDigits)
-        {
-            tableInfo?.TypeName.Add(typeName);
-            tableInfo?.Precision.Add(columnSize);
-            tableInfo?.Scale.Add((short)decimalDigits);
-            tableInfo?.BaseTypeName.Add(typeName);
-        }
-
         protected override string InfoDriverName => DriverName;
 
         protected override string InfoDriverArrowVersion => ArrowVersion;

@@ -68,54 +68,6 @@ namespace Apache.Arrow.Adbc.Drivers.Apache.Hive2
                 response,
                 dataTypeConversion: statement.Connection.DataTypeConversion);
 
-        internal override void SetPrecisionScaleAndTypeName(
-            short colType,
-            string typeName,
-            TableInfo? tableInfo,
-            int columnSize,
-            int decimalDigits)
-        {
-            // Keep the original type name
-            tableInfo?.TypeName.Add(typeName);
-            switch (colType)
-            {
-                case (short)ColumnTypeId.DECIMAL:
-                case (short)ColumnTypeId.NUMERIC:
-                    {
-                        // Precision/scale is provide in the API call.
-                        SqlDecimalParserResult result = SqlTypeNameParser<SqlDecimalParserResult>.Parse(typeName, colType);
-                        tableInfo?.Precision.Add(columnSize);
-                        tableInfo?.Scale.Add((short)decimalDigits);
-                        tableInfo?.BaseTypeName.Add(result.BaseTypeName);
-                        break;
-                    }
-
-                case (short)ColumnTypeId.CHAR:
-                case (short)ColumnTypeId.NCHAR:
-                case (short)ColumnTypeId.VARCHAR:
-                case (short)ColumnTypeId.LONGVARCHAR:
-                case (short)ColumnTypeId.LONGNVARCHAR:
-                case (short)ColumnTypeId.NVARCHAR:
-                    {
-                        // Precision is provide in the API call.
-                        SqlCharVarcharParserResult result = SqlTypeNameParser<SqlCharVarcharParserResult>.Parse(typeName, colType);
-                        tableInfo?.Precision.Add(columnSize);
-                        tableInfo?.Scale.Add(null);
-                        tableInfo?.BaseTypeName.Add(result.BaseTypeName);
-                        break;
-                    }
-
-                default:
-                    {
-                        SqlTypeNameParserResult result = SqlTypeNameParser<SqlTypeNameParserResult>.Parse(typeName, colType);
-                        tableInfo?.Precision.Add(null);
-                        tableInfo?.Scale.Add(null);
-                        tableInfo?.BaseTypeName.Add(result.BaseTypeName);
-                        break;
-                    }
-            }
-        }
-
         protected override ColumnsMetadataColumnNames GetColumnsMetadataColumnNames()
         {
             return new ColumnsMetadataColumnNames()

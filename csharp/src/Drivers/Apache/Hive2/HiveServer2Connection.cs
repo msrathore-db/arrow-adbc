@@ -108,14 +108,13 @@ namespace Apache.Arrow.Adbc.Drivers.Apache.Hive2
         }
 
         /// <summary>
-        /// The data type definitions based on SQL/CLI specification (ISO/IEC 9075-3).
+        /// The data type definitions based on the <see href="https://docs.oracle.com/en%2Fjava%2Fjavase%2F21%2Fdocs%2Fapi%2F%2F/java.sql/java/sql/Types.html">JDBC Types</see> constants.
         /// </summary>
         /// <remarks>
-        /// This enumeration can be used to determine the driver's specific data types that are contained in fields <c>xdbc_data_type</c> and <c>xdbc_sql_data_type</c>
+        /// This enumeration can be used to determine the drivers specific data types that are contained in fields <c>xdbc_data_type</c> and <c>xdbc_sql_data_type</c>
         /// in the column metadata <see cref="StandardSchemas.ColumnSchema"/>. This column metadata is returned as a result of a call to
         /// <see cref="AdbcConnection.GetObjects(GetObjectsDepth, string?, string?, string?, IReadOnlyList{string}?, string?)"/>
         /// when <c>depth</c> is set to <see cref="AdbcConnection.GetObjectsDepth.All"/>.
-        /// For new code, prefer using <see cref="Metadata.ColumnTypeId"/> instead.
         /// </remarks>
         internal enum ColumnTypeId
         {
@@ -622,8 +621,8 @@ namespace Apache.Arrow.Adbc.Drivers.Apache.Hive2
                         ReadOnlySpan<int> columnSizeList = rowSet.Columns[columnMap[columnNames.ColumnSize]].I32Val.Values.Values;
                         ReadOnlySpan<int> decimalDigitsList = rowSet.Columns[columnMap[columnNames.DecimalDigits]].I32Val.Values.Values;
 
-                        // Create metadata populator for field synthesis (allows override in derived classes)
-                        var populator = CreateMetadataFieldPopulator();
+                        // Create metadata populator for field synthesis
+                        var populator = new Metadata.MetadataFieldPopulator();
 
                         for (int i = 0; i < catalogList.Count; i++)
                         {
@@ -653,10 +652,6 @@ namespace Apache.Arrow.Adbc.Drivers.Apache.Hive2
                                                        isNullable.Equals("NO", StringComparison.InvariantCultureIgnoreCase) ? false :
                                                        (bool?)null;
 
-                                // Extract precision/scale using protocol-specific parsing
-                                var tempTableInfo = new TableInfo(string.Empty);
-                                SetPrecisionScaleAndTypeName(colType, typeName, tempTableInfo, columnSize, decimalDigits);
-
                                 // Populate column metadata using shared abstractions
                                 var record = populator.PopulateColumnMetadata(
                                     catalog,
@@ -666,19 +661,13 @@ namespace Apache.Arrow.Adbc.Drivers.Apache.Hive2
                                     typeName,
                                     ordinalPos,
                                     isNullableBool,
-                                    remarks: null,
+                                    remarks: null, // Not available in Thrift GetObjects
                                     columnDefault: columnDefault,
                                     customData: null
                                 );
 
-                                // Override synthesized fields with protocol-provided values
+                                // Override fields with Thrift-provided values (preserves exact current behavior)
                                 record.XdbcDataType = colType;
-                                record.XdbcColumnSize = tempTableInfo.Precision.Count > 0 ? tempTableInfo.Precision[0] : null;
-                                record.XdbcDecimalDigits = tempTableInfo.Scale.Count > 0 ? tempTableInfo.Scale[0] : null;
-                                record.XdbcNumPrecRadix = null;
-                                record.SqlDataType = colType;
-                                record.XdbcCharOctetLength = null;
-                                record.SqlDatetimeSub = null;
                                 record.Nullable = nullable;
                                 record.IsNullable = isNullable;
                                 record.IsAutoIncrement = isAutoIncrement ? "YES" : "NO";
@@ -958,16 +947,6 @@ namespace Apache.Arrow.Adbc.Drivers.Apache.Hive2
         protected abstract bool GetObjectsPatternsRequireLowerCase { get; }
 
         protected abstract bool IsColumnSizeValidForDecimal { get; }
-
-        /// <summary>
-        /// Factory method to create a MetadataFieldPopulator instance.
-        /// Override in derived classes to provide custom field population logic.
-        /// </summary>
-        /// <returns>A MetadataFieldPopulator instance for field synthesis</returns>
-        protected virtual Metadata.MetadataFieldPopulator CreateMetadataFieldPopulator()
-        {
-            return new Metadata.MetadataFieldPopulator();
-        }
 
         public override void SetOption(string key, string? value)
         {
@@ -1306,91 +1285,159 @@ namespace Apache.Arrow.Adbc.Drivers.Apache.Hive2
             });
         }
 
-        private static StructArray GetColumnSchema(TableInfo tableInfo)
+        #region Metadata Record Conversion Methods
+
+        /// <summary>
+        /// Converts Thrift GetCatalogs response to catalog metadata records.
+        /// Virtual to allow SEA and other protocols to override with their own conversion logic.
+        /// </summary>
+        /// <param name="rowSet">Thrift rowset containing catalog data</param>
+        /// <returns>List of catalog metadata records</returns>
+        internal protected virtual List<Metadata.CatalogMetadataRecord> ConvertToCatalogRecords(TRowSet rowSet)
         {
-            StringArray.Builder columnNameBuilder = new StringArray.Builder();
-            Int32Array.Builder ordinalPositionBuilder = new Int32Array.Builder();
-            StringArray.Builder remarksBuilder = new StringArray.Builder();
-            Int16Array.Builder xdbcDataTypeBuilder = new Int16Array.Builder();
-            StringArray.Builder xdbcTypeNameBuilder = new StringArray.Builder();
-            Int32Array.Builder xdbcColumnSizeBuilder = new Int32Array.Builder();
-            Int16Array.Builder xdbcDecimalDigitsBuilder = new Int16Array.Builder();
-            Int16Array.Builder xdbcNumPrecRadixBuilder = new Int16Array.Builder();
-            Int16Array.Builder xdbcNullableBuilder = new Int16Array.Builder();
-            StringArray.Builder xdbcColumnDefBuilder = new StringArray.Builder();
-            Int16Array.Builder xdbcSqlDataTypeBuilder = new Int16Array.Builder();
-            Int16Array.Builder xdbcDatetimeSubBuilder = new Int16Array.Builder();
-            Int32Array.Builder xdbcCharOctetLengthBuilder = new Int32Array.Builder();
-            StringArray.Builder xdbcIsNullableBuilder = new StringArray.Builder();
-            StringArray.Builder xdbcScopeCatalogBuilder = new StringArray.Builder();
-            StringArray.Builder xdbcScopeSchemaBuilder = new StringArray.Builder();
-            StringArray.Builder xdbcScopeTableBuilder = new StringArray.Builder();
-            BooleanArray.Builder xdbcIsAutoincrementBuilder = new BooleanArray.Builder();
-            BooleanArray.Builder xdbcIsGeneratedcolumnBuilder = new BooleanArray.Builder();
-            ArrowBuffer.BitmapBuilder nullBitmapBuffer = new ArrowBuffer.BitmapBuilder();
-            int length = 0;
+            var records = new List<Metadata.CatalogMetadataRecord>();
 
+            if (rowSet.Columns.Count == 0 || rowSet.Columns[0].StringVal.Values.Length == 0)
+                return records;
 
-            for (int i = 0; i < tableInfo.ColumnName.Count; i++)
+            var catalogNames = rowSet.Columns[0].StringVal.Values;
+            int rowCount = catalogNames.Length;
+
+            for (int i = 0; i < rowCount; i++)
             {
-                columnNameBuilder.Append(tableInfo.ColumnName[i]);
-                ordinalPositionBuilder.Append(tableInfo.OrdinalPosition[i]);
-                // Use the "remarks" field to store the original type name value
-                remarksBuilder.Append(tableInfo.TypeName[i]);
-                xdbcColumnSizeBuilder.Append(tableInfo.Precision[i]);
-                xdbcDecimalDigitsBuilder.Append(tableInfo.Scale[i]);
-                xdbcDataTypeBuilder.Append(tableInfo.ColType[i]);
-                // Just the base type name without precision or scale clause
-                xdbcTypeNameBuilder.Append(tableInfo.BaseTypeName[i]);
-                xdbcNumPrecRadixBuilder.AppendNull();
-                xdbcNullableBuilder.Append(tableInfo.Nullable[i]);
-                xdbcColumnDefBuilder.Append(tableInfo.ColumnDefault[i]);
-                xdbcSqlDataTypeBuilder.Append(tableInfo.ColType[i]);
-                xdbcDatetimeSubBuilder.AppendNull();
-                xdbcCharOctetLengthBuilder.AppendNull();
-                xdbcIsNullableBuilder.Append(tableInfo.IsNullable[i]);
-                xdbcScopeCatalogBuilder.AppendNull();
-                xdbcScopeSchemaBuilder.AppendNull();
-                xdbcScopeTableBuilder.AppendNull();
-                xdbcIsAutoincrementBuilder.Append(tableInfo.IsAutoIncrement[i]);
-                xdbcIsGeneratedcolumnBuilder.Append(true);
-                nullBitmapBuffer.Append(true);
-                length++;
+                records.Add(new Metadata.CatalogMetadataRecord(catalogNames.GetString(i)));
             }
 
-            IReadOnlyList<Field> schema = StandardSchemas.ColumnSchema;
-            IReadOnlyList<IArrowArray> dataArrays = schema.Validate(
-                new List<IArrowArray>
-                {
-                    columnNameBuilder.Build(),
-                    ordinalPositionBuilder.Build(),
-                    remarksBuilder.Build(),
-                    xdbcDataTypeBuilder.Build(),
-                    xdbcTypeNameBuilder.Build(),
-                    xdbcColumnSizeBuilder.Build(),
-                    xdbcDecimalDigitsBuilder.Build(),
-                    xdbcNumPrecRadixBuilder.Build(),
-                    xdbcNullableBuilder.Build(),
-                    xdbcColumnDefBuilder.Build(),
-                    xdbcSqlDataTypeBuilder.Build(),
-                    xdbcDatetimeSubBuilder.Build(),
-                    xdbcCharOctetLengthBuilder.Build(),
-                    xdbcIsNullableBuilder.Build(),
-                    xdbcScopeCatalogBuilder.Build(),
-                    xdbcScopeSchemaBuilder.Build(),
-                    xdbcScopeTableBuilder.Build(),
-                    xdbcIsAutoincrementBuilder.Build(),
-                    xdbcIsGeneratedcolumnBuilder.Build()
-                });
-
-            return new StructArray(
-                new StructType(schema),
-                length,
-                dataArrays,
-                nullBitmapBuffer.Build());
+            return records;
         }
 
-        internal abstract void SetPrecisionScaleAndTypeName(short columnType, string typeName, TableInfo? tableInfo, int columnSize, int decimalDigits);
+        /// <summary>
+        /// Converts Thrift GetSchemas response to schema metadata records.
+        /// Virtual to allow SEA and other protocols to override.
+        /// </summary>
+        /// <param name="rowSet">Thrift rowset containing schema data</param>
+        /// <returns>List of schema metadata records</returns>
+        internal protected virtual List<Metadata.SchemaMetadataRecord> ConvertToSchemaRecords(TRowSet rowSet)
+        {
+            var records = new List<Metadata.SchemaMetadataRecord>();
+
+            if (rowSet.Columns.Count < 2 || rowSet.Columns[0].StringVal.Values.Length == 0)
+                return records;
+
+            var schemaNames = rowSet.Columns[0].StringVal.Values;  // TABLE_SCHEM
+            var catalogNames = rowSet.Columns[1].StringVal.Values; // TABLE_CATALOG
+            int rowCount = schemaNames.Length;
+
+            for (int i = 0; i < rowCount; i++)
+            {
+                records.Add(new Metadata.SchemaMetadataRecord(
+                    catalogNames.GetString(i),
+                    schemaNames.GetString(i)));
+            }
+
+            return records;
+        }
+
+        /// <summary>
+        /// Converts Thrift GetTables response to table metadata records.
+        /// Virtual to allow SEA and other protocols to override.
+        /// </summary>
+        /// <param name="rowSet">Thrift rowset containing table data</param>
+        /// <returns>List of table metadata records</returns>
+        internal protected virtual List<Metadata.TableMetadataRecord> ConvertToTableRecords(TRowSet rowSet)
+        {
+            var records = new List<Metadata.TableMetadataRecord>();
+
+            if (rowSet.Columns.Count < 10 || rowSet.Columns[0].StringVal.Values.Length == 0)
+                return records;
+
+            int rowCount = rowSet.Columns[0].StringVal.Values.Length;
+
+            for (int i = 0; i < rowCount; i++)
+            {
+                records.Add(new Metadata.TableMetadataRecord(
+                    rowSet.Columns[0].StringVal.Values.GetString(i),  // catalogName
+                    rowSet.Columns[1].StringVal.Values.GetString(i),  // schemaName
+                    rowSet.Columns[2].StringVal.Values.GetString(i),  // tableName
+                    rowSet.Columns[3].StringVal.Values.GetString(i),  // tableType
+                    rowSet.Columns[4].StringVal.Values.GetString(i),  // remarks
+                    rowSet.Columns[5].StringVal.Values.GetString(i),  // typeCatalog
+                    rowSet.Columns[6].StringVal.Values.GetString(i),  // typeSchema
+                    rowSet.Columns[7].StringVal.Values.GetString(i),  // typeName
+                    rowSet.Columns[8].StringVal.Values.GetString(i),  // selfReferencingColName
+                    rowSet.Columns[9].StringVal.Values.GetString(i))); // refGeneration
+            }
+
+            return records;
+        }
+
+        /// <summary>
+        /// Converts Thrift GetPrimaryKeys response to primary key metadata records.
+        /// Virtual to allow SEA and other protocols to override.
+        /// </summary>
+        /// <param name="rowSet">Thrift rowset containing primary key data</param>
+        /// <returns>List of primary key metadata records</returns>
+        internal protected virtual List<Metadata.PrimaryKeyMetadataRecord> ConvertToPrimaryKeyRecords(TRowSet rowSet)
+        {
+            var records = new List<Metadata.PrimaryKeyMetadataRecord>();
+
+            if (rowSet.Columns.Count < 6 || rowSet.Columns[0].StringVal.Values.Length == 0)
+                return records;
+
+            int rowCount = rowSet.Columns[0].StringVal.Values.Length;
+
+            for (int i = 0; i < rowCount; i++)
+            {
+                records.Add(new Metadata.PrimaryKeyMetadataRecord(
+                    rowSet.Columns[0].StringVal.Values.GetString(i),  // catalogName
+                    rowSet.Columns[1].StringVal.Values.GetString(i),  // schemaName
+                    rowSet.Columns[2].StringVal.Values.GetString(i),  // tableName
+                    rowSet.Columns[3].StringVal.Values.GetString(i),  // columnName
+                    rowSet.Columns[4].I32Val.Values.GetValue(i),      // keySequence
+                    rowSet.Columns[5].StringVal.Values.GetString(i))); // primaryKeyName
+            }
+
+            return records;
+        }
+
+        /// <summary>
+        /// Converts Thrift GetCrossReference response to foreign key metadata records.
+        /// Virtual to allow SEA and other protocols to override.
+        /// </summary>
+        /// <param name="rowSet">Thrift rowset containing foreign key relationship data</param>
+        /// <returns>List of foreign key metadata records</returns>
+        internal protected virtual List<Metadata.ForeignKeyMetadataRecord> ConvertToForeignKeyRecords(TRowSet rowSet)
+        {
+            var records = new List<Metadata.ForeignKeyMetadataRecord>();
+
+            if (rowSet.Columns.Count < 14 || rowSet.Columns[0].StringVal.Values.Length == 0)
+                return records;
+
+            int rowCount = rowSet.Columns[0].StringVal.Values.Length;
+
+            for (int i = 0; i < rowCount; i++)
+            {
+                records.Add(new Metadata.ForeignKeyMetadataRecord(
+                    rowSet.Columns[0].StringVal.Values.GetString(i),  // pkCatalogName
+                    rowSet.Columns[1].StringVal.Values.GetString(i),  // pkSchemaName
+                    rowSet.Columns[2].StringVal.Values.GetString(i),  // pkTableName
+                    rowSet.Columns[3].StringVal.Values.GetString(i),  // pkColumnName
+                    rowSet.Columns[4].StringVal.Values.GetString(i),  // fkCatalogName
+                    rowSet.Columns[5].StringVal.Values.GetString(i),  // fkSchemaName
+                    rowSet.Columns[6].StringVal.Values.GetString(i),  // fkTableName
+                    rowSet.Columns[7].StringVal.Values.GetString(i),  // fkColumnName
+                    rowSet.Columns[8].I32Val.Values.GetValue(i),      // keySequence
+                    rowSet.Columns[9].I32Val.Values.GetValue(i),      // updateRule
+                    rowSet.Columns[10].I32Val.Values.GetValue(i),     // deleteRule
+                    rowSet.Columns[11].StringVal.Values.GetString(i), // fkName
+                    rowSet.Columns[12].StringVal.Values.GetString(i), // pkName
+                    rowSet.Columns[13].I32Val.Values.GetValue(i)));   // deferrability
+            }
+
+            return records;
+        }
+
+        #endregion
 
         public override Schema GetTableSchema(string? catalog, string? dbSchema, string? tableName)
         {
@@ -1401,13 +1448,15 @@ namespace Apache.Arrow.Adbc.Drivers.Apache.Hive2
                     throw new InvalidOperationException("Invalid session");
                 }
 
+                // Fetch column metadata from server
                 TGetColumnsReq getColumnsReq = new TGetColumnsReq(SessionHandle);
                 getColumnsReq.CatalogName = catalog;
                 getColumnsReq.SchemaName = dbSchema;
                 getColumnsReq.TableName = tableName;
                 TrySetGetDirectResults(getColumnsReq);
 
-                CancellationToken cancellationToken = ApacheUtility.GetCancellationToken(QueryTimeoutSeconds, ApacheUtility.TimeUnit.Seconds);
+                CancellationToken cancellationToken = ApacheUtility.GetCancellationToken(
+                    QueryTimeoutSeconds, ApacheUtility.TimeUnit.Seconds);
                 try
                 {
                     var columnsResponse = Client.GetColumns(getColumnsReq, cancellationToken).Result;
@@ -1417,21 +1466,37 @@ namespace Apache.Arrow.Adbc.Drivers.Apache.Hive2
                     List<TColumn> columns = rowSet.Columns;
                     int rowCount = rowSet.Columns[3].StringVal.Values.Length;
 
-                    Field[] fields = new Field[rowCount];
+                    // Use unified metadata architecture
+                    var populator = new Metadata.MetadataFieldPopulator();
+                    var records = new List<Metadata.ColumnMetadataRecord>();
+
+                    // Convert server response to metadata records
                     for (int i = 0; i < rowCount; i++)
                     {
                         string columnName = columns[3].StringVal.Values.GetString(i);
                         int? columnType = columns[4].I32Val.Values.GetValue(i);
                         string typeName = columns[5].StringVal.Values.GetString(i);
-                        // Note: the following two columns do not seem to be set correctly for DECIMAL types.
-                        bool isColumnSizeValid = IsColumnSizeValidForDecimal;
                         int? columnSize = columns[6].I32Val.Values.GetValue(i);
                         int? decimalDigits = columns[8].I32Val.Values.GetValue(i);
                         bool nullable = columns[10].I32Val.Values.GetValue(i) == 1;
-                        IArrowType dataType = HiveServer2Connection.GetArrowType(columnType!.Value, typeName, isColumnSizeValid, columnSize, decimalDigits);
-                        fields[i] = new Field(columnName, dataType, nullable);
+
+                        var record = populator.PopulateColumnMetadata(
+                            catalog, dbSchema, tableName, columnName, typeName,
+                            ordinalPosition: i + 1,
+                            isNullable: nullable,
+                            remarks: null,
+                            columnDefault: null,
+                            customData: null
+                        );
+
+                        // Preserve exact server-provided type code
+                        record.XdbcDataType = columnType;
+                        records.Add(record);
                     }
-                    return new Schema(fields, null);
+
+                    // Build Arrow Schema from records
+                    return Metadata.MetadataSchemaBuilder.BuildSchemaFromColumnMetadata(
+                        records, IsColumnSizeValidForDecimal);
                 }
                 catch (Exception ex) when (ExceptionHelper.IsOperationCanceledOrCancellationRequested(ex, cancellationToken))
                 {
@@ -1442,66 +1507,6 @@ namespace Apache.Arrow.Adbc.Drivers.Apache.Hive2
                     throw new HiveServer2Exception($"An unexpected error occurred while running metadata query. '{ApacheUtility.FormatExceptionMessage(ex)}'", ex);
                 }
             });
-        }
-
-        private static IArrowType GetArrowType(int columnTypeId, string typeName, bool isColumnSizeValid, int? columnSize, int? decimalDigits)
-        {
-            switch (columnTypeId)
-            {
-                case (int)ColumnTypeId.BOOLEAN:
-                    return BooleanType.Default;
-                case (int)ColumnTypeId.TINYINT:
-                    return Int8Type.Default;
-                case (int)ColumnTypeId.SMALLINT:
-                    return Int16Type.Default;
-                case (int)ColumnTypeId.INTEGER:
-                    return Int32Type.Default;
-                case (int)ColumnTypeId.BIGINT:
-                    return Int64Type.Default;
-                case (int)ColumnTypeId.FLOAT:
-                case (int)ColumnTypeId.REAL:
-                    return FloatType.Default;
-                case (int)ColumnTypeId.DOUBLE:
-                    return DoubleType.Default;
-                case (int)ColumnTypeId.VARCHAR:
-                case (int)ColumnTypeId.NVARCHAR:
-                case (int)ColumnTypeId.LONGVARCHAR:
-                case (int)ColumnTypeId.LONGNVARCHAR:
-                    return StringType.Default;
-                case (int)ColumnTypeId.TIMESTAMP:
-                    return new TimestampType(TimeUnit.Microsecond, timezone: (string?)null);
-                case (int)ColumnTypeId.BINARY:
-                case (int)ColumnTypeId.VARBINARY:
-                case (int)ColumnTypeId.LONGVARBINARY:
-                    return BinaryType.Default;
-                case (int)ColumnTypeId.DATE:
-                    return Date32Type.Default;
-                case (int)ColumnTypeId.CHAR:
-                case (int)ColumnTypeId.NCHAR:
-                    return StringType.Default;
-                case (int)ColumnTypeId.DECIMAL:
-                case (int)ColumnTypeId.NUMERIC:
-                    if (isColumnSizeValid && columnSize.HasValue && decimalDigits.HasValue)
-                    {
-                        return new Decimal128Type(columnSize.Value, decimalDigits.Value);
-                    }
-                    else
-                    {
-                        // Note: parsing the type name for SQL DECIMAL types as the precision and scale values
-                        // may not be returned in the GetColumns response
-                        return SqlTypeNameParser<SqlDecimalParserResult>
-                            .Parse(typeName, columnTypeId)
-                            .Decimal128Type;
-                    }
-                case (int)ColumnTypeId.NULL:
-                    return NullType.Default;
-                case (int)ColumnTypeId.ARRAY:
-                case (int)ColumnTypeId.JAVA_OBJECT:
-                case (int)ColumnTypeId.STRUCT:
-                    return StringType.Default;
-                default:
-                    throw new NotImplementedException($"Column type id: {columnTypeId} is not supported.");
-            }
         }
 
         internal async Task<TRowSet> FetchResultsAsync(TOperationHandle operationHandle, long batchSize = BatchSizeDefault, CancellationToken cancellationToken = default)
@@ -1676,33 +1681,6 @@ namespace Apache.Arrow.Adbc.Drivers.Apache.Hive2
 
                 return new HiveInfoArrowStream(StandardSchemas.GetInfoSchema, dataArrays);
             });
-        }
-
-        internal struct TableInfo(string type)
-        {
-            public string Type { get; } = type;
-
-            public List<string> ColumnName { get; } = new();
-
-            public List<short> ColType { get; } = new();
-
-            public List<string> BaseTypeName { get; } = new();
-
-            public List<string> TypeName { get; } = new();
-
-            public List<short> Nullable { get; } = new();
-
-            public List<int?> Precision { get; } = new();
-
-            public List<short?> Scale { get; } = new();
-
-            public List<int> OrdinalPosition { get; } = new();
-
-            public List<string> ColumnDefault { get; } = new();
-
-            public List<string> IsNullable { get; } = new();
-
-            public List<bool> IsAutoIncrement { get; } = new();
         }
 
         internal struct TableMetadata(string type)

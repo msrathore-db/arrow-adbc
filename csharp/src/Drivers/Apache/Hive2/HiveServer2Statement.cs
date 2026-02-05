@@ -70,8 +70,8 @@ namespace Apache.Arrow.Adbc.Drivers.Apache.Hive2
         }
 
         /// <summary>
-        /// Gets the schema from metadata response. Base implementation uses the standard schema parser.
-        /// Subclasses can override to support alternative schema parsing strategies.
+        /// Gets the schema from metadata response. Base implementation uses traditional Thrift schema.
+        /// Subclasses can override to support Arrow schema parsing.
         /// </summary>
         /// <param name="metadata">The metadata response containing schema information</param>
         /// <returns>The Arrow schema</returns>
@@ -442,16 +442,15 @@ namespace Apache.Arrow.Adbc.Drivers.Apache.Hive2
         /// since the backend treats these as exact match queries rather than pattern matches.
         protected virtual async Task<QueryResult> GetCrossReferenceAsForeignTableAsync(CancellationToken cancellationToken = default)
         {
-            IResponse response = await Connection.GetCrossReferenceAsync(
-                null,
-                null,
-                null,
-                CatalogName,
-                SchemaName,
-                TableName,
+            var response = await Connection.GetCrossReferenceAsync(
+                null, null, null,
+                CatalogName, SchemaName, TableName,
                 cancellationToken);
-
-            return await GetQueryResult(response, cancellationToken);
+            return await GetMetadataAsRecordBatch(
+                response,
+                Connection.ConvertToForeignKeyRecords,
+                Metadata.MetadataSchemaBuilder.BuildFlatForeignKeysSchema,
+                cancellationToken);
         }
 
         /// <summary>
@@ -461,16 +460,15 @@ namespace Apache.Arrow.Adbc.Drivers.Apache.Hive2
         /// </summary>
         protected virtual async Task<QueryResult> GetCrossReferenceAsync(CancellationToken cancellationToken = default)
         {
-            IResponse response = await Connection.GetCrossReferenceAsync(
-                CatalogName,
-                SchemaName,
-                TableName,
-                ForeignCatalogName,
-                ForeignSchemaName,
-                ForeignTableName,
+            var response = await Connection.GetCrossReferenceAsync(
+                CatalogName, SchemaName, TableName,
+                ForeignCatalogName, ForeignSchemaName, ForeignTableName,
                 cancellationToken);
-
-            return await GetQueryResult(response, cancellationToken);
+            return await GetMetadataAsRecordBatch(
+                response,
+                Connection.ConvertToForeignKeyRecords,
+                Metadata.MetadataSchemaBuilder.BuildFlatForeignKeysSchema,
+                cancellationToken);
         }
 
         /// <summary>
@@ -480,43 +478,52 @@ namespace Apache.Arrow.Adbc.Drivers.Apache.Hive2
         /// </summary>
         protected virtual async Task<QueryResult> GetPrimaryKeysAsync(CancellationToken cancellationToken = default)
         {
-            IResponse response = await Connection.GetPrimaryKeysAsync(
-                CatalogName,
-                SchemaName,
-                TableName,
+            var response = await Connection.GetPrimaryKeysAsync(
+                CatalogName, SchemaName, TableName, cancellationToken);
+            return await GetMetadataAsRecordBatch(
+                response,
+                Connection.ConvertToPrimaryKeyRecords,
+                Metadata.MetadataSchemaBuilder.BuildFlatPrimaryKeysSchema,
                 cancellationToken);
-
-            return await GetQueryResult(response, cancellationToken);
         }
 
         protected virtual async Task<QueryResult> GetCatalogsAsync(CancellationToken cancellationToken = default)
         {
-            IResponse response = await Connection.GetCatalogsAsync(cancellationToken);
-
-            return await GetQueryResult(response, cancellationToken);
+            var response = await Connection.GetCatalogsAsync(cancellationToken);
+            return await GetMetadataAsRecordBatch(
+                response,
+                Connection.ConvertToCatalogRecords,
+                Metadata.MetadataSchemaBuilder.BuildFlatCatalogsSchema,
+                cancellationToken);
         }
 
         protected virtual async Task<QueryResult> GetSchemasAsync(CancellationToken cancellationToken = default)
         {
-            IResponse response = await Connection.GetSchemasAsync(
+            var response = await Connection.GetSchemasAsync(
                 EscapePatternWildcardsInName(CatalogName),
                 EscapePatternWildcardsInName(SchemaName),
                 cancellationToken);
-
-            return await GetQueryResult(response, cancellationToken);
+            return await GetMetadataAsRecordBatch(
+                response,
+                Connection.ConvertToSchemaRecords,
+                Metadata.MetadataSchemaBuilder.BuildFlatSchemasSchema,
+                cancellationToken);
         }
 
         protected virtual async Task<QueryResult> GetTablesAsync(CancellationToken cancellationToken = default)
         {
-            List<string>? tableTypesList = this.TableTypes?.Split(',').ToList();
-            IResponse response = await Connection.GetTablesAsync(
+            var tableTypesList = this.TableTypes?.Split(',').ToList();
+            var response = await Connection.GetTablesAsync(
                 EscapePatternWildcardsInName(CatalogName),
                 EscapePatternWildcardsInName(SchemaName),
                 EscapePatternWildcardsInName(TableName),
                 tableTypesList,
                 cancellationToken);
-
-            return await GetQueryResult(response, cancellationToken);
+            return await GetMetadataAsRecordBatch(
+                response,
+                Connection.ConvertToTableRecords,
+                Metadata.MetadataSchemaBuilder.BuildFlatTablesSchema,
+                cancellationToken);
         }
 
         protected virtual async Task<QueryResult> GetColumnsAsync(CancellationToken cancellationToken = default)
@@ -557,17 +564,45 @@ namespace Apache.Arrow.Adbc.Drivers.Apache.Hive2
             return GetSchemaFromMetadata(response);
         }
 
-        private async Task<QueryResult> GetQueryResult(IResponse response, CancellationToken cancellationToken)
+        /// <summary>
+        /// Generic helper for metadata methods that convert TRowSet to RecordBatch using metadata records.
+        /// Handles both direct results and poll-fetch paths.
+        /// Virtual to allow protocol-specific customization (e.g., SEA).
+        /// </summary>
+        /// <typeparam name="TRecord">The metadata record type (e.g., CatalogMetadataRecord)</typeparam>
+        /// <param name="response">The Thrift response from the metadata RPC call</param>
+        /// <param name="converter">Function to convert TRowSet to list of metadata records</param>
+        /// <param name="builder">Function to build RecordBatch from metadata records</param>
+        /// <param name="cancellationToken">Cancellation token</param>
+        /// <returns>QueryResult containing the metadata as RecordBatch</returns>
+        protected virtual async Task<QueryResult> GetMetadataAsRecordBatch<TRecord>(
+            IResponse response,
+            Func<TRowSet, List<TRecord>> converter,
+            Func<IEnumerable<TRecord>, RecordBatch> builder,
+            CancellationToken cancellationToken)
         {
-            if (Connection.TryGetDirectResults(response.DirectResults, out QueryResult? result))
+            TRowSet? rowSet;
+
+            // Try direct results first (fast path)
+            if (Connection.TryGetDirectResults(response.DirectResults, out TGetResultSetMetadataResp? metadata, out rowSet))
             {
-                return result!;
+                var records = converter(rowSet!);
+                var batch = builder(records);
+                // Extract column arrays from RecordBatch for HiveInfoArrowStream
+                var arrays = Enumerable.Range(0, batch.ColumnCount).Select(i => batch.Column(i)).ToList();
+                return new QueryResult(batch.Length, new HiveServer2Connection.HiveInfoArrowStream(batch.Schema, arrays));
             }
 
+            // Poll and fetch path (slow path)
             await HiveServer2Connection.PollForResponseAsync(response.OperationHandle!, Connection.Client, PollTimeMilliseconds, cancellationToken);
-            Schema schema = await GetResultSetSchemaAsync(response.OperationHandle!, Connection.Client, cancellationToken);
+            metadata = await HiveServer2Connection.GetResultSetMetadataAsync(response.OperationHandle!, Connection.Client, cancellationToken);
+            rowSet = await Connection.FetchResultsAsync(response.OperationHandle!, BatchSize, cancellationToken);
 
-            return new QueryResult(-1, Connection.NewReader(this, schema, response));
+            var recordList = converter(rowSet);
+            var recordBatch = builder(recordList);
+            // Extract column arrays from RecordBatch for HiveInfoArrowStream
+            var columnArrays = Enumerable.Range(0, recordBatch.ColumnCount).Select(i => recordBatch.Column(i)).ToList();
+            return new QueryResult(recordBatch.Length, new HiveServer2Connection.HiveInfoArrowStream(recordBatch.Schema, columnArrays));
         }
 
         protected internal QueryResult EnhanceGetColumnsResult(Schema originalSchema, IReadOnlyList<IArrowArray> originalData,
@@ -624,7 +659,9 @@ namespace Apache.Arrow.Adbc.Drivers.Apache.Hive2
                     customData: null
                 );
 
-                // Extract values with fallback to protocol-provided values
+                // Extract values with fallback to Thrift-provided values
+                // This preserves the existing behavior where parsed values take precedence,
+                // but Thrift values are used if parsing fails or returns null
                 string baseTypeName = record.BaseTypeName ?? typeName ?? string.Empty;
                 int finalColumnSize = record.XdbcColumnSize ?? columnSize;
                 int finalDecimalDigits = record.XdbcDecimalDigits ?? decimalDigits;
